@@ -1,0 +1,715 @@
+fileFormatVersion: 2
+guid: adae6836d7579f54cae65c3af41338a8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3939178208695068557
+    second: strokevillage0023_0
+  - first:
+      213: 2054699221452329781
+    second: strokevillage0023_1
+  - first:
+      213: 839334621422105601
+    second: strokevillage0023_2
+  - first:
+      213: 8868281591103174849
+    second: strokevillage0023_3
+  - first:
+      213: -2166902629275546828
+    second: strokevillage0023_4
+  - first:
+      213: -943151846373323158
+    second: strokevillage0023_5
+  - first:
+      213: -860867955963361842
+    second: strokevillage0023_6
+  - first:
+      213: -7612808194895887431
+    second: strokevillage0023_7
+  - first:
+      213: 4142021997753873291
+    second: strokevillage0023_8
+  - first:
+      213: -3712446149283760715
+    second: strokevillage0023_9
+  - first:
+      213: -6925120418571891218
+    second: strokevillage0023_10
+  - first:
+      213: -3831918052344304331
+    second: strokevillage0023_11
+  - first:
+      213: 1974463763666582998
+    second: strokevillage0023_12
+  - first:
+      213: 5511265481999937802
+    second: strokevillage0023_13
+  - first:
+      213: -5710295470062095760
+    second: strokevillage0023_14
+  - first:
+      213: 3065133824611844900
+    second: strokevillage0023_15
+  - first:
+      213: 4188968431135924908
+    second: strokevillage0023_16
+  - first:
+      213: -2105839231749134848
+    second: strokevillage0023_17
+  - first:
+      213: -5623693378785829874
+    second: strokevillage0023_18
+  - first:
+      213: 1478745845925401067
+    second: strokevillage0023_19
+  - first:
+      213: 8525015570418891656
+    second: strokevillage0023_20
+  - first:
+      213: -9004183735612998870
+    second: strokevillage0023_21
+  - first:
+      213: -2801948880446540925
+    second: strokevillage0023_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: strokevillage0023_0
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 1514
+        width: 613
+        height: 443
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d87aa3cc5b5caa630800000000000000
+      internalID: 3939178208695068557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_1
+      rect:
+        serializedVersion: 2
+        x: 1585
+        y: 1568
+        width: 113
+        height: 429
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53310fe3e02c38c10800000000000000
+      internalID: 2054699221452329781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_2
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 708
+        width: 217
+        height: 747
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1043d85246ae5ab00800000000000000
+      internalID: 839334621422105601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_3
+      rect:
+        serializedVersion: 2
+        x: 1291
+        y: 1400
+        width: 59
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c837d5fe17721b70800000000000000
+      internalID: 8868281591103174849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_4
+      rect:
+        serializedVersion: 2
+        x: 1398
+        y: 1400
+        width: 71
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43bcb271a8d9de1e0800000000000000
+      internalID: -2166902629275546828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_5
+      rect:
+        serializedVersion: 2
+        x: 1510
+        y: 1400
+        width: 71
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6e0aab846049e2f0800000000000000
+      internalID: -943151846373323158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_6
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 1400
+        width: 59
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec58946b7259d04f0800000000000000
+      internalID: -860867955963361842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_7
+      rect:
+        serializedVersion: 2
+        x: 1723
+        y: 1302
+        width: 69
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b34c08f74fd95690800000000000000
+      internalID: -7612808194895887431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_8
+      rect:
+        serializedVersion: 2
+        x: 1771
+        y: 1378
+        width: 69
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8339f3cf0b6b7930800000000000000
+      internalID: 4142021997753873291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_9
+      rect:
+        serializedVersion: 2
+        x: 1844
+        y: 1382
+        width: 69
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b5bc2885edba7cc0800000000000000
+      internalID: -3712446149283760715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_10
+      rect:
+        serializedVersion: 2
+        x: 1866
+        y: 1275
+        width: 112
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eedc7309ba705ef90800000000000000
+      internalID: -6925120418571891218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_11
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 670
+        width: 207
+        height: 676
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53d6c9175da42dac0800000000000000
+      internalID: -3831918052344304331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_12
+      rect:
+        serializedVersion: 2
+        x: 1291
+        y: 1263
+        width: 71
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dd3a37f454b66b10800000000000000
+      internalID: 1974463763666582998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_13
+      rect:
+        serializedVersion: 2
+        x: 1428
+        y: 1249
+        width: 67
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a017a7581c2fb7c40800000000000000
+      internalID: 5511265481999937802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_14
+      rect:
+        serializedVersion: 2
+        x: 1593
+        y: 1230
+        width: 59
+        height: 139
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0723d604684f0c0b0800000000000000
+      internalID: -5710295470062095760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_15
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 1269
+        width: 69
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 423060549fa898a20800000000000000
+      internalID: 3065133824611844900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_16
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 872
+        width: 31
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca2ae211894322a30800000000000000
+      internalID: 4188968431135924908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_17
+      rect:
+        serializedVersion: 2
+        x: 1382
+        y: 902
+        width: 31
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 006e28d306e86c2e0800000000000000
+      internalID: -2105839231749134848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_18
+      rect:
+        serializedVersion: 2
+        x: 1502
+        y: 838
+        width: 189
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0c11c7eaa0a4f1b0800000000000000
+      internalID: -5623693378785829874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_19
+      rect:
+        serializedVersion: 2
+        x: 1799
+        y: 838
+        width: 189
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be1d77b138f858410800000000000000
+      internalID: 1478745845925401067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_20
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 21
+        width: 308
+        height: 581
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88bfd7b6e70fe4670800000000000000
+      internalID: 8525015570418891656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_21
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 121
+        width: 216
+        height: 344
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2bff624996ba0380800000000000000
+      internalID: -9004183735612998870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: strokevillage0023_22
+      rect:
+        serializedVersion: 2
+        x: 1392
+        y: 161
+        width: 344
+        height: 544
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3833e2ea65a7d19d0800000000000000
+      internalID: -2801948880446540925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      strokevillage0023_0: 3939178208695068557
+      strokevillage0023_1: 2054699221452329781
+      strokevillage0023_10: -6925120418571891218
+      strokevillage0023_11: -3831918052344304331
+      strokevillage0023_12: 1974463763666582998
+      strokevillage0023_13: 5511265481999937802
+      strokevillage0023_14: -5710295470062095760
+      strokevillage0023_15: 3065133824611844900
+      strokevillage0023_16: 4188968431135924908
+      strokevillage0023_17: -2105839231749134848
+      strokevillage0023_18: -5623693378785829874
+      strokevillage0023_19: 1478745845925401067
+      strokevillage0023_2: 839334621422105601
+      strokevillage0023_20: 8525015570418891656
+      strokevillage0023_21: -9004183735612998870
+      strokevillage0023_22: -2801948880446540925
+      strokevillage0023_3: 8868281591103174849
+      strokevillage0023_4: -2166902629275546828
+      strokevillage0023_5: -943151846373323158
+      strokevillage0023_6: -860867955963361842
+      strokevillage0023_7: -7612808194895887431
+      strokevillage0023_8: 4142021997753873291
+      strokevillage0023_9: -3712446149283760715
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
