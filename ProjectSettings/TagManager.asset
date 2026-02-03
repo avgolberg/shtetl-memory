@@ -45,6 +45,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Cloud2
+    uniqueID: 2671431317
+    locked: 0
+  - name: Cloud1
+    uniqueID: 4105446967
+    locked: 0
+  - name: Ground2
+    uniqueID: 1473751957
+    locked: 0
+  - name: Ground1
+    uniqueID: 3754786689
+    locked: 0
   - name: Player
     uniqueID: 120779639
     locked: 0
