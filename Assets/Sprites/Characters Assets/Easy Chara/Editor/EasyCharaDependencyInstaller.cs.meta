@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d1698d7ca9eca6d47b2baa0bded6c9e0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 313655
+  packageName: "Easy Chara \u2013 Hisa 2D Character Pack"
+  packageVersion: 1.2
+  assetPath: Assets/Easy Chara/Editor/EasyCharaDependencyInstaller.cs
+  uploadId: 840872
