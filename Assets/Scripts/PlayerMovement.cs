@@ -16,18 +16,26 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void OnMove(InputValue value)
+    public void OnMove(InputAction.CallbackContext context)
     {
-        moveInput = value.Get<Vector2>();
+        moveInput = context.ReadValue<Vector2>();
     }
+    
     void Update()
     {
+        if (PauseController.IsGamePaused)
+        {
+            rb.linearVelocity = Vector2.zero;
+            animator.SetFloat("speed", 0);
+            return;
+        }
+
         Move();
         FlipSprite();
     }
 
     void Move()
-    {
+    {        
         float targetX = moveInput.x * moveSpeed;
         float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetX, accel * Time.deltaTime);
         if (Mathf.Abs(newX) < 0.05f) newX = 0f;
