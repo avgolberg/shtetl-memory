@@ -1,22 +1,17 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class NPC : MonoBehaviour, IInteractable
 {
-    [Header("Dialogue Data")]
     public NPCDialogue dialogueData;
-
-    [Header("UI")]
-    public GameObject dialoguePanel;
-    public TMP_Text dialogueText;
-    public TMP_Text nameText;
-    public Image portraitImage;
-
+    private DialogueController dialogueUI;
     private int dialogueIndex;
-    private bool isTyping;
-    private bool isDialogueActive;
+    private bool isTyping, isDialogueActive;
+    private void Start()
+    {
+        dialogueUI = DialogueController.Instance;
+        dialogueUI.SetActiveNPC(this);
+    }
 
     public bool CanInteract()
     {
@@ -25,7 +20,7 @@ public class NPC : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (dialogueData == null)
+        if (dialogueData == null || (PauseController.IsGamePaused && !isDialogueActive))
             return;
 
         if (isDialogueActive)
@@ -43,10 +38,8 @@ public class NPC : MonoBehaviour, IInteractable
         isDialogueActive = true;
         dialogueIndex = 0;
 
-        nameText.SetText(dialogueData.npcName);
-        portraitImage.sprite = dialogueData.npcPortrait;
-
-        dialoguePanel.SetActive(true);
+        dialogueUI.SetNPCInfo(dialogueData.npcName, dialogueData.npcPortrait);
+        dialogueUI.ShowDialogueUI(true);
         PauseController.SetPause(true);
 
         StartCoroutine(TypeLine());
@@ -55,14 +48,12 @@ public class NPC : MonoBehaviour, IInteractable
     IEnumerator TypeLine()
     {
         isTyping = true;
-        dialogueText.SetText("");
+        dialogueUI.SetDialogueText("");
 
-        string line = dialogueData.dialogueLines[dialogueIndex];
-
-        foreach (char letter in line)
+        foreach (char letter in dialogueData.dialogueLines[dialogueIndex])
         {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(dialogueData.typingSpeed);
+            dialogueUI.SetDialogueText(dialogueUI.dialogueText.text += letter);
+            yield return new WaitForSecondsRealtime(dialogueData.typingSpeed);
         }
 
         isTyping = false;
@@ -77,13 +68,12 @@ public class NPC : MonoBehaviour, IInteractable
 
     void NextLine()
     {
-        // Skip typing animation
         if (isTyping)
         {
-            StopAllCoroutines();
-            dialogueText.SetText(dialogueData.dialogueLines[dialogueIndex]);
+            StopAllCoroutines(); // Skip typing animation
+            dialogueUI.SetDialogueText(dialogueData.dialogueLines[dialogueIndex]);
             isTyping = false;
-            
+
             if (dialogueData.autoProgressLines.Length > dialogueIndex &&
             dialogueData.autoProgressLines[dialogueIndex])
             {
@@ -105,17 +95,15 @@ public class NPC : MonoBehaviour, IInteractable
     }
     IEnumerator AutoProgress()
     {
-        yield return new WaitForSeconds(dialogueData.autoProgressDelay);
+        yield return new WaitForSecondsRealtime(dialogueData.autoProgressDelay);
         NextLine();
     }
     public void EndDialogue()
     {
         StopAllCoroutines();
-
         isDialogueActive = false;
-        dialogueText.SetText("");
-        dialoguePanel.SetActive(false);
-
+        dialogueUI.SetDialogueText("");
+        dialogueUI.ShowDialogueUI(false);
         PauseController.SetPause(false);
     }
 }

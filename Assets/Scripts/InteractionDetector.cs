@@ -10,19 +10,16 @@ public class InteractionDetector : MonoBehaviour
     {
         interactionIcon.SetActive(false);
     }
-
+    
     public void OnInteract(InputAction.CallbackContext context)
     {
         interactableInRange?.Interact();
-        if (!interactableInRange.CanInteract())
-        {
-            interactionIcon.SetActive(false);
-        }
+        interactionIcon.SetActive(interactableInRange != null && interactableInRange.CanInteract());
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out IInteractable interactable) && interactable.CanInteract())
+        if (collision.TryGetComponent(out IInteractable interactable))
         {
             interactableInRange = interactable;
             interactionIcon.SetActive(true);

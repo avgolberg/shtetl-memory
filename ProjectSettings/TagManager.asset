@@ -15,10 +15,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - NPC_Body
+  - NPC_Trigger
+  - Background
   - 
   - 
   - 

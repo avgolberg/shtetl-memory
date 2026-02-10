@@ -8,10 +8,12 @@ public class PlayerMovement : MonoBehaviour
 
     Vector2 moveInput;
     Rigidbody2D rb;
+    private Vector3 baseScale;
     Animator animator;
 
     void Awake()
     {
+        baseScale = transform.localScale;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -51,6 +53,6 @@ public class PlayerMovement : MonoBehaviour
     {
         bool isMoving = Mathf.Abs(rb.linearVelocity.x) > Mathf.Epsilon;
         if (isMoving)
-            transform.localScale = new Vector2(Mathf.Sign(rb.linearVelocity.x), 1f);
+            transform.localScale = new Vector2(Mathf.Sign(rb.linearVelocity.x) * Mathf.Abs(baseScale.x), baseScale.y);
     }
 }
