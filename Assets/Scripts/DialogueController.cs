@@ -22,6 +22,7 @@ public class DialogueController : MonoBehaviour
     {
         ActiveNPC = npc;
     }
+    
     public void ShowDialogueUI(bool show)
     {
         dialoguePanel.SetActive(show); //Toggle UI visability
@@ -50,6 +51,7 @@ public class DialogueController : MonoBehaviour
         choiceButton.GetComponent<Button>().onClick.AddListener(onClick);
         return choiceButton;
     }
+
     public void CloseDialogue()
     {
         ActiveNPC?.EndDialogue();

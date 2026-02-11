@@ -17,8 +17,20 @@ MonoBehaviour:
   dialogueLines:
   - Hi there!
   - I'm happy to see you in the Shtetl Memory!
-  autoProgressLines: 0100
+  - Can you help me here?
+  - Thanks!!
+  - I knew you'd help!
+  - Oh... ok...
+  - Maybe next time...
+  autoProgressLines: 01010101000100
+  endDialogueLines: 00000000010001
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   voiceSound: {fileID: 8300000, guid: 0ebde7a5355c951498e39a04454874f3, type: 3}
   voicePitch: 0.5
+  choices:
+  - dialogueIndex: 2
+    choices:
+    - Yes!
+    - No...
+    nextDialogueIndexes: 0300000005000000
