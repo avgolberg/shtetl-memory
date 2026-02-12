@@ -362,7 +362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &46877098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1198,7 +1198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &283998786
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1592,7 +1592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &341808706
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2398,7 +2398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &586472285
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5773,6 +5773,8 @@ GameObject:
   - component: {fileID: 1248967902}
   - component: {fileID: 1248967904}
   - component: {fileID: 1248967903}
+  - component: {fileID: 1248967905}
+  - component: {fileID: 1248967906}
   m_Layer: 5
   m_Name: InventoryPage
   m_TagString: Untagged
@@ -5837,6 +5839,48 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1248967901}
   m_CullTransparentMesh: 1
+--- !u!114 &1248967905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248967901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 50
+    m_Right: 50
+    m_Top: 50
+    m_Bottom: 50
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 180, y: 180}
+  m_Spacing: {x: 40, y: 40}
+  m_Constraint: 0
+  m_ConstraintCount: 2
+--- !u!114 &1248967906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248967901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5834309361bd0e948b7faeaa6754b26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryController
+  inventoryPanel: {fileID: 1248967901}
+  slotPrefab: {fileID: 5610723047291095632, guid: c48e910e194ed3c45b3413b514181af0, type: 3}
+  slotCount: 21
+  itemPrefabs:
+  - {fileID: 5357822092064164975, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+  - {fileID: 6171226648823713828, guid: b506866a6de44284c860831be2334d07, type: 3}
 --- !u!1 &1252218871
 GameObject:
   m_ObjectHideFlags: 0
