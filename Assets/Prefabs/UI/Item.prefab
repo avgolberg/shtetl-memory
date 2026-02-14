@@ -117,6 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
   ID: 1
+  Name: Coin
 --- !u!212 &6701476030847216963
 SpriteRenderer:
   m_ObjectHideFlags: 0
