@@ -10,18 +10,37 @@ public class InventoryController : MonoBehaviour
     public int slotCount;
     public GameObject[] itemPrefabs;
 
-    void Start()
+    void Awake()
     {
         itemDictionary = FindFirstObjectByType<ItemDictionary>();
+    }
+    
+     public bool AddItem(GameObject itemPrefab)
+    {
+        //Look for empty slot
+        foreach(Transform slotTranform in inventoryPanel.transform)
+        {
+            Slot slot = slotTranform.GetComponent<Slot>();
+            if(slot != null && slot.currentItem == null)
+            {
+                GameObject newItem = Instantiate(itemPrefab, slotTranform);
+                newItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                slot.currentItem = newItem;
+                return true;
+            }
+        }
+
+        Debug.Log("Inventory is full!");
+        return false;
     }
     
     public List<InventorySaveData> GetInventoryItems()
     {
         List<InventorySaveData> invData = new List<InventorySaveData>();
-        foreach(Transform slotTranform in inventoryPanel.transform)
+        foreach (Transform slotTranform in inventoryPanel.transform)
         {
             Slot slot = slotTranform.GetComponent<Slot>();
-            if(slot.currentItem != null)
+            if (slot.currentItem != null)
             {
                 Item item = slot.currentItem.GetComponent<Item>();
                 invData.Add(new InventorySaveData { itemID = item.ID, slotIndex = slotTranform.GetSiblingIndex() });
