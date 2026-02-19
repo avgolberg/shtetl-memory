@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a8283dea023b04590f80edf7bd90f6, type: 3}
+  m_Name: CollectCoins
+  m_EditorClassIdentifier: Assembly-CSharp::Quest
+  questID: 3cfc7f97-2d15-4b77-9a33-ba153cb4a922
+  questName: Collect Coins
+  description: We must collect 3 coins to help!
+  objectives:
+  - objectiveID: 1
+    description: Collect 3 Coins
+    type: 0
+    requiredAmount: 3
+    currentAmount: 0

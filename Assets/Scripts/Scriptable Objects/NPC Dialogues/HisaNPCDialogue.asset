@@ -22,8 +22,11 @@ MonoBehaviour:
   - I knew you'd help!
   - Oh... ok...
   - Maybe next time...
-  autoProgressLines: 01010101000100
-  endDialogueLines: 00000000010001
+  - Good luck collecting coins!
+  - Thank you for the coins!
+  - Now I can use them to open the shop!
+  autoProgressLines: 01010101000100000100
+  endDialogueLines: 00000000010001010001
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   voiceSound: {fileID: 8300000, guid: 0ebde7a5355c951498e39a04454874f3, type: 3}
@@ -34,3 +37,7 @@ MonoBehaviour:
     - Yes!
     - No...
     nextDialogueIndexes: 0300000005000000
+    givesQuest: 0100
+  questInProgressIndex: 7
+  questCompletedIndex: 8
+  quest: {fileID: 11400000, guid: 97322ac89117b1040b514afaadf61275, type: 2}
