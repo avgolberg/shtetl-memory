@@ -2593,6 +2593,8 @@ MonoBehaviour:
   itemPrefabs:
   - {fileID: -1705732769093425551, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
   - {fileID: 8622794785365113402, guid: b506866a6de44284c860831be2334d07, type: 3}
+  - {fileID: 1251492786455522547, guid: d7ae49b40ef2e6b428afd36ef74b9afb, type: 3}
+  - {fileID: 1251492786455522547, guid: d90e17b03a6448e4b839423ceced7a3b, type: 3}
 --- !u!1 &541386685
 GameObject:
   m_ObjectHideFlags: 0
@@ -4732,6 +4734,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771925592}
   m_CullTransparentMesh: 1
+--- !u!1 &781842943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 781842944}
+  - component: {fileID: 781842945}
+  m_Layer: 0
+  m_Name: RewardsController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &781842944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781842943}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1221159694}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &781842945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781842943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4596a467bc7b9f44caf4cdb01f96cff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RewardsController
 --- !u!224 &797172036 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4409370873865233432, guid: b506866a6de44284c860831be2334d07, type: 3}
@@ -6944,6 +6990,7 @@ Transform:
   - {fileID: 1388937697}
   - {fileID: 1086485415}
   - {fileID: 727556202}
+  - {fileID: 781842944}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1221159695
@@ -7881,6 +7928,7 @@ MonoBehaviour:
   itemPrefabs:
   - {fileID: 5357822092064164975, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
   - {fileID: 6171226648823713828, guid: b506866a6de44284c860831be2334d07, type: 3}
+  - {fileID: 3697729990531335917, guid: d7ae49b40ef2e6b428afd36ef74b9afb, type: 3}
 --- !u!1 &1449290958
 GameObject:
   m_ObjectHideFlags: 0

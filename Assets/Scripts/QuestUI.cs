@@ -34,7 +34,7 @@ public class QuestUI : MonoBehaviour
             TMP_Text questNameText = entry.transform.Find("QuestNameText").GetComponent<TMP_Text>();
             Transform objectiveList = entry.transform.Find("ObjectiveList");
 
-            questNameText.text = quest.quest.name;
+            questNameText.text = quest.quest.questName;
 
             foreach(var objective in quest.objectives)
             {
