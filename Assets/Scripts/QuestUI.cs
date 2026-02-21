@@ -24,6 +24,12 @@ public class QuestUI : MonoBehaviour
         //Build quest entries
         foreach(var quest in QuestController.Instance.activateQuests)
         {
+            if (quest.quest == null)
+            {
+                Debug.LogError("NULL QUEST IN LIST");
+                continue;
+            }
+            
             GameObject entry = Instantiate(questEntryPrefab, questListContent);
             TMP_Text questNameText = entry.transform.Find("QuestNameText").GetComponent<TMP_Text>();
             Transform objectiveList = entry.transform.Find("ObjectiveList");

@@ -6,7 +6,7 @@ public class SaveController : MonoBehaviour
     private string saveLocation;
     private InventoryController inventoryController;
 
-    void Awake()
+    void Start()
     {
         //Define save location
         saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
@@ -20,7 +20,9 @@ public class SaveController : MonoBehaviour
         SaveData saveData = new SaveData
         {
             playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
-            inventorySaveData = inventoryController.GetInventoryItems()
+            inventorySaveData = inventoryController.GetInventoryItems(),
+            questProgressData = QuestController.Instance.activateQuests,
+            handinQuestIDs = QuestController.Instance.handinQuestIDs
         };
 
         File.WriteAllText(saveLocation, JsonUtility.ToJson(saveData));
@@ -33,8 +35,11 @@ public class SaveController : MonoBehaviour
             SaveData saveData = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveLocation));
 
             GameObject.FindGameObjectWithTag("Player").transform.position = saveData.playerPosition;
-            
+
             inventoryController.SetInventoryItems(saveData.inventorySaveData);
+
+            QuestController.Instance.LoadQuestProgress(saveData.questProgressData);
+            QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;
         }
         else
         {

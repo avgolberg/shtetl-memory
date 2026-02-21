@@ -6132,6 +6132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestController
   activateQuests: []
+  handinQuestIDs: []
 --- !u!1 &1127900289
 GameObject:
   m_ObjectHideFlags: 0
