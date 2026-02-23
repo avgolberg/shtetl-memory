@@ -7,6 +7,7 @@ public class NPC : MonoBehaviour, IInteractable
     private DialogueController dialogueUI;
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
+    private float nextVoiceTime;
     private enum QuestState { NotStarted, InProgress, Completed }
     private QuestState questState = QuestState.NotStarted;
 
@@ -83,7 +84,6 @@ public class NPC : MonoBehaviour, IInteractable
         }
     }
 
-
     IEnumerator TypeLine()
     {
         isTyping = true;
@@ -92,7 +92,15 @@ public class NPC : MonoBehaviour, IInteractable
         foreach (char letter in dialogueData.dialogueLines[dialogueIndex])
         {
             dialogueUI.SetDialogueText(dialogueUI.dialogueText.text += letter);
-            //SoundEffectManager.PlayVoice(dialogueData.voiceSound, dialogueData.voicePitch);
+            if (!char.IsWhiteSpace(letter) && Time.unscaledTime >= nextVoiceTime)
+            {
+                SoundEffectManager.PlayVoice(
+                    new AudioClipData(dialogueData.voiceSound, dialogueData.voiceVolume),
+                    dialogueData.voicePitch
+                );
+
+                nextVoiceTime = Time.unscaledTime + 0.05f;
+            }
             yield return new WaitForSecondsRealtime(dialogueData.typingSpeed);
         }
 
@@ -175,6 +183,7 @@ public class NPC : MonoBehaviour, IInteractable
     void DisplayCurrentLine()
     {
         StopAllCoroutines();
+        nextVoiceTime = Time.unscaledTime;
         StartCoroutine(TypeLine());
     }
 

@@ -18,7 +18,13 @@ MonoBehaviour:
   - Hi there! I am a teacher!
   - I'm happy to see you in the Shtetl Memory!
   autoProgressLines: 0100
+  endDialogueLines: 
   autoProgressDelay: 1.5
   typingSpeed: 0.05
-  voiceSound: {fileID: 8300000, guid: 0ebde7a5355c951498e39a04454874f3, type: 3}
+  voiceSound: {fileID: 8300000, guid: 1f1b10f40b9b95c41845422e605cb277, type: 3}
+  voiceVolume: 1
   voicePitch: 0.5
+  choices: []
+  questInProgressIndex: 0
+  questCompletedIndex: 0
+  quest: {fileID: 0}
