@@ -29,9 +29,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (PauseController.IsGamePaused)
         {
-            rb.linearVelocity = Vector2.zero;
-            animator.SetFloat("speed", 0);
-            StopFootsteps();
+            if(rb.linearVelocity != Vector2.zero)
+            {
+                rb.linearVelocity = Vector2.zero;
+                animator.SetFloat("speed", 0);
+                StopFootsteps();
+            }
             return;
         }
 
