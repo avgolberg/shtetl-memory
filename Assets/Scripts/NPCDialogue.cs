@@ -6,12 +6,11 @@ public class NPCDialogue : ScriptableObject
     public string npcName;
     public Sprite npcPortrait;
 
-    [TextArea(2, 5)]
     public string[] dialogueLines;
 
     public bool[] autoProgressLines;
     public bool[] endDialogueLines; //Mark where dialogue ends
-
+    public bool[] questHandInIndex;
     public float autoProgressDelay = 1.5f;
 
     public float typingSpeed = 0.05f;
@@ -21,6 +20,7 @@ public class NPCDialogue : ScriptableObject
     public float voicePitch = 1f;
     public DialogueChoice[] choices;
     public int questInProgressIndex; //What does he say while quest in progress
+    
     public int questCompletedIndex; //What does he say when quest completed
     public Quest quest; //Quest NPC gives
 }

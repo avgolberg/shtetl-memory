@@ -24,9 +24,10 @@ MonoBehaviour:
   - Maybe next time...
   - Good luck collecting coins!
   - Thank you for the coins!
-  - Now I can use them to open the shop!
+  - Now you can find a portal!
   autoProgressLines: 01010101000100000100
   endDialogueLines: 00000000010001010001
+  questHandInIndex: 00000000010000010100
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   voiceSound: {fileID: 8300000, guid: 1f1b10f40b9b95c41845422e605cb277, type: 3}

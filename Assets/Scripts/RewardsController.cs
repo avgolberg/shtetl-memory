@@ -14,16 +14,15 @@ public class RewardsController : MonoBehaviour
     {
         if (quest?.questRewards == null) return;
 
-        foreach(var reward in quest.questRewards)
+        foreach (var reward in quest.questRewards)
         {
             switch (reward.type)
             {
                 case RewardType.Item:
                     GiveItemReward(reward.rewardID, reward.amount);
                     break;
-                case RewardType.Gold:
-                    break;
-                case RewardType.Experience:
+                case RewardType.Portal:
+                    GiveTeleportReward(reward.rewardID);
                     break;
                 case RewardType.Custom:
                     break;
@@ -37,10 +36,20 @@ public class RewardsController : MonoBehaviour
 
         if (itemPrefab == null) return;
 
-        for(int i = 0; i < amount; i++)
+        for (int i = 0; i < amount; i++)
         {
             InventoryController.Instance.AddItem(itemPrefab);
             itemPrefab.GetComponent<Item>().ShowPopUp();
         }
+    }
+
+    public void GiveTeleportReward(int teleportID)
+    {
+        var teleportPrefab = FindAnyObjectByType<TransitionDictionary>()?.GetTransitionPrefab(teleportID);
+
+        if (teleportPrefab == null) return;
+
+        teleportPrefab.GetComponent<MapTransition>().ChangeSprite();
+        
     }
 }

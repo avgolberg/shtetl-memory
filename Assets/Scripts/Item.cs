@@ -43,11 +43,6 @@ public class Item : MonoBehaviour
         cloneItem.UpdateQuantityDisplay();
         return clone;
     }
-
-    public virtual void UseItem()
-    {
-        Debug.Log("Using item " + Name);
-    }
     
     public virtual void ShowPopUp()
     {

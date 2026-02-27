@@ -1,15 +1,29 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class MapTransition : MonoBehaviour
+public class MapTransition : MonoBehaviour, IInteractable
 {
+    public int ID;
+    public string Name;
+    public Sprite updatedSprite;
     [SerializeField] PolygonCollider2D mapBoundary;
     [SerializeField] Transform teleportTargetPosition;
-    private CinemachineConfiner2D confiner;
+    [SerializeField] bool isReturnTransition;
+
+    CinemachineConfiner2D confiner;
+    SpriteRenderer sr;
+    GameObject player;
+    bool canInteract = false;
 
     private void Awake()
     {
         confiner = FindFirstObjectByType<CinemachineConfiner2D>();
+        sr = GetComponent<SpriteRenderer>();
+
+        if (isReturnTransition)
+        {
+            ChangeSprite();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -17,16 +31,12 @@ public class MapTransition : MonoBehaviour
         if (!collision.CompareTag("Player"))
             return;
 
-        FadeTransition(collision.gameObject);
-
-        //MapController_Manual.Instance?.HighlightArea(mapBoundry.name);
-        //MapController_Dynamic.Instance?.UpdateCurrentArea(mapBoundry.name);
+        player = collision.gameObject;
     }
-    
-     async void FadeTransition(GameObject player)
+
+    async void FadeTransition(GameObject player)
     {
         PauseController.SetPause(true);
-
         await ScreenFader.Instance.FadeOut();
 
         confiner.BoundingShape2D = mapBoundary;
@@ -40,5 +50,24 @@ public class MapTransition : MonoBehaviour
         await ScreenFader.Instance.FadeIn();
 
         PauseController.SetPause(false);
+    }
+
+    public void ChangeSprite()
+    {
+        sr.sprite = updatedSprite;
+        canInteract = true;
+    }
+
+    public void Interact()
+    {
+        if (player == null) return;
+        if (!CanInteract()) return;
+        
+        FadeTransition(player);
+    }
+
+    public bool CanInteract()
+    {
+        return canInteract;
     }
 }

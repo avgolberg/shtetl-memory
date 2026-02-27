@@ -33,7 +33,7 @@ public class QuestObjective
     public bool IsCompleted => currentAmount >= requiredAmount;
 }
 
-public enum ObjectiveType { CollectItem, DefeatEnemy, ReachLocation, TalkNPC, Custom }
+public enum ObjectiveType { CollectItem, ReachLocation, TalkNPC, Custom }
 
 [Serializable]
 public class QuestProgress
@@ -73,4 +73,4 @@ public class QuestReward
     public int amount = 1;
 }
 
-public enum RewardType { Item, Gold, Experience, Custom }
+public enum RewardType { Item, Portal, Custom }

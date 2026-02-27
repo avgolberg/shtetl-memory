@@ -106,6 +106,9 @@ public class NPC : MonoBehaviour, IInteractable
 
         isTyping = false;
 
+        if (HandleQuestHandInJump())
+            yield break;
+
         // Auto progress
         if (dialogueData.autoProgressLines.Length > dialogueIndex &&
             dialogueData.autoProgressLines[dialogueIndex])
@@ -132,6 +135,9 @@ public class NPC : MonoBehaviour, IInteractable
 
         dialogueUI.ClearChoices();
 
+        if (HandleQuestHandInJump())
+            return;
+
         if (dialogueData.endDialogueLines.Length > dialogueIndex && dialogueData.endDialogueLines[dialogueIndex])
         {
             EndDialogue();
@@ -155,6 +161,41 @@ public class NPC : MonoBehaviour, IInteractable
         {
             EndDialogue();
         }
+    }
+
+    bool TryHandInQuest()
+    {
+        if (dialogueData.quest == null) return false;
+
+        string id = dialogueData.quest.questID;
+
+        if (!QuestController.Instance.IsQuestCompleted(id)) return false;
+        if (QuestController.Instance.IsQuestHandedIn(id)) return false;
+
+        RewardsController.Instance.GiveQuestReward(dialogueData.quest);
+        QuestController.Instance.HandInQuest(id);
+        questState = QuestState.Completed;
+        
+        return true;
+    }
+
+    bool HandleQuestHandInJump()
+    {
+        if (dialogueData.quest == null) return false;
+
+        if (dialogueData.questHandInIndex == null) return false;
+        if (dialogueIndex < 0 || dialogueIndex >= dialogueData.questHandInIndex.Length) return false;
+
+        if (!dialogueData.questHandInIndex[dialogueIndex]) return false;
+
+        if (TryHandInQuest())
+        {
+            dialogueIndex = dialogueData.questCompletedIndex;
+            dialogueUI.ClearChoices();
+            DisplayCurrentLine();
+            return true;
+        }
+        return false;
     }
 
     void DisplayChoices(DialogueChoice choice)
@@ -194,22 +235,10 @@ public class NPC : MonoBehaviour, IInteractable
     }
     public void EndDialogue()
     {
-        SyncQuestState();
-        if (questState == QuestState.Completed && !QuestController.Instance.IsQuestHandedIn(dialogueData.quest.questID))
-        {
-            HandleQuestCompletion(dialogueData.quest);
-        }
-
         StopAllCoroutines();
         isDialogueActive = false;
         dialogueUI.SetDialogueText("");
         dialogueUI.ShowDialogueUI(false);
         PauseController.SetPause(false);
-    }
-    
-    void HandleQuestCompletion(Quest quest)
-    {
-        RewardsController.Instance.GiveQuestReward(quest);
-        QuestController.Instance.HandInQuest(quest.questID);
     }
 }

@@ -3,23 +3,30 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] float moveSpeed = 8f;
     [SerializeField] float accel = 12f;
-    private float stopThreshold = 0.05f;
-    private bool playingFootsteps = false;
-    public float footstepSpeed = 0.5f;
+    [SerializeField] float stopThreshold = 0.05f;
+
+    [Header("Footsteps")]
+    [SerializeField] float minSpeedForStep = 0.5f;     
+    [SerializeField] float stepIntervalWalk = 0.7f;  
+    [SerializeField] float stepIntervalRun = 0.45f;
+
     Vector2 moveInput;
     Rigidbody2D rb;
-    private Vector3 baseScale;
     Animator animator;
+    Vector3 baseScale;
 
+    float stepTimer;
+   
     void Awake()
     {
         baseScale = transform.localScale;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
-
+    
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -30,61 +37,71 @@ public class PlayerMovement : MonoBehaviour
         if (PauseController.IsGamePaused)
         {
             if(rb.linearVelocity != Vector2.zero)
-            {
                 rb.linearVelocity = Vector2.zero;
-                animator.SetFloat("speed", 0);
-                StopFootsteps();
-            }
+
+            animator.SetFloat("speed", 0f);
+            stepTimer = 0f;
             return;
         }
 
-        Move();
         FlipSprite();
+    }
+
+    void FixedUpdate()
+    {
+        if (PauseController.IsGamePaused)
+            return;
+
+        Move();
+        UpdateFootsteps();
     }
 
     void Move()
     {
         float targetX = moveInput.x * moveSpeed;
-        float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetX, accel * Time.deltaTime);
+        float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetX, accel * Time.fixedDeltaTime);
         if (Mathf.Abs(newX) < stopThreshold) newX = 0f;
 
         rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
 
-        float speed01 = Mathf.Abs(rb.linearVelocity.x) / moveSpeed; // 0..1
+        float speed01 = Mathf.Clamp01(Mathf.Abs(rb.linearVelocity.x) / moveSpeed);
         animator.SetFloat("speed", speed01);
-        
-        bool isMoving = Mathf.Abs(newX) > stopThreshold; 
+    }
 
-        if (isMoving && !playingFootsteps)
+    void UpdateFootsteps()
+    {
+        bool hasInput = Mathf.Abs(moveInput.x) > 0.01f;
+
+        float speedAbs = Mathf.Abs(rb.linearVelocity.x);
+        bool canStep = hasInput && speedAbs > minSpeedForStep;
+
+        if (!canStep)
         {
-            StartFootsteps();
+            stepTimer = 0f;
+            return;
         }
-        else if (!isMoving && playingFootsteps)
+
+        float t = Mathf.Clamp01(speedAbs / moveSpeed);
+        float interval = Mathf.Lerp(stepIntervalWalk, stepIntervalRun, t);
+
+        stepTimer += Time.fixedDeltaTime;
+        if (stepTimer >= interval)
         {
-            StopFootsteps();
+            stepTimer = 0f;
+            PlayFootstep();
         }
     }
 
     void FlipSprite()
     {
-        bool isMoving = Mathf.Abs(rb.linearVelocity.x) > Mathf.Epsilon;
-        if (isMoving)
-            transform.localScale = new Vector2(Mathf.Sign(rb.linearVelocity.x) * Mathf.Abs(baseScale.x), baseScale.y);
+        float vx = rb.linearVelocity.x;
+        if (Mathf.Abs(vx) > 0.001f)
+            transform.localScale = new Vector2(Mathf.Sign(vx) * Mathf.Abs(baseScale.x), baseScale.y);
     }
-    void StartFootsteps()
-    {
-        playingFootsteps = true;
-        InvokeRepeating(nameof(PlayFootstep), 0f, footstepSpeed);
-    }
-
-    void StopFootsteps()
-    {
-        playingFootsteps = false;
-        CancelInvoke(nameof(PlayFootstep));
-    }
-
+    
     void PlayFootstep()
     {
+        if (PauseController.IsGamePaused) return;
         SoundEffectManager.Play("Footstep", true);
     }
 }

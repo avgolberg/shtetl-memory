@@ -28,3 +28,6 @@ MonoBehaviour:
   - type: 0
     rewardID: 4
     amount: 1
+  - type: 1
+    rewardID: 1
+    amount: 1
