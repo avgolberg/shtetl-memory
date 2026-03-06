@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ca22778ea1f93764c94d31fbe5629cd6
+guid: 9085655f85a67c6489337c60bf6e4f02
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8200483762139297037
-    second: bushAlt1_0
+      213: -8567186622430992613
+    second: temp_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bushAlt1_0
+      name: temp_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 141
-        height: 47
+        width: 290
+        height: 646
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3fa04536777023e80800000000000000
-      internalID: -8200483762139297037
+      spriteID: b17a585682d3b1980800000000000000
+      internalID: -8567186622430992613
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      bushAlt1_0: -8200483762139297037
+      temp_0: -8567186622430992613
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,4 +1,5 @@
 using System.IO;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class SaveController : MonoBehaviour
@@ -20,6 +21,7 @@ public class SaveController : MonoBehaviour
         SaveData saveData = new SaveData
         {
             playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
+            cameraBounding = FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D,
             inventorySaveData = inventoryController.GetInventoryItems(),
             questProgressData = QuestController.Instance.activateQuests,
             handinQuestIDs = QuestController.Instance.handinQuestIDs
@@ -34,7 +36,9 @@ public class SaveController : MonoBehaviour
         {
             SaveData saveData = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveLocation));
 
-            GameObject.FindGameObjectWithTag("Player").transform.position = saveData.playerPosition;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D = saveData.cameraBounding;
+            player.transform.position = saveData.playerPosition;
 
             inventoryController.SetInventoryItems(saveData.inventorySaveData);
 
