@@ -14,13 +14,13 @@ public class ItemDictionary : MonoBehaviour
         {
             if(itemPrefabs[i] != null)
             {
-                itemPrefabs[i].ID = i + 1;
+                itemPrefabs[i].itemId = i + 1;
             }
         }
 
         foreach(Item item in itemPrefabs)
         {
-            itemDictionary[item.ID] = item.gameObject;
+            itemDictionary[item.itemId] = item.gameObject;
         }
     }
 

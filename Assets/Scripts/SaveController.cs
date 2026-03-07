@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -5,14 +6,13 @@ using UnityEngine;
 public class SaveController : MonoBehaviour
 {
     private string saveLocation;
-    private InventoryController inventoryController;
+    private List<string> collectedItemIds = new();
+    private HashSet<string> collectedItemIdsSet = new();
 
-    void Start()
+    void Awake()
     {
         //Define save location
         saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
-        inventoryController = FindFirstObjectByType<InventoryController>();
-
         LoadGame();
     }
 
@@ -22,7 +22,8 @@ public class SaveController : MonoBehaviour
         {
             playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
             cameraBounding = FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D,
-            inventorySaveData = inventoryController.GetInventoryItems(),
+            inventorySaveData = InventoryController.Instance.GetInventoryItems(),
+            collectedItemIds = collectedItemIds,
             questProgressData = QuestController.Instance.activateQuests,
             handinQuestIDs = QuestController.Instance.handinQuestIDs
         };
@@ -40,14 +41,40 @@ public class SaveController : MonoBehaviour
             FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D = saveData.cameraBounding;
             player.transform.position = saveData.playerPosition;
 
-            inventoryController.SetInventoryItems(saveData.inventorySaveData);
+            InventoryController.Instance.SetInventoryItems(saveData.inventorySaveData);
 
+            LoadCollectedItemIds(saveData.collectedItemIds);
             QuestController.Instance.LoadQuestProgress(saveData.questProgressData);
             QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;
         }
         else
         {
             SaveGame();
+            InventoryController.Instance.SetInventoryItems(new List<InventorySaveData>()); //
         }
+    }
+
+    public void MarkItemCollected(string uniqueId)
+    {
+        if (collectedItemIdsSet.Add(uniqueId))
+        {
+            collectedItemIds.Add(uniqueId);
+        }
+    }
+
+    public bool IsItemCollected(string uniqueId)
+    {
+        return collectedItemIdsSet.Contains(uniqueId);
+    }
+
+    public List<string> GetCollectedItemIds()
+    {
+        return collectedItemIds;
+    }
+
+    public void LoadCollectedItemIds(List<string> ids)
+    {
+        collectedItemIds = ids ?? new List<string>();
+        collectedItemIdsSet = new HashSet<string>(collectedItemIds);
     }
 }

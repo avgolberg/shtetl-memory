@@ -60,7 +60,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 Item draggedItem = GetComponent<Item>();
                 Item targetItem = dropSlot.currentItem.GetComponent<Item>();
 
-                if (draggedItem.ID == targetItem.ID)
+                if (draggedItem.itemId == targetItem.itemId)
                 {
                     targetItem.AddToStack(draggedItem.quantity);
                     originalSlot.currentItem = null;

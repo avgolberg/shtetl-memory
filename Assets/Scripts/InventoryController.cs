@@ -42,7 +42,7 @@ public class InventoryController : MonoBehaviour
                 Item item = slot.currentItem.GetComponent<Item>();
                 if (item != null)
                 {
-                    itemsCountCache[item.ID] = itemsCountCache.GetValueOrDefault(item.ID, 0) + item.quantity;
+                    itemsCountCache[item.itemId] = itemsCountCache.GetValueOrDefault(item.itemId, 0) + item.quantity;
                 }
             }
         }
@@ -63,7 +63,7 @@ public class InventoryController : MonoBehaviour
             if (slot != null && slot.currentItem != null)
             {
                 Item slotItem = slot.currentItem.GetComponent<Item>();
-                if (slotItem != null && slotItem.ID == itemToAdd.ID)
+                if (slotItem != null && slotItem.itemId == itemToAdd.itemId)
                 {
                     //Same item, stack them
                     slotItem.AddToStack();
@@ -101,7 +101,7 @@ public class InventoryController : MonoBehaviour
                 Item item = slot.currentItem.GetComponent<Item>();
                 invData.Add(new InventorySaveData
                 {
-                    itemID = item.ID,
+                    itemID = item.itemId,
                     slotIndex = slotTranform.GetSiblingIndex(),
                     quantity = item.quantity
                 });
@@ -159,7 +159,7 @@ public class InventoryController : MonoBehaviour
 
             Slot slot = slotTransform.GetComponent<Slot>();
 
-            if (slot?.currentItem?.GetComponent<Item>() is Item item && item.ID == itemID)
+            if (slot?.currentItem?.GetComponent<Item>() is Item item && item.itemId == itemID)
             {
                 int removed = Mathf.Min(amountToRemove, item.quantity);
 

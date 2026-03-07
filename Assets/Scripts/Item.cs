@@ -4,19 +4,32 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
-    public int ID;
+    public int itemId;
+    public string uniqueId;
     public string Name;
     public int quantity = 1;
+    public bool IsCollected { get; private set; }
     private TMP_Text quantityText;
-
+    private SaveController saveController;
     private void Awake()
     {
+        uniqueId = GlobalHelper.GenerateUniqueID(gameObject);
         quantityText = GetComponentInChildren<TMP_Text>();
+        saveController = FindFirstObjectByType<SaveController>();
         UpdateQuantityDisplay();
     }
+
+    void Start()
+    {
+        if (saveController != null && saveController.IsItemCollected(uniqueId))
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public void UpdateQuantityDisplay()
     {
-        if(quantityText != null)
+        if (quantityText != null)
         {
             quantityText.text = quantity > 1 ? quantity.ToString() : "";
         }
