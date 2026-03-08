@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -1705732769093425551}
   - component: {fileID: 6701476030847216963}
   - component: {fileID: -4999098554861363247}
+  - component: {fileID: 1844854889598744029}
   m_Layer: 10
   m_Name: Item
   m_TagString: Item
@@ -117,7 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4b63fa2c914a744be2935468800e2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  ID: 1
+  itemId: 0
+  uniqueId: 
   Name: Coin
   quantity: 1
 --- !u!212 &6701476030847216963
@@ -214,6 +216,21 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.3
+--- !u!114 &1844854889598744029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357822092064164975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c0fb655f5a06c469e06130121fd72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BounceEffect
+  bounceHeight: 0.3
+  bounceDuration: 0.4
+  bounceCount: 2
 --- !u!1 &8011182768872618657
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,22 +12,21 @@ public class PlayerItemCollector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Item"))
-        {
-            Item item = collision.GetComponent<Item>();
-            if(item != null)
-            {
-                //Add item inventory
-                bool itemAdded = inventoryController.AddItem(collision.gameObject);
+        if (!collision.CompareTag("Item")) return;
 
-                if (itemAdded)
-                {
-                    SoundEffectManager.Play("CollectItem");
-                    item.ShowPopUp();
-                    saveController.MarkItemCollected(item.uniqueId);
-                    Destroy(collision.gameObject);
-                }
-            }
+        Item item = collision.GetComponent<Item>();
+        if (item == null) return;
+
+        if (!item.TryCollect()) return;
+        
+        bool itemAdded = inventoryController.AddItem(collision.gameObject);
+        if (itemAdded)
+        {
+            SoundEffectManager.Play("CollectItem");
+            item.ShowPopUp();
+            if (item.ShouldTrackCollection)
+                saveController.MarkItemCollected(item.uniqueId);
+            Destroy(collision.gameObject);
         }
     }
 }

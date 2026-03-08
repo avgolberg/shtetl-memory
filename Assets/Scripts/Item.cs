@@ -8,9 +8,14 @@ public class Item : MonoBehaviour
     public string uniqueId;
     public string Name;
     public int quantity = 1;
-    public bool IsCollected { get; private set; }
-    private TMP_Text quantityText;
+
+    private bool canBeCollected = true;
+    private bool isBeingCollected;
     private SaveController saveController;
+    private bool shouldTrackCollection = true;
+    public bool ShouldTrackCollection => shouldTrackCollection;
+
+    private TMP_Text quantityText;
     private void Awake()
     {
         uniqueId = GlobalHelper.GenerateUniqueID(gameObject);
@@ -56,7 +61,7 @@ public class Item : MonoBehaviour
         cloneItem.UpdateQuantityDisplay();
         return clone;
     }
-    
+
     public virtual void ShowPopUp()
     {
         Sprite itemIcon = GetComponent<Image>().sprite;
@@ -64,5 +69,29 @@ public class Item : MonoBehaviour
         {
             ItemPickupUIController.Instance.ShowItemPickup(Name, itemIcon);
         }
+    }
+
+    public void EnableCollection(float delay)
+    {
+        canBeCollected = false;
+        Invoke(nameof(SetCollectable), delay);
+    }
+
+    private void SetCollectable()
+    {
+        canBeCollected = true;
+    }
+
+    public bool TryCollect()
+    {
+        if (!canBeCollected || isBeingCollected) return false;
+
+        isBeingCollected = true;
+        return true;
+    }
+
+    public void SetTrackCollection(bool value)
+    {
+        shouldTrackCollection = value;
     }
 }

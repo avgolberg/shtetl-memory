@@ -8,6 +8,8 @@ public class SaveController : MonoBehaviour
     private string saveLocation;
     private List<string> collectedItemIds = new();
     private HashSet<string> collectedItemIdsSet = new();
+    private List<string> openedChestIds = new();
+    private HashSet<string> openedChestIdsSet = new();
 
     void Awake()
     {
@@ -24,6 +26,7 @@ public class SaveController : MonoBehaviour
             cameraBounding = FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D,
             inventorySaveData = InventoryController.Instance.GetInventoryItems(),
             collectedItemIds = collectedItemIds,
+            openedChestIds = openedChestIds,
             questProgressData = QuestController.Instance.activateQuests,
             handinQuestIDs = QuestController.Instance.handinQuestIDs
         };
@@ -44,6 +47,7 @@ public class SaveController : MonoBehaviour
             InventoryController.Instance.SetInventoryItems(saveData.inventorySaveData);
 
             LoadCollectedItemIds(saveData.collectedItemIds);
+            LoadOpenedChestIds(saveData.openedChestIds);
             QuestController.Instance.LoadQuestProgress(saveData.questProgressData);
             QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;
         }
@@ -67,14 +71,28 @@ public class SaveController : MonoBehaviour
         return collectedItemIdsSet.Contains(uniqueId);
     }
 
-    public List<string> GetCollectedItemIds()
-    {
-        return collectedItemIds;
-    }
-
     public void LoadCollectedItemIds(List<string> ids)
     {
         collectedItemIds = ids ?? new List<string>();
         collectedItemIdsSet = new HashSet<string>(collectedItemIds);
+    }
+
+    public void MarkChestOpened(string uniqueId)
+    {
+        if (openedChestIdsSet.Add(uniqueId))
+        {
+            openedChestIds.Add(uniqueId);
+        }
+    }
+
+    public bool IsChestOpened(string uniqueId)
+    {
+        return openedChestIdsSet.Contains(uniqueId);
+    }
+
+    public void LoadOpenedChestIds(List<string> ids)
+    {
+        openedChestIds = ids ?? new List<string>();
+        openedChestIdsSet = new HashSet<string>(openedChestIds);
     }
 }
