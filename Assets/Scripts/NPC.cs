@@ -204,8 +204,14 @@ public class NPC : MonoBehaviour, IInteractable
         {
             int nextIndex = choice.nextDialogueIndexes[i];
             bool givesQuest = choice.givesQuest[i];
-            dialogueUI.CreateChoiceButton(choice.choices[i], () => ChooseOption(nextIndex, givesQuest));
+
+            dialogueUI.CreateChoiceButton(
+                choice.choices[i],
+                () => ChooseOption(nextIndex, givesQuest)
+            );
         }
+        dialogueUI.FitChoiceButtonsWidth();
+        dialogueUI.AdjustDialoguePanelPosition(choice.choices.Length);
     }
 
     void ChooseOption(int nextIndex, bool givesQuest)
