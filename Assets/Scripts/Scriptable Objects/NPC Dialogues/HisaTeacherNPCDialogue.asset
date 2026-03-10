@@ -15,37 +15,83 @@ MonoBehaviour:
   npcName: Halyna
   npcPortrait: {fileID: -6471082416391893753, guid: 53d5f5efd048d2d4081b29c56deb11a6, type: 3}
   dialogueLines:
-  - Oh! You surprised me. Oh! You surprised me.
-  - 1
-  - 2
-  - 3
-  autoProgressLines: 01010100
-  endDialogueLines: 00000001
-  questHandInIndex: 00000000
+  - Oh! You surprised me.
+  - People rarely come to this street.
+  - "Well\u2026 Let me see. That is this house."
+  - A Jewish family. Long before my time.
+  - My grandmother talked about them sometimes.
+  - A big family. The house was never quiet.
+  - They never came back after the war.
+  - "After that\u2026 the authorities let us move in. "
+  - We were five children. One room each felt like a miracle.
+  - Every Friday they walked to the market where she worked.
+  - All dressed up.  Like it was a holiday.
+  - "Ah\u2026 that. The old owners had something there. "
+  - A small little case.
+  - My father once tried to sand it away. Said it looked strange.
+  - But the mark never disappeared.
+  - "Anyway\u2026 I was just about to go out."
+  - My friend turned seventy today. Imagine that!
+  - I promised her a bouquet.
+  - These days I prefer flowers to cake. Easier on the teeth.
+  - Wildflowers grow around the street.
+  - Would you help me gather a few?
+  - Well...
+  - While you do that, I'll see if I can find something inside.
+  - Your photograph reminded me of it.
+  - Flowers from the street smell better than the ones from shops.
+  - Oh! You actually did it. Beautiful! She'll love these.
+  - 'And look what I found. A small wooden box. '
+  - The only thing that stayed here from the previous family.
+  - My parents opened it once, many years ago.
+  - Some old postcards inside. Maybe letters too.
+  - "But the key\u2026 That is the problem."
+  - My husband had a box full of little things.
+  - "Keys, coins\u2026 You know how it goes."
+  - If the key survived, it will be in that box.
+  - "Well\u2026  Look at that. After all these years."
+  - "Maybe\u2026  this was waiting for you."
+  autoProgressLines: 010101010101010101010101010101010101010101010101010101010101010101010101
+  endDialogueLines: 000000000000000000000000000000000000000000010001010000000000000000000001
+  questHandInIndex: 000000000000000000000000000000000000000000000000010100000000000000000000
   autoProgressDelay: 1.5
   typingSpeed: 0.05
-  voiceSound: {fileID: 8300000, guid: 1f1b10f40b9b95c41845422e605cb277, type: 3}
-  voiceVolume: 1
-  voicePitch: 0.5
+  voiceSound: {fileID: 8300000, guid: 7d48a4a59f7c53446be514af9beb7aa5, type: 3}
+  voiceVolume: 0.3
+  voicePitch: 1
   choices:
-  - dialogueIndex: 0
-    choices:
-    - 'Do you know who lived here? '
-    nextDialogueIndexes: 01000000
-    givesQuest: 00
   - dialogueIndex: 1
     choices:
-    - I see
-    - Did they leave anything behind?
-    nextDialogueIndexes: 0200000002000000
-    givesQuest: 0000
+    - Sorry. I'm looking for this house.
+    nextDialogueIndexes: 02000000
+    givesQuest: 00
   - dialogueIndex: 2
     choices:
-    - 'Do you know who lived here? '
-    - Did they leave anything behind?
-    - Thanks.
-    nextDialogueIndexes: 000000000000000000000000
-    givesQuest: 000000
-  questInProgressIndex: 0
-  questCompletedIndex: 0
-  quest: {fileID: 0}
+    - Do you know who lived here?
+    nextDialogueIndexes: 03000000
+    givesQuest: 00
+  - dialogueIndex: 8
+    choices:
+    - Do you remember anything else?
+    - What is this mark on the door?
+    nextDialogueIndexes: 090000000b000000
+    givesQuest: 0000
+  - dialogueIndex: 10
+    choices:
+    - Okay...
+    nextDialogueIndexes: 0f000000
+    givesQuest: 00
+  - dialogueIndex: 14
+    choices:
+    - Something strange...
+    nextDialogueIndexes: 0f000000
+    givesQuest: 00
+  - dialogueIndex: 20
+    choices:
+    - Sure!
+    - Maybe next time...
+    nextDialogueIndexes: 1600000015000000
+    givesQuest: 0100
+  questInProgressIndex: 24
+  questCompletedIndex: 25
+  quest: {fileID: 11400000, guid: a41c66c449176d54fbb65cb7ded5f0e2, type: 2}

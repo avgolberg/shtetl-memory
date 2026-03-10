@@ -27,6 +27,7 @@ public class QuestObjective
     public string objectiveID; //Match with item ID that you need to collect, enemy ID that you need to kill etc
     public string description;
     public ObjectiveType type;
+    public ItemType targetItemType;
     public int requiredAmount;
     public int currentAmount;
 
@@ -54,6 +55,7 @@ public class QuestProgress
                 objectiveID = obj.objectiveID,
                 description = obj.description,
                 type = obj.type,
+                targetItemType = obj.targetItemType,
                 requiredAmount = obj.requiredAmount,
                 currentAmount = 0
             });

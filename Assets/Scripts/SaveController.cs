@@ -27,7 +27,7 @@ public class SaveController : MonoBehaviour
             inventorySaveData = InventoryController.Instance.GetInventoryItems(),
             collectedItemIds = collectedItemIds,
             openedChestIds = openedChestIds,
-            questProgressData = QuestController.Instance.activateQuests,
+            questProgressData = QuestController.Instance.activeQuests,
             handinQuestIDs = QuestController.Instance.handinQuestIDs
         };
 

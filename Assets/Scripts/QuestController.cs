@@ -4,7 +4,7 @@ using UnityEngine;
 public class QuestController : MonoBehaviour
 {
     public static QuestController Instance { get; private set; }
-    public List<QuestProgress> activateQuests = new();
+    public List<QuestProgress> activeQuests = new();
     private QuestUI questUI;
     public List<string> handinQuestIDs = new();
 
@@ -21,18 +21,37 @@ public class QuestController : MonoBehaviour
     {
         if (IsQuestActive(quest.questID)) return;
 
-        activateQuests.Add(new QuestProgress(quest));
+        activeQuests.Add(new QuestProgress(quest));
 
         CheckInventoryForQuests();
         questUI.UpdateQuestUI();
     }
 
-    public bool IsQuestActive(string questID) => activateQuests.Exists(q => q.QuestID == questID);
+    public bool CanCollectObjectiveItem(ItemType itemType)
+    {
+        foreach (var questProgress in activeQuests)
+        {
+            foreach (var objective in questProgress.objectives)
+            {
+                if (objective.IsCompleted)
+                    continue;
+
+                if (objective.type != ObjectiveType.CollectItem)
+                    continue;
+
+                if (objective.targetItemType == itemType)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public bool IsQuestActive(string questID) => activeQuests.Exists(q => q.QuestID == questID);
     public void CheckInventoryForQuests()
     {
         Dictionary<int, int> itemCounts = InventoryController.Instance.GetItemCounts();
 
-        foreach (QuestProgress quest in activateQuests)
+        foreach (QuestProgress quest in activeQuests)
         {
             foreach (QuestObjective questObjective in quest.objectives)
             {
@@ -52,7 +71,7 @@ public class QuestController : MonoBehaviour
 
     public bool IsQuestCompleted(string questID)
     {
-        QuestProgress quest = activateQuests.Find(q => q.QuestID == questID);
+        QuestProgress quest = activeQuests.Find(q => q.QuestID == questID);
         return quest != null && quest.objectives.TrueForAll(o => o.IsCompleted);
     }
 
@@ -66,11 +85,11 @@ public class QuestController : MonoBehaviour
         }
 
         //Remove quest from quest log
-        QuestProgress quest = activateQuests.Find(q => q.QuestID == questID);
+        QuestProgress quest = activeQuests.Find(q => q.QuestID == questID);
         if(quest != null)
         {
             handinQuestIDs.Add(questID);
-            activateQuests.Remove(quest);
+            activeQuests.Remove(quest);
             questUI.UpdateQuestUI();
         }
     }
@@ -82,7 +101,7 @@ public class QuestController : MonoBehaviour
 
     public bool RemoveRequiredItemsFromInventory(string questID)
     {
-        QuestProgress quest = activateQuests.Find(q => q.QuestID == questID);
+        QuestProgress quest = activeQuests.Find(q => q.QuestID == questID);
         if (quest == null) return false;
 
         Dictionary<int, int> requiredItems = new();
@@ -118,7 +137,7 @@ public class QuestController : MonoBehaviour
     
     public void LoadQuestProgress(List<QuestProgress> savedQuests)
     {
-        activateQuests = savedQuests ?? new();
+        activeQuests = savedQuests ?? new();
 
         CheckInventoryForQuests();
         questUI.UpdateQuestUI();

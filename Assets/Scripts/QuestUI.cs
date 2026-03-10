@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -22,7 +21,7 @@ public class QuestUI : MonoBehaviour
         }
 
         //Build quest entries
-        foreach(var quest in QuestController.Instance.activateQuests)
+        foreach(var quest in QuestController.Instance.activeQuests)
         {
             if (quest.quest == null)
             {

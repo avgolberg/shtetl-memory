@@ -8,6 +8,8 @@ public class Item : MonoBehaviour
     public string uniqueId;
     public string Name;
     public int quantity = 1;
+    [SerializeField] private ItemType itemType;
+    [SerializeField] private bool requiresActiveQuest = false;
 
     private bool canBeCollected = true;
     private bool isBeingCollected;
@@ -84,7 +86,11 @@ public class Item : MonoBehaviour
 
     public bool TryCollect()
     {
-        if (!canBeCollected || isBeingCollected) return false;
+        if (!canBeCollected || isBeingCollected)
+            return false;
+
+        if (requiresActiveQuest)
+            return QuestController.Instance.CanCollectObjectiveItem(itemType);
 
         isBeingCollected = true;
         return true;
@@ -95,3 +101,5 @@ public class Item : MonoBehaviour
         shouldTrackCollection = value;
     }
 }
+
+public enum ItemType { Coin, Flower, Key, Note, Custom}
