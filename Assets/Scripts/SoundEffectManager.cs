@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,11 +6,16 @@ public class SoundEffectManager : MonoBehaviour
 {
     private static SoundEffectManager Instance;
     private static AudioSource audioSource;
-     private static AudioSource randomPitchAudioSource;
+    private static AudioSource randomPitchAudioSource;
     private static AudioSource voiceAudioSource;
+    private static AudioSource musicAudioSource;
+    private Coroutine musicCoroutine;
     private static SoundEffectLibrary soundEffectLibrary;
     private static float sfxVolume = 1f;
     private static float musicVolume = 1f;
+    private static float musicTargetVolume = 1f;
+    public static float SFXVolume => sfxVolume;
+    public static float MusicVolume => musicVolume;
     [SerializeField] Slider sfxSlider;
     [SerializeField] Slider musicSlider;
 
@@ -22,6 +28,7 @@ public class SoundEffectManager : MonoBehaviour
             audioSource = audioSources[0];
             randomPitchAudioSource = audioSources[1];
             voiceAudioSource = audioSources[2];
+            musicAudioSource = audioSources[3];
             soundEffectLibrary = GetComponent<SoundEffectLibrary>();
             //DontDestroyOnLoad(gameObject);
         }
@@ -30,11 +37,30 @@ public class SoundEffectManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    void Start()
+    {
+        sfxSlider.value = sfxVolume;
+        musicSlider.value = musicVolume;
+
+        sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
+        musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
+    }
+
+    private void OnSFXSliderChanged(float value)
+    {
+        sfxVolume = sfxSlider.value;
+    }
+
+    private void OnMusicSliderChanged(float value)
+    {
+        musicVolume = musicSlider.value;
+        SetMusicVolume();
+    }
 
     public static void Play(string soundName, bool randomPitch = false)
     {
         AudioClipData clipData = soundEffectLibrary.GetRandomClip(soundName);
-        if(clipData != null)
+        if (clipData != null)
         {
             if (randomPitch)
             {
@@ -57,15 +83,75 @@ public class SoundEffectManager : MonoBehaviour
         voiceAudioSource.Play();
     }
 
-    void Start()
+    public static void StopVoice()
     {
-        sfxSlider.onValueChanged.AddListener(delegate { OnValueChanged(); });
-        musicSlider.onValueChanged.AddListener(delegate { OnValueChanged(); });
+        if (voiceAudioSource != null && voiceAudioSource.isPlaying)
+            voiceAudioSource.Stop();
     }
 
-    public void OnValueChanged()
+    public static void PlayMusic(AudioClip clip, float targetVolume = 0.5f, float fadeDuration = 1f)
     {
-        sfxVolume = sfxSlider.value;
-        musicVolume = musicSlider.value;
+        if (clip == null || musicAudioSource == null || Instance == null)
+            return;
+
+        if (musicAudioSource.clip == clip && musicAudioSource.isPlaying)
+            return;
+
+        if (Instance.musicCoroutine != null)
+            Instance.StopCoroutine(Instance.musicCoroutine);
+
+        musicTargetVolume = targetVolume;
+
+        Instance.musicCoroutine = Instance.StartCoroutine(
+            Instance.CrossfadeMusicRoutine(clip, targetVolume, fadeDuration)
+        );
+    }
+    private IEnumerator CrossfadeMusicRoutine(AudioClip newClip, float targetVolume, float fadeDuration)
+    {
+        if (musicAudioSource.isPlaying && musicAudioSource.clip != null)
+        {
+            float startVolume = musicAudioSource.volume;
+            float timer = 0f;
+
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                musicAudioSource.volume = Mathf.Lerp(startVolume, 0f, timer / fadeDuration);
+                yield return null;
+            }
+
+            musicAudioSource.Stop();
+        }
+
+        musicAudioSource.clip = newClip;
+        musicAudioSource.volume = 0f;
+        musicAudioSource.loop = true;
+        musicAudioSource.Play();
+
+        float fadeInTimer = 0f;
+        float finalVolume = targetVolume * musicVolume;
+
+        while (fadeInTimer < fadeDuration)
+        {
+            fadeInTimer += Time.deltaTime;
+            musicAudioSource.volume = Mathf.Lerp(0f, finalVolume, fadeInTimer / fadeDuration);
+            yield return null;
+        }
+
+        musicAudioSource.volume = finalVolume;
+        musicCoroutine = null;
+    }
+
+    public static void SetMusicVolume()
+    {
+        if (musicAudioSource != null)
+            musicAudioSource.volume = musicTargetVolume * musicVolume;
+    }
+    
+    public static void InitializeVolumes(float loadedSfx, float loadedMusic)
+    {
+        sfxVolume = loadedSfx;
+        musicVolume = loadedMusic;
+        SetMusicVolume();
     }
 }

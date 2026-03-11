@@ -7,8 +7,8 @@ public class MenuController : MonoBehaviour
 
     public void OnToggleMenu(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         menuCanvas.SetActive(!menuCanvas.activeSelf);
-        if (menuCanvas.activeSelf) SoundEffectManager.Play("MenuClose");
-        else SoundEffectManager.Play("MenuOpen");
+        SoundEffectManager.Play("MenuToggle");
     }
 }

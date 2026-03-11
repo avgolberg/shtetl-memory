@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class SaveController : MonoBehaviour
 {
     private string saveLocation;
+    private Location currentLocation;
     private List<string> collectedItemIds = new();
     private HashSet<string> collectedItemIdsSet = new();
     private List<string> openedChestIds = new();
@@ -20,18 +22,19 @@ public class SaveController : MonoBehaviour
 
     public void SaveGame()
     {
-        SaveData saveData = new SaveData
-        {
-            playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position,
-            cameraBounding = FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D,
-            inventorySaveData = InventoryController.Instance.GetInventoryItems(),
-            collectedItemIds = collectedItemIds,
-            openedChestIds = openedChestIds,
-            questProgressData = QuestController.Instance.activeQuests,
-            handinQuestIDs = QuestController.Instance.handinQuestIDs
-        };
+        SaveData sd = new SaveData();
 
-        File.WriteAllText(saveLocation, JsonUtility.ToJson(saveData));
+        sd.playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        sd.currentLocationID = currentLocation.LocationID;
+        sd.inventorySaveData = InventoryController.Instance.GetInventoryItems();
+        sd.collectedItemIds = collectedItemIds;
+        sd.openedChestIds = openedChestIds;
+        sd.questProgressData = QuestController.Instance.activeQuests;
+        sd.handinQuestIDs = QuestController.Instance.handinQuestIDs;
+        sd.sfxVolume = SoundEffectManager.SFXVolume;
+        sd.musicVolume = SoundEffectManager.MusicVolume;
+        
+        File.WriteAllText(saveLocation, JsonUtility.ToJson(sd));
     }
 
     public void LoadGame()
@@ -40,8 +43,15 @@ public class SaveController : MonoBehaviour
         {
             SaveData saveData = JsonUtility.FromJson<SaveData>(File.ReadAllText(saveLocation));
 
+            Location[] locations = FindObjectsByType<Location>(FindObjectsSortMode.None);
+            Location targetLocation = locations.FirstOrDefault(l => l.LocationID == saveData.currentLocationID);
+            SetCurrentLocation(targetLocation);
+            FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D = targetLocation.MapBoundary;
+
+            SoundEffectManager.InitializeVolumes(saveData.sfxVolume, saveData.musicVolume);
+            SoundEffectManager.PlayMusic(targetLocation.MusicClip, targetLocation.MusicVolume, targetLocation.MusicFadeDuration);
+
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D = saveData.cameraBounding;
             player.transform.position = saveData.playerPosition;
 
             InventoryController.Instance.SetInventoryItems(saveData.inventorySaveData);
@@ -49,13 +59,19 @@ public class SaveController : MonoBehaviour
             LoadCollectedItemIds(saveData.collectedItemIds);
             LoadOpenedChestIds(saveData.openedChestIds);
             QuestController.Instance.LoadQuestProgress(saveData.questProgressData);
-            QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;
+            QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;            
         }
         else
         {
             SaveGame();
             InventoryController.Instance.SetInventoryItems(new List<InventorySaveData>()); //
         }
+    }
+
+    public void SetCurrentLocation(Location location)
+    {
+        if (location == null) return;
+        currentLocation = location;
     }
 
     public void MarkItemCollected(string uniqueId)

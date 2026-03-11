@@ -6,20 +6,21 @@ public class MapTransition : MonoBehaviour, IInteractable
     public int ID;
     public string Name;
     public Sprite updatedSprite;
-    [SerializeField] PolygonCollider2D mapBoundary;
+    [SerializeField] private Location targetLocation;
     [SerializeField] Transform teleportTargetPosition;
     [SerializeField] bool isReturnTransition;
 
     CinemachineConfiner2D confiner;
     SpriteRenderer sr;
     GameObject player;
+    SaveController saveController;
     bool canInteract = false;
 
     private void Awake()
     {
         confiner = FindFirstObjectByType<CinemachineConfiner2D>();
         sr = GetComponent<SpriteRenderer>();
-
+        saveController = FindFirstObjectByType<SaveController>();
         if (isReturnTransition)
         {
             ChangeSprite();
@@ -37,9 +38,11 @@ public class MapTransition : MonoBehaviour, IInteractable
     async void FadeTransition(GameObject player)
     {
         PauseController.SetPause(true);
-        await ScreenFader.Instance.FadeOut();
 
-        confiner.BoundingShape2D = mapBoundary;
+        await ScreenFader.Instance.FadeOut();
+        SoundEffectManager.PlayMusic(targetLocation.MusicClip, targetLocation.MusicVolume, targetLocation.MusicFadeDuration);
+
+        confiner.BoundingShape2D = targetLocation.MapBoundary;
         confiner.InvalidateBoundingShapeCache();
 
         player.transform.position = teleportTargetPosition.position;
@@ -48,7 +51,7 @@ public class MapTransition : MonoBehaviour, IInteractable
         ScreenFader.Instance.SnapCameraToTarget(player.transform);
 
         await ScreenFader.Instance.FadeIn();
-
+        saveController.SetCurrentLocation(targetLocation);
         PauseController.SetPause(false);
     }
 

@@ -15,7 +15,7 @@ public class NPCDialogue : ScriptableObject
 
     public float typingSpeed = 0.05f;
 
-    public AudioClip voiceSound;
+    public AudioClip[] voiceSounds;
     public float voiceVolume = 1f;
     public float voicePitch = 1f;
     public DialogueChoice[] choices;

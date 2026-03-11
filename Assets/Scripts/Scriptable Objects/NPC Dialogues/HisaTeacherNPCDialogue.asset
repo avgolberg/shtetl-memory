@@ -56,7 +56,16 @@ MonoBehaviour:
   questHandInIndex: 000000000000000000000000000000000000000000000000010100000000000000000000
   autoProgressDelay: 1.5
   typingSpeed: 0.05
-  voiceSound: {fileID: 8300000, guid: 7d48a4a59f7c53446be514af9beb7aa5, type: 3}
+  voiceSounds:
+  - {fileID: 8300000, guid: 3df71c6804778de438bb2a703f65f1da, type: 3}
+  - {fileID: 8300000, guid: e4a69de1b37b05e46ab21968a2ba063d, type: 3}
+  - {fileID: 8300000, guid: 6f658ae42d19f4d4295eb7c3627dc3f8, type: 3}
+  - {fileID: 8300000, guid: ba2af97afff31a3459c0fa61a64f68cf, type: 3}
+  - {fileID: 8300000, guid: a47253504d113864cb157436c9fc087b, type: 3}
+  - {fileID: 8300000, guid: f3045c1739aa25b4a9e19cb5206b1872, type: 3}
+  - {fileID: 8300000, guid: e284a523ddbcb0e49b55a809892b2913, type: 3}
+  - {fileID: 8300000, guid: 86b419b05dee91748843bb6be90ab5f7, type: 3}
+  - {fileID: 8300000, guid: 9d2ad1f2c502baa4a93d95e854c5ba41, type: 3}
   voiceVolume: 0.3
   voicePitch: 1
   choices:

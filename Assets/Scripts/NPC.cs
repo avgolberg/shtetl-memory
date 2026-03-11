@@ -6,6 +6,8 @@ public class NPC : MonoBehaviour, IInteractable
     public NPCDialogue dialogueData;
     private DialogueController dialogueUI;
     private int dialogueIndex;
+    private Coroutine typingCoroutine;
+    private Coroutine autoProgressCoroutine;
     private bool isTyping, isDialogueActive;
     private float nextVoiceTime;
     private enum QuestState { NotStarted, InProgress, Completed }
@@ -14,7 +16,6 @@ public class NPC : MonoBehaviour, IInteractable
     private void Start()
     {
         dialogueUI = DialogueController.Instance;
-        dialogueUI.SetActiveNPC(this);
     }
 
     public bool CanInteract()
@@ -39,6 +40,8 @@ public class NPC : MonoBehaviour, IInteractable
 
     void StartDialogue()
     {
+        dialogueUI.SetActiveNPC(this);
+        
         SyncQuestState();
 
         //Set dialogue line based on questState
@@ -86,25 +89,38 @@ public class NPC : MonoBehaviour, IInteractable
 
     IEnumerator TypeLine()
     {
+        if (!isDialogueActive)
+            yield break;
+
         isTyping = true;
         dialogueUI.SetDialogueText("");
 
         foreach (char letter in dialogueData.dialogueLines[dialogueIndex])
         {
+            if (!isDialogueActive)
+                yield break;
+
             dialogueUI.SetDialogueText(dialogueUI.dialogueText.text += letter);
             if (!char.IsWhiteSpace(letter) && Time.unscaledTime >= nextVoiceTime)
             {
+                AudioClip clip = dialogueData.voiceSounds[
+                    Random.Range(0, dialogueData.voiceSounds.Length)
+                ];
                 SoundEffectManager.PlayVoice(
-                    new AudioClipData(dialogueData.voiceSound, dialogueData.voiceVolume),
+                    new AudioClipData(clip, dialogueData.voiceVolume),
                     dialogueData.voicePitch
                 );
 
-                nextVoiceTime = Time.unscaledTime + 0.05f;
+                nextVoiceTime = Time.unscaledTime + Random.Range(0.04f, 0.08f);
             }
             yield return new WaitForSecondsRealtime(dialogueData.typingSpeed);
         }
 
         isTyping = false;
+        typingCoroutine = null;
+
+        if (!isDialogueActive)
+            yield break;
 
         if (HandleQuestHandInJump())
             yield break;
@@ -113,22 +129,34 @@ public class NPC : MonoBehaviour, IInteractable
         if (dialogueData.autoProgressLines.Length > dialogueIndex &&
             dialogueData.autoProgressLines[dialogueIndex])
         {
-            StartCoroutine(AutoProgress());
+            autoProgressCoroutine = StartCoroutine(AutoProgress());
         }
     }
 
     void NextLine()
     {
+        if (!isDialogueActive)
+            return;
+
+        SoundEffectManager.StopVoice();
+
         if (isTyping)
         {
-            StopAllCoroutines(); // Skip typing animation
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+                typingCoroutine = null;
+            }
             dialogueUI.SetDialogueText(dialogueData.dialogueLines[dialogueIndex]);
             isTyping = false;
 
             if (dialogueData.autoProgressLines.Length > dialogueIndex &&
-            dialogueData.autoProgressLines[dialogueIndex])
+            dialogueData.autoProgressLines[dialogueIndex] && isDialogueActive)
             {
-                StartCoroutine(AutoProgress());
+                if (autoProgressCoroutine != null)
+                     StopCoroutine(autoProgressCoroutine);
+
+                autoProgressCoroutine = StartCoroutine(AutoProgress());
             }
             return;
         }
@@ -229,22 +257,55 @@ public class NPC : MonoBehaviour, IInteractable
 
     void DisplayCurrentLine()
     {
-        StopAllCoroutines();
+        if (!isDialogueActive)
+            return;
+
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+        if (autoProgressCoroutine != null)
+        {
+            StopCoroutine(autoProgressCoroutine);
+            autoProgressCoroutine = null;
+        }
         nextVoiceTime = Time.unscaledTime;
-        StartCoroutine(TypeLine());
+        typingCoroutine = StartCoroutine(TypeLine());
     }
 
     IEnumerator AutoProgress()
     {
         yield return new WaitForSecondsRealtime(dialogueData.autoProgressDelay);
+
+        autoProgressCoroutine = null;
+
+        if (!isDialogueActive)
+            yield break;
+
         NextLine();
     }
     public void EndDialogue()
     {
-        StopAllCoroutines();
         isDialogueActive = false;
+        isTyping = false;
+
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        if (autoProgressCoroutine != null)
+        {
+            StopCoroutine(autoProgressCoroutine);
+            autoProgressCoroutine = null;
+        }
+
+        SoundEffectManager.StopVoice();
         dialogueUI.SetDialogueText("");
         dialogueUI.ShowDialogueUI(false);
+        dialogueUI.SetActiveNPC(null);
         PauseController.SetPause(false);
     }
 }

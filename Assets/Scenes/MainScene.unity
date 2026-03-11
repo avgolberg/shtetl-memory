@@ -4147,6 +4147,7 @@ GameObject:
   - component: {fileID: 316550429}
   - component: {fileID: 316550430}
   - component: {fileID: 316550431}
+  - component: {fileID: 316550432}
   m_Layer: 8
   m_Name: L1
   m_TagString: Untagged
@@ -4319,6 +4320,24 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5, y: 65}
   m_EdgeRadius: 0
+--- !u!114 &316550432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316550427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a1929d7b0a13a458602b5d265dcb09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Location
+  locationID: 1
+  locationName: L1 Forest
+  mapBoundary: {fileID: 316550429}
+  musicClip: {fileID: 8300000, guid: 79c3e20c44210d9469edd9b7a8838d3b, type: 3}
+  musicVolume: 0.2
+  musicFadeDuration: 1
 --- !u!1 &320263652
 GameObject:
   m_ObjectHideFlags: 0
@@ -5817,7 +5836,7 @@ Transform:
   m_GameObject: {fileID: 425419587}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.8, y: -83.43, z: -10}
+  m_LocalPosition: {x: -20.8, y: -82.57, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6770,6 +6789,7 @@ GameObject:
   - component: {fileID: 535135259}
   - component: {fileID: 535135261}
   - component: {fileID: 535135260}
+  - component: {fileID: 535135262}
   m_Layer: 8
   m_Name: L2
   m_TagString: Untagged
@@ -6938,6 +6958,24 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5, y: 65}
   m_EdgeRadius: 0
+--- !u!114 &535135262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535135257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a1929d7b0a13a458602b5d265dcb09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Location
+  locationID: 2
+  locationName: L2 Street
+  mapBoundary: {fileID: 535135259}
+  musicClip: {fileID: 8300000, guid: 0a6f541ebd3329b4caa697c0c572361a, type: 3}
+  musicVolume: 0.2
+  musicFadeDuration: 1
 --- !u!1 &540564813
 GameObject:
   m_ObjectHideFlags: 0
@@ -13066,7 +13104,7 @@ MonoBehaviour:
   ID: 2
   Name: L2->L1 Return Waypoint
   updatedSprite: {fileID: 21300000, guid: 20a5c881ec318fc4aa257f89e116f980, type: 3}
-  mapBoundary: {fileID: 316550429}
+  targetLocation: {fileID: 316550432}
   teleportTargetPosition: {fileID: 565369858772504666}
   isReturnTransition: 1
 --- !u!212 &1043832306
@@ -18952,7 +18990,7 @@ Transform:
   m_GameObject: {fileID: 1528788092}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.8, y: -83.43, z: -10}
+  m_LocalPosition: {x: -20.8, y: -82.57, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22242,7 +22280,7 @@ Transform:
   m_GameObject: {fileID: 1776308375}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.8, y: -86.93, z: 0}
+  m_LocalPosition: {x: -20.8, y: -86.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24160,6 +24198,7 @@ GameObject:
   - component: {fileID: 1924878540}
   - component: {fileID: 1924878539}
   - component: {fileID: 1924878543}
+  - component: {fileID: 1924878544}
   m_Layer: 0
   m_Name: SoundEffectManager
   m_TagString: Untagged
@@ -24389,13 +24428,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundEffectLibrary
   soundEffectGroups:
-  - name: MenuOpen
+  - name: MenuToggle
     audioClips:
     - clip: {fileID: 8300000, guid: 05a9bb881718cae4dae2eacd0c840786, type: 3}
-      volume: 0.05
-  - name: MenuClose
-    audioClips:
-    - clip: {fileID: 8300000, guid: ef0bbd3df3b4732458762897b5a4db94, type: 3}
       volume: 0.05
   - name: CollectItem
     audioClips:
@@ -24409,6 +24444,10 @@ MonoBehaviour:
     audioClips:
     - clip: {fileID: 8300000, guid: 2099a70b4902cd44385283bba88fb338, type: 3}
       volume: 0.3
+  - name: BackgroundMusic
+    audioClips:
+    - clip: {fileID: 8300000, guid: 79c3e20c44210d9469edd9b7a8838d3b, type: 3}
+      volume: 0.1
 --- !u!114 &1924878542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24511,6 +24550,103 @@ AudioSource:
     - serializedVersion: 3
       time: 0
       value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1924878544
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924878537}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -26967,7 +27103,7 @@ MonoBehaviour:
   ID: 1
   Name: L1->L2 Waypoint
   updatedSprite: {fileID: 21300000, guid: 20a5c881ec318fc4aa257f89e116f980, type: 3}
-  mapBoundary: {fileID: 535135259}
+  targetLocation: {fileID: 535135262}
   teleportTargetPosition: {fileID: 258462957}
   isReturnTransition: 0
 --- !u!1 &7653589885856858451
