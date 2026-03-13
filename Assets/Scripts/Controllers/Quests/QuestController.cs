@@ -7,6 +7,7 @@ public class QuestController : MonoBehaviour
     public List<QuestProgress> activeQuests = new();
     private QuestUI questUI;
     public List<string> handinQuestIDs = new();
+    [SerializeField] Sprite questIcon;
 
     void Awake()
     {
@@ -22,6 +23,10 @@ public class QuestController : MonoBehaviour
         if (IsQuestActive(quest.questID)) return;
 
         activeQuests.Add(new QuestProgress(quest));
+        if (ItemPickupUIController.Instance != null)
+        {
+            ItemPickupUIController.Instance.ShowItemPickup("New quest: \n" + quest.questName, questIcon);
+        }
 
         CheckInventoryForQuests();
         questUI.UpdateQuestUI();

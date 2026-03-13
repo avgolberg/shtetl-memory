@@ -200,7 +200,7 @@ public class NPC : MonoBehaviour, IInteractable
         if (!QuestController.Instance.IsQuestCompleted(id)) return false;
         if (QuestController.Instance.IsQuestHandedIn(id)) return false;
 
-        RewardsController.Instance.GiveQuestReward(dialogueData.quest);
+        RewardsController.Instance.GiveQuestReward(dialogueData.quest, gameObject);
         QuestController.Instance.HandInQuest(id);
         questState = QuestState.Completed;
         
@@ -218,7 +218,7 @@ public class NPC : MonoBehaviour, IInteractable
 
         if (TryHandInQuest())
         {
-            dialogueIndex = dialogueData.questCompletedIndex;
+            if (dialogueIndex == dialogueData.questCompletedIndex) dialogueIndex++; 
             dialogueUI.ClearChoices();
             DisplayCurrentLine();
             return true;

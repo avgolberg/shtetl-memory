@@ -75,4 +75,4 @@ public class QuestReward
     public int amount = 1;
 }
 
-public enum RewardType { Item, Portal, Custom }
+public enum RewardType { Item, Portal, MiniGame, Custom }

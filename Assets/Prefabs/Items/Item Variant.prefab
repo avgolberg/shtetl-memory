@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1705732769093425551, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
       propertyPath: requiresActiveQuest
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2508342591863830611, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
       propertyPath: m_Pivot.x

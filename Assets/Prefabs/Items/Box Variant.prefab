@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4999098554861363247, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -1705732769093425551, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
       propertyPath: ID
       value: 2
@@ -23,6 +27,14 @@ PrefabInstance:
     - target: {fileID: -1705732769093425551, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
       propertyPath: itemType
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1705732769093425551, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 89273470961612922, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2508342591863830611, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
       propertyPath: m_Pivot.x
@@ -120,8 +132,39 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 4e020a7cc188f244abf83fb94b735e66, type: 3}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 89273470961612922, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+    - {fileID: -1705732769093425551, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+    - {fileID: 9044262960601308103, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+    - {fileID: 7319248668207995171, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+    - {fileID: 3978419288807016254, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 8011182768872618657, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5357822092064164975, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2007474451371692420}
   m_SourcePrefab: {fileID: 100100000, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+--- !u!1 &6171226648823713828 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5357822092064164975, guid: 71b131863d893b24098b499c9d5c21b6, type: 3}
+  m_PrefabInstance: {fileID: 2305375985219296331}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-2007474451371692420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171226648823713828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab638fb1d8ab4994b9f672e1c770ccfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiniGameItem
+  miniGameItemID: 1
+  uniqueID: 
+  Name: Box with Keys
+  updatedSprite: {fileID: 21300000, guid: 4e020a7cc188f244abf83fb94b735e66, type: 3}
+  miniGameUI: {fileID: 1984160678195349669, guid: 7c678d8bfbd05974f92562a18c444aca, type: 3}

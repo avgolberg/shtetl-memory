@@ -10,7 +10,7 @@ public class RewardsController : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void GiveQuestReward(Quest quest)
+    public void GiveQuestReward(Quest quest, GameObject source)
     {
         if (quest?.questRewards == null) return;
 
@@ -23,6 +23,9 @@ public class RewardsController : MonoBehaviour
                     break;
                 case RewardType.Portal:
                     GiveTeleportReward(reward.rewardID);
+                    break;
+                case RewardType.MiniGame:
+                    GiveMiniGameReward(reward.rewardID, source);
                     break;
                 case RewardType.Custom:
                     break;
@@ -50,6 +53,14 @@ public class RewardsController : MonoBehaviour
         if (teleportPrefab == null) return;
 
         teleportPrefab.GetComponent<MapTransition>().ChangeSprite();
-        
+    }
+
+    public void GiveMiniGameReward(int miniGameID, GameObject source)
+    {
+        var miniGamePrefab = FindAnyObjectByType<MiniGameItemDictionary>()?.GetMiniGameItemPrefab(miniGameID);
+
+        if (miniGamePrefab == null) return;
+
+        ItemDropSpawner.SpawnItem(miniGamePrefab, source, 5f, 0.3f);
     }
 }
