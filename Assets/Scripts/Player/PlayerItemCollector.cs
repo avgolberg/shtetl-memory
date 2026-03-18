@@ -2,14 +2,6 @@ using UnityEngine;
 
 public class PlayerItemCollector : MonoBehaviour
 {
-    private InventoryController inventoryController;
-    private SaveController saveController;
-    void Start()
-    {
-        inventoryController = FindFirstObjectByType<InventoryController>();
-        saveController = FindFirstObjectByType<SaveController>();
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Item")) return;
@@ -19,13 +11,13 @@ public class PlayerItemCollector : MonoBehaviour
 
         if (!item.TryCollect()) return;
         
-        bool itemAdded = inventoryController.AddItem(collision.gameObject);
+        bool itemAdded = InventoryController.Instance.AddItem(collision.gameObject);
         if (itemAdded)
         {
             SoundEffectManager.Play("CollectItem");
             item.ShowPopUp();
             if (item.ShouldTrackCollection)
-                saveController.MarkItemCollected(item.uniqueId);
+                SaveController.Instance.MarkItemCollected(item.uniqueId);
             Destroy(collision.gameObject);
         }
     }

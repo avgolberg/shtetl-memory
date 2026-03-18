@@ -13,7 +13,6 @@ public class Item : MonoBehaviour
 
     private bool canBeCollected = true;
     private bool isBeingCollected;
-    private SaveController saveController;
     private bool shouldTrackCollection = true;
     public bool ShouldTrackCollection => shouldTrackCollection;
 
@@ -22,13 +21,12 @@ public class Item : MonoBehaviour
     {
         uniqueId = GlobalHelper.GenerateUniqueID(gameObject);
         quantityText = GetComponentInChildren<TMP_Text>();
-        saveController = FindFirstObjectByType<SaveController>();
         UpdateQuantityDisplay();
     }
 
     void Start()
     {
-        if (saveController != null && saveController.IsItemCollected(uniqueId))
+        if (SaveController.Instance.IsItemCollected(uniqueId))
         {
             Destroy(gameObject);
         }

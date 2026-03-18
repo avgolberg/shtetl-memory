@@ -6,16 +6,25 @@ using UnityEngine;
 
 public class SaveController : MonoBehaviour
 {
+    public static SaveController Instance { get; private set; }
     private string saveLocation;
     private Location currentLocation;
     private List<string> collectedItemIds = new();
     private HashSet<string> collectedItemIdsSet = new();
     private List<string> openedChestIds = new();
     private HashSet<string> openedChestIdsSet = new();
+    private List<MiniGameItemSaveData> spawnedItems = new();
 
     void Awake()
     {
-        //Define save location
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
         saveLocation = Path.Combine(Application.persistentDataPath, "saveData.json");
         LoadGame();
     }
@@ -27,13 +36,14 @@ public class SaveController : MonoBehaviour
         sd.playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
         sd.currentLocationID = currentLocation.LocationID;
         sd.inventorySaveData = InventoryController.Instance.GetInventoryItems();
+        sd.spawnedItemSaveData = spawnedItems;
         sd.collectedItemIds = collectedItemIds;
         sd.openedChestIds = openedChestIds;
         sd.questProgressData = QuestController.Instance.activeQuests;
         sd.handinQuestIDs = QuestController.Instance.handinQuestIDs;
         sd.sfxVolume = SoundEffectManager.SFXVolume;
         sd.musicVolume = SoundEffectManager.MusicVolume;
-        
+
         File.WriteAllText(saveLocation, JsonUtility.ToJson(sd));
     }
 
@@ -55,11 +65,11 @@ public class SaveController : MonoBehaviour
             player.transform.position = saveData.playerPosition;
 
             InventoryController.Instance.SetInventoryItems(saveData.inventorySaveData);
-
+            LoadSpawnedItems(saveData.spawnedItemSaveData);
             LoadCollectedItemIds(saveData.collectedItemIds);
             LoadOpenedChestIds(saveData.openedChestIds);
             QuestController.Instance.LoadQuestProgress(saveData.questProgressData);
-            QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;            
+            QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;
         }
         else
         {
@@ -110,5 +120,89 @@ public class SaveController : MonoBehaviour
     {
         openedChestIds = ids ?? new List<string>();
         openedChestIdsSet = new HashSet<string>(openedChestIds);
+    }
+
+    public void MarkItemSpawned(int miniGameId, string uniqueId, Vector3 spawnPos)
+    {
+        if (spawnedItems == null)
+            spawnedItems = new List<MiniGameItemSaveData>();
+
+        var existingItem = spawnedItems.Find(i => i.uniqueID == uniqueId);
+
+        if (existingItem == null)
+        {
+            spawnedItems.Add(new MiniGameItemSaveData
+            {
+                miniGameItemID = miniGameId,
+                uniqueID = uniqueId,
+                wasSpawned = true,
+                isCompleted = false,
+                spawnPosition = spawnPos
+            });
+        }
+        else
+        {
+            existingItem.wasSpawned = true;
+            existingItem.isCompleted = false;
+            existingItem.spawnPosition = spawnPos;
+        }
+    }
+    public void MarkMiniGameCompleted(int miniGameId, string uniqueId, Vector3 spawnPos)
+    {
+        if (spawnedItems == null)
+            spawnedItems = new List<MiniGameItemSaveData>();
+
+        var itemData = spawnedItems.Find(i => i.uniqueID == uniqueId);
+
+        if (itemData == null)
+        {
+            spawnedItems.Add(new MiniGameItemSaveData
+            {
+                miniGameItemID = miniGameId,
+                uniqueID = uniqueId,
+                wasSpawned = true,
+                isCompleted = true,
+                spawnPosition = spawnPos
+            });
+        }
+        else
+        {
+            itemData.isCompleted = true;
+        }
+    }
+
+    public MiniGameItemSaveData GetSpawnedItemData(string uniqueId)
+    {
+        if (spawnedItems == null)
+            spawnedItems = new List<MiniGameItemSaveData>();
+
+        return spawnedItems.Find(i => i.uniqueID == uniqueId);
+    }
+
+    public bool IsItemSpawned(string uniqueId)
+    {
+        var itemData = GetSpawnedItemData(uniqueId);
+        return itemData != null && itemData.wasSpawned;
+    }
+
+    public bool IsMiniGameCompleted(string uniqueId)
+    {
+        var itemData = GetSpawnedItemData(uniqueId);
+        return itemData != null && itemData.isCompleted;
+    }
+
+    public void LoadSpawnedItems(List<MiniGameItemSaveData> items)
+    {
+        spawnedItems = items ?? new List<MiniGameItemSaveData>();
+
+        foreach (var spawnedItem in spawnedItems)
+        {
+            if (!spawnedItem.wasSpawned) continue;
+
+            var prefab = FindAnyObjectByType<MiniGameItemDictionary>()?.GetMiniGameItemPrefab(spawnedItem.miniGameItemID);
+            if (prefab == null) continue;
+            
+            ItemDropSpawner.SpawnItemAtposition(prefab, spawnedItem.spawnPosition);
+        }
     }
 }

@@ -13,14 +13,12 @@ public class MapTransition : MonoBehaviour, IInteractable
     CinemachineConfiner2D confiner;
     SpriteRenderer sr;
     GameObject player;
-    SaveController saveController;
     bool canInteract = false;
 
     private void Awake()
     {
         confiner = FindFirstObjectByType<CinemachineConfiner2D>();
         sr = GetComponent<SpriteRenderer>();
-        saveController = FindFirstObjectByType<SaveController>();
         if (isReturnTransition)
         {
             ChangeSprite();
@@ -51,7 +49,7 @@ public class MapTransition : MonoBehaviour, IInteractable
         ScreenFader.Instance.SnapCameraToTarget(player.transform);
 
         await ScreenFader.Instance.FadeIn();
-        saveController.SetCurrentLocation(targetLocation);
+        SaveController.Instance.SetCurrentLocation(targetLocation);
         PauseController.SetPause(false);
     }
 

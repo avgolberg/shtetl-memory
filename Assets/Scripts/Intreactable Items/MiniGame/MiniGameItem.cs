@@ -1,18 +1,31 @@
 using UnityEngine;
+
 public class MiniGameItem : MonoBehaviour, IInteractable
 {
     public int miniGameItemID;
     public string uniqueID;
     public string Name;
     public Sprite updatedSprite;
-
-    [SerializeField] private GameObject miniGameUI;
-
+    public Vector3 spawnPosition;
+    private IMiniGame miniGame;
     private bool isCompleted;
 
     void Awake()
     {
         uniqueID = GlobalHelper.GenerateUniqueID(gameObject);
+        miniGame = FindFirstObjectByType<MiniGameRegistry>(FindObjectsInactive.Include)
+        ?.GetMiniGame(miniGameItemID);
+    }
+
+    void Start()
+    {
+        if (SaveController.Instance.IsItemSpawned(uniqueID))
+        {
+            var itemData = SaveController.Instance.GetSpawnedItemData(uniqueID);
+            isCompleted = itemData.isCompleted;
+            spawnPosition = itemData.spawnPosition;
+            UpdateVisualState();
+        }
     }
 
     public bool CanInteract()
@@ -25,39 +38,14 @@ public class MiniGameItem : MonoBehaviour, IInteractable
         if (isCompleted)
             return;
 
-        if (miniGameUI == null)
-        {
-            Debug.LogWarning($"MiniGame UI is missing on {gameObject.name}");
-            return;
-        }
-
-        GameObject miniGameObject = Instantiate(miniGameUI);
-        MiniGameBase miniGame = miniGameObject.GetComponent<MiniGameBase>();
-
-        if (miniGame == null)
-        {
-            Debug.LogWarning($"MiniGameBase not found on {miniGameObject.name}");
-            return;
-        }
-
-        miniGame.Open(this);
+        miniGame?.Open(this);
     }
 
     public void CompleteMiniGame()
     {
         isCompleted = true;
+        SaveController.Instance.MarkMiniGameCompleted(miniGameItemID, uniqueID, spawnPosition);
         UpdateVisualState();
-    }
-
-    public void SetCompleted(bool completed)
-    {
-        isCompleted = completed;
-        UpdateVisualState();
-    }
-
-    public bool IsCompleted()
-    {
-        return isCompleted;
     }
 
     private void UpdateVisualState()

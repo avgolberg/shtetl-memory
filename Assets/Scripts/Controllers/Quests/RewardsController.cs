@@ -59,7 +59,7 @@ public class RewardsController : MonoBehaviour
     {
         var miniGamePrefab = FindAnyObjectByType<MiniGameItemDictionary>()?.GetMiniGameItemPrefab(miniGameID);
 
-        if (miniGamePrefab == null) return;
+        if (miniGamePrefab == null || source == null) return;
 
         ItemDropSpawner.SpawnItem(miniGamePrefab, source, 5f, 0.3f);
     }

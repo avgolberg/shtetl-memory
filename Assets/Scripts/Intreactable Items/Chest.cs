@@ -8,20 +8,12 @@ public class Chest : MonoBehaviour, IInteractable
     [SerializeField] Sprite openedSprite;
     [SerializeField] float dropDistance = 5f;
     [SerializeField] float collectionDelay = 0.3f;
-    private SaveController saveController;
 
-    void Awake()
-    {
-        saveController = FindFirstObjectByType<SaveController>();
-    }
 
     void Start()
     {
         ChestID ??= GlobalHelper.GenerateUniqueID(gameObject);
-        if (saveController != null)
-        {
-            IsOpened = saveController.IsChestOpened(ChestID);
-        }
+        IsOpened = SaveController.Instance.IsChestOpened(ChestID);
     }
 
     public bool CanInteract()
@@ -52,7 +44,7 @@ public class Chest : MonoBehaviour, IInteractable
         if (IsOpened)
         {
             GetComponent<SpriteRenderer>().sprite = openedSprite;
-            saveController.MarkChestOpened(ChestID);
+            SaveController.Instance.MarkChestOpened(ChestID);
         }
     }
 }

@@ -8,6 +8,7 @@ public class SaveData
     public string currentLocationID;
     public List<string> collectedItemIds;
     public List<string> openedChestIds;
+    public List<MiniGameItemSaveData> spawnedItemSaveData;
     public List<InventorySaveData> inventorySaveData;
     public List<QuestProgress> questProgressData;
     public List<string> handinQuestIDs;
@@ -21,4 +22,14 @@ public class InventorySaveData
     public int itemID;
     public int slotIndex;
     public int quantity = 1;
+}
+
+[System.Serializable]
+public class MiniGameItemSaveData
+{
+    public int miniGameItemID;
+    public string uniqueID;
+    public bool wasSpawned;
+    public bool isCompleted;
+    public Vector3 spawnPosition;
 }

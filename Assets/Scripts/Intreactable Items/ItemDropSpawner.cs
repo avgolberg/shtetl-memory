@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class ItemDropSpawner
 {
-    public static void SpawnItem(GameObject itemPrefab, GameObject source, float dropDistance = 5f, float verticalOffset = 0.2f, float collectionDelay = 0.3f)
+    public static void SpawnItem(GameObject itemPrefab, GameObject source, float dropDistance = 5f, float collectionDelay = 0.3f)
     {
         if (itemPrefab == null || source == null) return;
 
@@ -23,11 +23,23 @@ public static class ItemDropSpawner
             item.EnableCollection(collectionDelay);
         }
 
+        MiniGameItem miniGameItem = droppedItem.GetComponent<MiniGameItem>();
+        if (miniGameItem != null)
+        {
+            SaveController.Instance.MarkItemSpawned(miniGameItem.miniGameItemID, miniGameItem.uniqueID, spawnPos);
+        }
+
         BounceEffect bounce = droppedItem.GetComponent<BounceEffect>();
         if (bounce != null)
         {
             bounce.StartBounce();
         }
+    }
+
+    public static GameObject SpawnItemAtposition(GameObject itemPrefab, Vector3 position)
+    {
+        if (itemPrefab == null) return null;
+        return Object.Instantiate(itemPrefab, position, Quaternion.identity);
     }
 
     private static Vector3 GetSpawnPosition(GameObject source, GameObject player, float dropDistance)
