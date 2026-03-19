@@ -110,6 +110,31 @@ public class InventoryController : MonoBehaviour
         return invData;
     }
 
+    public List<Item> GetItemsByType(ItemType itemType)
+{
+    List<Item> result = new();
+
+    foreach (Transform slotTransform in inventoryPanel.transform)
+    {
+        Slot slot = slotTransform.GetComponent<Slot>();
+        if (slot == null || slot.currentItem == null) continue;
+
+        Item item = slot.currentItem.GetComponent<Item>();
+        if (item == null) continue;
+
+        if (item.ItemType == itemType)
+        {
+            int count = Mathf.Max(1, itemsCountCache[item.itemId]);
+
+            for (int i = 0; i < count; i++)
+            {
+                result.Add(item);
+            }
+        }
+    }
+    return result;
+}
+
     public void SetInventoryItems(List<InventorySaveData> inventorySaveData)
     {
         //Clear inventory panel - avoid duplicates

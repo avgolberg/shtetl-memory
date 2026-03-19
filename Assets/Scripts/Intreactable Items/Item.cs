@@ -9,6 +9,7 @@ public class Item : MonoBehaviour
     public string Name;
     public int quantity = 1;
     [SerializeField] private ItemType itemType;
+    public ItemType ItemType => itemType;
     [SerializeField] private bool requiresActiveQuest = false;
 
     private bool canBeCollected = true;
