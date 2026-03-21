@@ -33197,103 +33197,6 @@ MonoBehaviour:
   buttonsContainer: {fileID: 1085512115}
   buttonPrefab: {fileID: 3185720378376222878, guid: b8f8882a92b97c149a03224af9261bdb, type: 3}
   feedbackText: {fileID: 1069860880}
---- !u!1001 &2139687925
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 34.15025
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -87.351265
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3798483889109303567, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5393566032278293458, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
-      propertyPath: m_Name
-      value: Box 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 026f75e2c266c2d4885503d1dcb118ba, type: 3}
 --- !u!1 &2143229242
 GameObject:
   m_ObjectHideFlags: 0
@@ -33746,6 +33649,18 @@ PrefabInstance:
       propertyPath: dialogueData
       value: 
       objectReference: {fileID: 11400000, guid: 12b851305cb40e8499dd1c401afdef9d, type: 2}
+    - target: {fileID: 1927501839689377998, guid: 7ca8dab9bc9c1614bb217b3afa6e30e9, type: 3}
+      propertyPath: dialogueStages.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1927501839689377998, guid: 7ca8dab9bc9c1614bb217b3afa6e30e9, type: 3}
+      propertyPath: 'dialogueStages.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 12b851305cb40e8499dd1c401afdef9d, type: 2}
+    - target: {fileID: 1927501839689377998, guid: 7ca8dab9bc9c1614bb217b3afa6e30e9, type: 3}
+      propertyPath: 'dialogueStages.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8412f0e6559bdfa469c45d88b9494f36, type: 2}
     - target: {fileID: 8985533983672323676, guid: 7ca8dab9bc9c1614bb217b3afa6e30e9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 56.69
@@ -33938,6 +33853,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Hisa
       objectReference: {fileID: 0}
+    - target: {fileID: 7702911583973860912, guid: 48bb171e63b5e0d479d8c658be654809, type: 3}
+      propertyPath: dialogueStages.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7702911583973860912, guid: 48bb171e63b5e0d479d8c658be654809, type: 3}
+      propertyPath: 'dialogueStages.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 12b851305cb40e8499dd1c401afdef9d, type: 2}
+    - target: {fileID: 7702911583973860912, guid: 48bb171e63b5e0d479d8c658be654809, type: 3}
+      propertyPath: 'dialogueStages.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8412f0e6559bdfa469c45d88b9494f36, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34194,4 +34121,3 @@ SceneRoots:
   - {fileID: 5955153881693138003}
   - {fileID: 3537827977683657055}
   - {fileID: 1449290959}
-  - {fileID: 2139687925}

@@ -8,6 +8,7 @@ public class Quest : ScriptableObject
     public string questID;
     public string questName;
     public string description;
+    public bool consumeRequiredItemsOnHandIn = true;
     public List<QuestObjective> objectives;
     public List<QuestReward> questRewards;
 
@@ -16,7 +17,7 @@ public class Quest : ScriptableObject
     {
         if (string.IsNullOrEmpty(questID))
         {
-            questID = questName + Guid.NewGuid().ToString();
+            questID = questName.Replace(' ', '_') + "_" + Guid.NewGuid().ToString();
         }
     } 
 }

@@ -111,29 +111,29 @@ public class InventoryController : MonoBehaviour
     }
 
     public List<Item> GetItemsByType(ItemType itemType)
-{
-    List<Item> result = new();
-
-    foreach (Transform slotTransform in inventoryPanel.transform)
     {
-        Slot slot = slotTransform.GetComponent<Slot>();
-        if (slot == null || slot.currentItem == null) continue;
+        List<Item> result = new();
 
-        Item item = slot.currentItem.GetComponent<Item>();
-        if (item == null) continue;
-
-        if (item.ItemType == itemType)
+        foreach (Transform slotTransform in inventoryPanel.transform)
         {
-            int count = Mathf.Max(1, itemsCountCache[item.itemId]);
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if (slot == null || slot.currentItem == null) continue;
 
-            for (int i = 0; i < count; i++)
+            Item item = slot.currentItem.GetComponent<Item>();
+            if (item == null) continue;
+
+            if (item.ItemType == itemType)
             {
-                result.Add(item);
+                int count = Mathf.Max(1, itemsCountCache[item.itemId]);
+
+                for (int i = 0; i < count; i++)
+                {
+                    result.Add(item);
+                }
             }
         }
+        return result;
     }
-    return result;
-}
 
     public void SetInventoryItems(List<InventorySaveData> inventorySaveData)
     {

@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour, IInteractable
 {
-    public NPCDialogue dialogueData;
+    public NPCDialogue[] dialogueStages;
+    private NPCDialogue dialogueData;
+    private int currentStageIndex = 0;
     private DialogueController dialogueUI;
     private int dialogueIndex;
     private Coroutine typingCoroutine;
@@ -16,6 +18,8 @@ public class NPC : MonoBehaviour, IInteractable
     private void Start()
     {
         dialogueUI = DialogueController.Instance;
+        ResolveCurrentDialogueData();
+        SyncQuestState();
     }
 
     public bool CanInteract()
@@ -38,10 +42,52 @@ public class NPC : MonoBehaviour, IInteractable
         }
     }
 
+    private void ResolveCurrentDialogueData()
+    {
+        if (dialogueStages == null || dialogueStages.Length == 0)
+            return;
+
+        currentStageIndex = 0;
+        dialogueData = dialogueStages[0];
+
+        for (int i = 0; i < dialogueStages.Length; i++)
+        {
+            NPCDialogue stage = dialogueStages[i];
+            if (stage == null || stage.quest == null)
+            {
+                currentStageIndex = i;
+                dialogueData = stage;
+                return;
+            }
+
+            string questId = stage.quest.questID;
+
+            if (QuestController.Instance.IsQuestHandedIn(questId))
+            {
+                if (i + 1 < dialogueStages.Length)
+                {
+                    currentStageIndex = i + 1;
+                    dialogueData = dialogueStages[i + 1];
+                }
+                else
+                {
+                    currentStageIndex = i;
+                    dialogueData = stage;
+                }
+            }
+            else
+            {
+                currentStageIndex = i;
+                dialogueData = stage;
+                return;
+            }
+        }
+    }
+
     void StartDialogue()
     {
         dialogueUI.SetActiveNPC(this);
-        
+
         SyncQuestState();
 
         //Set dialogue line based on questState
@@ -51,7 +97,21 @@ public class NPC : MonoBehaviour, IInteractable
         }
         else if (questState == QuestState.InProgress)
         {
-            dialogueIndex = dialogueData.questInProgressIndex;
+            if (IsQuestReadyToHandIn())
+            {
+                if (TryHandInQuest())
+                {
+                    dialogueIndex = dialogueData.questCompletedIndex;
+                }
+                else
+                {
+                    dialogueIndex = dialogueData.questInProgressIndex;
+                }
+            }
+            else
+            {
+                dialogueIndex = dialogueData.questInProgressIndex;
+            }
         }
         else if (questState == QuestState.Completed)
         {
@@ -73,7 +133,7 @@ public class NPC : MonoBehaviour, IInteractable
 
         string questID = dialogueData.quest.questID;
 
-        if (QuestController.Instance.IsQuestCompleted(questID) || QuestController.Instance.IsQuestHandedIn(questID))
+        if (QuestController.Instance.IsQuestHandedIn(questID))
         {
             questState = QuestState.Completed;
         }
@@ -154,7 +214,7 @@ public class NPC : MonoBehaviour, IInteractable
             dialogueData.autoProgressLines[dialogueIndex] && isDialogueActive)
             {
                 if (autoProgressCoroutine != null)
-                     StopCoroutine(autoProgressCoroutine);
+                    StopCoroutine(autoProgressCoroutine);
 
                 autoProgressCoroutine = StartCoroutine(AutoProgress());
             }
@@ -181,13 +241,25 @@ public class NPC : MonoBehaviour, IInteractable
             }
         }
 
-        if (++dialogueIndex < dialogueData.dialogueLines.Length)
+        if (dialogueIndex + 1 < dialogueData.dialogueLines.Length)
         {
+            dialogueIndex++;
             DisplayCurrentLine();
         }
         else
         {
-            EndDialogue();
+            if (currentStageIndex + 1 < dialogueStages.Length)
+            {
+                currentStageIndex++;
+                dialogueData = dialogueStages[currentStageIndex];
+                dialogueIndex = 0;
+                questState = QuestState.NotStarted;
+                DisplayCurrentLine();
+            }
+            else
+            {
+                EndDialogue();
+            }
         }
     }
 
@@ -203,7 +275,7 @@ public class NPC : MonoBehaviour, IInteractable
         RewardsController.Instance.GiveQuestReward(dialogueData.quest, gameObject);
         QuestController.Instance.HandInQuest(id);
         questState = QuestState.Completed;
-        
+
         return true;
     }
 
@@ -218,11 +290,20 @@ public class NPC : MonoBehaviour, IInteractable
 
         if (TryHandInQuest())
         {
-            if (dialogueIndex == dialogueData.questCompletedIndex) dialogueIndex++; 
+            dialogueIndex = dialogueData.questCompletedIndex;
             dialogueUI.ClearChoices();
-            DisplayCurrentLine();
+
+            if (dialogueIndex >= 0 && dialogueIndex < dialogueData.dialogueLines.Length)
+            {
+                DisplayCurrentLine();
+            }
+            else
+            {
+                EndDialogue();
+            }
             return true;
         }
+
         return false;
     }
 
@@ -307,5 +388,14 @@ public class NPC : MonoBehaviour, IInteractable
         dialogueUI.ShowDialogueUI(false);
         dialogueUI.SetActiveNPC(null);
         PauseController.SetPause(false);
+    }
+
+    private bool IsQuestReadyToHandIn()
+    {
+        if (dialogueData.quest == null) return false;
+
+        string questID = dialogueData.quest.questID;
+        return QuestController.Instance.IsQuestCompleted(questID)
+            && !QuestController.Instance.IsQuestHandedIn(questID);
     }
 }

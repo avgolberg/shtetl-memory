@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5af86c06a1cd5294e909c2ee75d2c673, type: 3}
-  m_Name: HisaTeacherNPCDialogue
+  m_Name: Halyna NPCDialogue  Part1
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
   npcName: Halyna
   npcPortrait: {fileID: -6471082416391893753, guid: 53d5f5efd048d2d4081b29c56deb11a6, type: 3}
@@ -41,19 +41,9 @@ MonoBehaviour:
   - Your photograph reminded me of it.
   - Flowers from the street smell better than the ones from shops.
   - Oh! You actually did it. Beautiful! She'll love these.
-  - 'And look what I found. A small wooden box. '
-  - The only thing that stayed here from the previous family.
-  - My parents opened it once, many years ago.
-  - Some old postcards inside. Maybe letters too.
-  - "But the key\u2026 That is the problem."
-  - My husband had a box full of little things.
-  - "Keys, coins\u2026 You know how it goes."
-  - If the key survived, it will be in that box.
-  - "Well\u2026  Look at that. After all these years."
-  - "Maybe\u2026  this was waiting for you."
-  autoProgressLines: 010101010101010101010101010101010101010101010101010101010101010101010101
-  endDialogueLines: 000000000000000000000000000000000000000000010001010000000000000000000001
-  questHandInIndex: 000000000000000000000000000000000000000000000000010100000000000000000000
+  autoProgressLines: 0101010101010101010101010101010101010101010101010101
+  endDialogueLines: 0000000000000000000000000000000000000000000100010000
+  questHandInIndex: 0000000000000000000000000000000000000000000000000100
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   voiceSounds:
@@ -104,3 +94,4 @@ MonoBehaviour:
   questInProgressIndex: 24
   questCompletedIndex: 25
   quest: {fileID: 11400000, guid: a41c66c449176d54fbb65cb7ded5f0e2, type: 2}
+  nextDialogueData: {fileID: 11400000, guid: 8412f0e6559bdfa469c45d88b9494f36, type: 2}

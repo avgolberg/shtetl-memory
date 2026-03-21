@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a8283dea023b04590f80edf7bd90f6, type: 3}
   m_Name: CollectCoins
   m_EditorClassIdentifier: Assembly-CSharp::Quest
-  questID: 3cfc7f97-2d15-4b77-9a33-ba153cb4a922
+  questID: Collect_Coins_069db277-9152-4508-8337-66fde58ae7e0
   questName: Collect Coins
   description: We must collect 3 coins to help!
+  consumeRequiredItemsOnHandIn: 1
   objectives:
   - objectiveID: 1
     description: Collect 3 Coins
     type: 0
+    targetItemType: 0
     requiredAmount: 3
     currentAmount: 0
   questRewards:

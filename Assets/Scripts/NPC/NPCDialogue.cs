@@ -19,10 +19,9 @@ public class NPCDialogue : ScriptableObject
     public float voiceVolume = 1f;
     public float voicePitch = 1f;
     public DialogueChoice[] choices;
-    public int questInProgressIndex; //What does he say while quest in progress
-    
-    public int questCompletedIndex; //What does he say when quest completed
     public Quest quest; //Quest NPC gives
+    public int questInProgressIndex; //What does he say while quest in progress
+    public int questCompletedIndex; //What does he say when quest completed
 }
 
 [System.Serializable]
