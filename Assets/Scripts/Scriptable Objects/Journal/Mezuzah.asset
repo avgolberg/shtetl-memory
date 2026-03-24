@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89ce92c460386d438f3bbb15da08d04, type: 3}
+  m_Name: Mezuzah
+  m_EditorClassIdentifier: Assembly-CSharp::JournalTopicData
+  topicId: mezuzah
+  stages:
+  - title: Strange case on the door
+    lines:
+    - "\u25CF There is a small case attached to the doorframe."
+  - title: Strange case on the door
+    lines:
+    - "\u25CF It is placed on the doorpost in Jewish homes."
+  - title: Mezuzah
+    lines:
+    - "\u25CF It is called a mezuzah."
+    - "\u25CF It marks the home as a Jewish home."
+    - "\u25CF It connects daily life with tradition."

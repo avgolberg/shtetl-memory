@@ -101,6 +101,10 @@ public class KeyChoiceGameController : MonoBehaviour, IMiniGame
 
     private void CompleteGame()
     {
+        for (int i = 0; i < availableKeys.Count; i++)
+        {
+            InventoryController.Instance.RemoveItemsFromInventory(availableKeys[i].itemId, 1);
+        }
         currentSource?.CompleteMiniGame();
         Close();
     }   

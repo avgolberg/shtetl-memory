@@ -5,16 +5,17 @@ public class QuestController : MonoBehaviour
 {
     public static QuestController Instance { get; private set; }
     public List<QuestProgress> activeQuests = new();
-    private QuestUI questUI;
     public List<string> handinQuestIDs = new();
     [SerializeField] Sprite questIcon;
+
+    [SerializeField] private Transform listContent;
+    [SerializeField] private EntryBlockUI entryPrefab;
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        questUI = FindFirstObjectByType<QuestUI>();
         InventoryController.Instance.OnInventoryChanged += CheckInventoryForQuests;
     }
 
@@ -29,7 +30,7 @@ public class QuestController : MonoBehaviour
         }
 
         CheckInventoryForQuests();
-        questUI.UpdateQuestUI();
+        UpdateUI();
     }
 
     public bool CanCollectObjectiveItem(ItemType itemType)
@@ -71,7 +72,7 @@ public class QuestController : MonoBehaviour
                 }
             }
         }
-        questUI.UpdateQuestUI();
+        UpdateUI();
     }
 
     public bool IsQuestCompleted(string questID)
@@ -103,7 +104,7 @@ public class QuestController : MonoBehaviour
         
         handinQuestIDs.Add(questID);
         activeQuests.Remove(questProgress);
-        questUI.UpdateQuestUI();
+        UpdateUI();
     }
 
     public bool IsQuestHandedIn(string questID)
@@ -170,7 +171,30 @@ public class QuestController : MonoBehaviour
         activeQuests = savedQuests ?? new();
 
         CheckInventoryForQuests();
-        questUI.UpdateQuestUI();
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        foreach(Transform child in listContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach(var quest in activeQuests)
+        {
+            if (quest.quest == null) continue;
+            
+            List<string> lines = new();
+
+            foreach (var objective in quest.objectives)
+            {
+                lines.Add($"{objective.description} ({objective.currentAmount}/{objective.requiredAmount})"); //Collect 5 Potions (0/5)
+            }
+
+            EntryBlockUI entry = Instantiate(entryPrefab, listContent);
+            entry.Setup(quest.quest.questName, lines);
+        }
     }
 
 }

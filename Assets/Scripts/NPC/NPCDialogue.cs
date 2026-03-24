@@ -11,6 +11,7 @@ public class NPCDialogue : ScriptableObject
     public bool[] autoProgressLines;
     public bool[] endDialogueLines; //Mark where dialogue ends
     public bool[] questHandInIndex;
+    public DialogueJournal[] journalUpdates;
     public float autoProgressDelay = 1.5f;
 
     public float typingSpeed = 0.05f;
@@ -31,4 +32,12 @@ public class DialogueChoice
     public string[] choices; //Player response options
     public int[] nextDialogueIndexes; //Where choice leads
     public bool[] givesQuest; //If choise gives quest
+}
+
+[System.Serializable]
+public class DialogueJournal
+{
+    public bool trigger;
+    public string topicId;
+    public int stageIndex;
 }

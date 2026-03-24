@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6064941299783251115}
   - component: {fileID: 1870961686503140739}
   m_Layer: 5
-  m_Name: ObjectiveList
+  m_Name: LinesContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,8 +130,9 @@ GameObject:
   - component: {fileID: 3547301728003696081}
   - component: {fileID: 1848273227921262654}
   - component: {fileID: 3144170397537602137}
+  - component: {fileID: 7225975125610862285}
   m_Layer: 5
-  m_Name: QuestEntry
+  m_Name: EntryBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,6 +237,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &7225975125610862285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3478180322136617897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceddd885426d7e840b5fb9cd214039e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntryBlockUI
+  titleText: {fileID: 4997129208221918397}
+  linesContainer: {fileID: 6264797028232527835}
+  linePrefab: {fileID: 2390051976087890555, guid: 05c3aa6a1a4ade14cb7b2465e940d83f, type: 3}
 --- !u!1 &4656298111804195619
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +264,7 @@ GameObject:
   - component: {fileID: 3609985375554569129}
   - component: {fileID: 4997129208221918397}
   m_Layer: 5
-  m_Name: QuestNameText
+  m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

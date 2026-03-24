@@ -24,12 +24,6 @@ MonoBehaviour:
   - They never came back after the war.
   - "After that\u2026 the authorities let us move in. "
   - We were five children. One room each felt like a miracle.
-  - Every Friday they walked to the market where she worked.
-  - All dressed up.  Like it was a holiday.
-  - "Ah\u2026 that. The old owners had something there. "
-  - A small little case.
-  - My father once tried to sand it away. Said it looked strange.
-  - But the mark never disappeared.
   - "Anyway\u2026 I was just about to go out."
   - My friend turned seventy today. Imagine that!
   - I promised her a bouquet.
@@ -41,9 +35,70 @@ MonoBehaviour:
   - Your photograph reminded me of it.
   - Flowers from the street smell better than the ones from shops.
   - Oh! You actually did it. Beautiful! She'll love these.
-  autoProgressLines: 0101010101010101010101010101010101010101010101010101
-  endDialogueLines: 0000000000000000000000000000000000000000000100010000
-  questHandInIndex: 0000000000000000000000000000000000000000000000000100
+  autoProgressLines: 0101010101010101010101010101010101010101
+  endDialogueLines: 0000000000000000000000000000000100010100
+  questHandInIndex: 0000000000000000000000000000000000000100
+  journalUpdates:
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   voiceSounds:
@@ -69,29 +124,12 @@ MonoBehaviour:
     - Do you know who lived here?
     nextDialogueIndexes: 03000000
     givesQuest: 00
-  - dialogueIndex: 8
-    choices:
-    - Do you remember anything else?
-    - What is this mark on the door?
-    nextDialogueIndexes: 090000000b000000
-    givesQuest: 0000
-  - dialogueIndex: 10
-    choices:
-    - Okay...
-    nextDialogueIndexes: 0f000000
-    givesQuest: 00
   - dialogueIndex: 14
-    choices:
-    - Something strange...
-    nextDialogueIndexes: 0f000000
-    givesQuest: 00
-  - dialogueIndex: 20
     choices:
     - Sure!
     - Maybe next time...
-    nextDialogueIndexes: 1600000015000000
+    nextDialogueIndexes: 100000000f000000
     givesQuest: 0100
-  questInProgressIndex: 24
-  questCompletedIndex: 25
   quest: {fileID: 11400000, guid: a41c66c449176d54fbb65cb7ded5f0e2, type: 2}
-  nextDialogueData: {fileID: 11400000, guid: 8412f0e6559bdfa469c45d88b9494f36, type: 2}
+  questInProgressIndex: 18
+  questCompletedIndex: 19

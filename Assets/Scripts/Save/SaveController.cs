@@ -39,6 +39,7 @@ public class SaveController : MonoBehaviour
         sd.spawnedItemSaveData = spawnedItems;
         sd.collectedItemIds = collectedItemIds;
         sd.openedChestIds = openedChestIds;
+        sd.journalTopics = JournalController.Instance.GetSaveData();
         sd.questProgressData = QuestController.Instance.activeQuests;
         sd.handinQuestIDs = QuestController.Instance.handinQuestIDs;
         sd.sfxVolume = SoundEffectManager.SFXVolume;
@@ -64,6 +65,7 @@ public class SaveController : MonoBehaviour
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.transform.position = saveData.playerPosition;
 
+            JournalController.Instance.LoadFromSave(saveData.journalTopics);
             InventoryController.Instance.SetInventoryItems(saveData.inventorySaveData);
             LoadSpawnedItems(saveData.spawnedItemSaveData);
             LoadCollectedItemIds(saveData.collectedItemIds);

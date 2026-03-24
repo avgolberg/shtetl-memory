@@ -20,13 +20,65 @@ MonoBehaviour:
   - The only thing that stayed here from the previous family...
   - was a jewelry box. If the key survived, it is probably inside.
   - Take it. Maybe you will find what we need.
-  - Maybe this was waiting for you all along.
+  - Every Friday they walked to the market where she worked.
+  - Alll dressed up.  Like it was a holiday.
+  - "Ah\u2026 that. The old owners had something there."
+  - A small little case.
+  - My father once tried to sand it away. Said it looked strange.
+  - But the mark never disappeared.
   - Well... after all these years...
+  - Maybe this was waiting for you all along.
   - Maybe it is time to open it again.
   - I hope you find what you're looking for.
-  autoProgressLines: 010101010101010101
-  endDialogueLines: 000000000001000101
+  autoProgressLines: 010101010101010101010101010101
+  endDialogueLines: 000000000000000000000001000001
   questHandInIndex: 000000000001000100
+  journalUpdates:
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 1
+    topicId: mezuzah
+    stageIndex: 1
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   voiceSounds:
@@ -44,9 +96,20 @@ MonoBehaviour:
   choices:
   - dialogueIndex: 4
     choices:
-    - Oh, thanks! I will.
-    nextDialogueIndexes: 05000000
-    givesQuest: 01
+    - Maybe you remember anything else?
+    - What is this mark on the door?
+    nextDialogueIndexes: 0500000007000000
+    givesQuest: 0101
+  - dialogueIndex: 6
+    choices:
+    - Okay...
+    nextDialogueIndexes: 0b000000
+    givesQuest: 00
+  - dialogueIndex: 10
+    choices:
+    - Something strange...
+    nextDialogueIndexes: 0b000000
+    givesQuest: 00
   quest: {fileID: 11400000, guid: 30e4b76b44934bc40bcd8ddd44b4c221, type: 2}
-  questInProgressIndex: 5
-  questCompletedIndex: 6
+  questInProgressIndex: 11
+  questCompletedIndex: 12

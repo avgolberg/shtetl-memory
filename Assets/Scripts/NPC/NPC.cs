@@ -182,6 +182,8 @@ public class NPC : MonoBehaviour, IInteractable
         if (!isDialogueActive)
             yield break;
 
+        HandleJournalUpdateForCurrentLine();
+
         if (HandleQuestHandInJump())
             yield break;
 
@@ -397,5 +399,19 @@ public class NPC : MonoBehaviour, IInteractable
         string questID = dialogueData.quest.questID;
         return QuestController.Instance.IsQuestCompleted(questID)
             && !QuestController.Instance.IsQuestHandedIn(questID);
+    }
+
+    void HandleJournalUpdateForCurrentLine()
+    {
+        if (dialogueData.journalUpdates == null) return;
+        if (dialogueIndex < 0 || dialogueIndex >= dialogueData.journalUpdates.Length) return;
+
+        DialogueJournal update = dialogueData.journalUpdates[dialogueIndex];
+        if (update == null || !update.trigger) return;
+
+        if (!string.IsNullOrEmpty(update.topicId))
+        {
+            JournalController.Instance.UnlockOrUpdateTopic(update.topicId, update.stageIndex);
+        }
     }
 }

@@ -10,6 +10,7 @@ public class SaveData
     public List<string> openedChestIds;
     public List<MiniGameItemSaveData> spawnedItemSaveData;
     public List<InventorySaveData> inventorySaveData;
+    public List<JournalTopicSaveData> journalTopics;
     public List<QuestProgress> questProgressData;
     public List<string> handinQuestIDs;
     public float sfxVolume;
@@ -32,4 +33,11 @@ public class MiniGameItemSaveData
     public bool wasSpawned;
     public bool isCompleted;
     public Vector3 spawnPosition;
+}
+
+[System.Serializable]
+public class JournalTopicSaveData
+{
+    public string topicId;
+    public int unlockedStageIndex;
 }
