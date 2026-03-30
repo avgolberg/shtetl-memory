@@ -21,19 +21,19 @@ MonoBehaviour:
     description: Collect 5 Red Flowers
     type: 0
     targetItemType: 1
-    requiredAmount: 1
+    requiredAmount: 5
     currentAmount: 0
   - objectiveID: 6
     description: Collect 5 Blue Flowers
     type: 0
     targetItemType: 1
-    requiredAmount: 1
+    requiredAmount: 5
     currentAmount: 0
   - objectiveID: 7
     description: Collect 5 Purple Flowers
     type: 0
     targetItemType: 1
-    requiredAmount: 1
+    requiredAmount: 5
     currentAmount: 0
   questRewards:
   - type: 2

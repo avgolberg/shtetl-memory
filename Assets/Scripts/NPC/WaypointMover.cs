@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WaypointMover : MonoBehaviour
 {
-    
+
     [SerializeField] Transform waypointParent;
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float waitTime = 2f;
@@ -12,17 +12,17 @@ public class WaypointMover : MonoBehaviour
     private Transform[] waypoints;
     private int currentWaypointIndex;
     private bool isWaiting;
+    private bool isTalking;
 
-    Animator animator;
     Rigidbody2D rb;
     private Vector3 baseScale;
-    static readonly int isWalking = Animator.StringToHash("isWalking");
+    private NPCAnimationController animationController;
 
     void Awake()
     {
         baseScale = transform.localScale;
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponentInChildren<Animator>();
+        animationController = GetComponent<NPCAnimationController>();
     }
 
     void Start()
@@ -32,21 +32,20 @@ public class WaypointMover : MonoBehaviour
         {
             waypoints[i] = waypointParent.GetChild(i);
         }
-        
-        animator.SetBool(isWalking, false);
+
+        animationController?.SetIdle();
     }
 
     void FixedUpdate()
     {
-        if (PauseController.IsGamePaused || isWaiting)
+        if (isTalking || isWaiting)
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-            animator.SetBool(isWalking, false);
+            animationController?.SetIdle();
             return;
         }
 
         MoveToWaypoint();
-        animator.SetBool(isWalking, rb.linearVelocity.sqrMagnitude > 0.0001f);
     }
 
     void MoveToWaypoint()
@@ -67,11 +66,13 @@ public class WaypointMover : MonoBehaviour
 
         rb.linearVelocity = new Vector2(Mathf.Sign(dx) * moveSpeed, rb.linearVelocity.y);
         transform.localScale = new Vector2(Mathf.Sign(rb.linearVelocity.x) * Mathf.Abs(baseScale.x), baseScale.y);
+
+        animationController?.SetMove();
     }
     IEnumerator WaitAtWaypoint()
     {
         isWaiting = true;
-        animator.SetBool(isWalking, false);
+        animationController?.SetIdle();
         rb.linearVelocity = Vector2.zero;
         yield return new WaitForSecondsRealtime(waitTime);
 
@@ -80,5 +81,16 @@ public class WaypointMover : MonoBehaviour
         currentWaypointIndex = loopWaypoints ? (currentWaypointIndex + 1) % waypoints.Length : Mathf.Min(currentWaypointIndex + 1, waypoints.Length - 1);
 
         isWaiting = false;
+    }
+    
+    public void SetTalking(bool talking)
+    {
+        isTalking = talking;
+
+        if (talking)
+        {
+            rb.linearVelocity = Vector2.zero;
+            animationController?.SetIdle();
+        }
     }
 }

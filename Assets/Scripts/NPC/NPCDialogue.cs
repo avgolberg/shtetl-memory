@@ -23,6 +23,7 @@ public class NPCDialogue : ScriptableObject
     public Quest quest; //Quest NPC gives
     public int questInProgressIndex; //What does he say while quest in progress
     public int questCompletedIndex; //What does he say when quest completed
+    public int repeatDialogueIndex = -1;
 }
 
 [System.Serializable]

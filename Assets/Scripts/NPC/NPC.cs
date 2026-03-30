@@ -14,10 +14,17 @@ public class NPC : MonoBehaviour, IInteractable
     private float nextVoiceTime;
     private enum QuestState { NotStarted, InProgress, Completed }
     private QuestState questState = QuestState.NotStarted;
+    private NPCAnimationController animationController;
+    [SerializeField] private bool switchToIdleAfterFirstDialogue;
+    private bool hasSwitchedAnimation;
+    private WaypointMover waypointMover;
+    private bool hasFinishedDialogueOnce;
 
     private void Start()
     {
         dialogueUI = DialogueController.Instance;
+        waypointMover = GetComponent<WaypointMover>();
+        animationController = GetComponent<NPCAnimationController>();
         ResolveCurrentDialogueData();
         SyncQuestState();
     }
@@ -87,11 +94,16 @@ public class NPC : MonoBehaviour, IInteractable
     void StartDialogue()
     {
         dialogueUI.SetActiveNPC(this);
+        waypointMover?.SetTalking(true);
 
         SyncQuestState();
 
         //Set dialogue line based on questState
-        if (questState == QuestState.NotStarted)
+        if (dialogueData.quest == null && hasFinishedDialogueOnce && dialogueData.repeatDialogueIndex >= 0)
+        {
+            dialogueIndex = dialogueData.repeatDialogueIndex;
+        }
+        else if (questState == QuestState.NotStarted)
         {
             dialogueIndex = 0;
         }
@@ -129,7 +141,7 @@ public class NPC : MonoBehaviour, IInteractable
 
     private void SyncQuestState()
     {
-        if (dialogueData.quest == null) return;
+        if (dialogueData == null || dialogueData.quest == null) return;
 
         string questID = dialogueData.quest.questID;
 
@@ -388,8 +400,17 @@ public class NPC : MonoBehaviour, IInteractable
         SoundEffectManager.StopVoice();
         dialogueUI.SetDialogueText("");
         dialogueUI.ShowDialogueUI(false);
+
+        if (switchToIdleAfterFirstDialogue && !hasSwitchedAnimation && animationController != null)
+        {
+            animationController.SetState(NPCAnimationController.AnimState.Idle);
+            hasSwitchedAnimation = true;
+        }
+
         dialogueUI.SetActiveNPC(null);
+        waypointMover?.SetTalking(false);
         PauseController.SetPause(false);
+        hasFinishedDialogueOnce = true;
     }
 
     private bool IsQuestReadyToHandIn()

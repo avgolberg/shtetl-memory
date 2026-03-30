@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 2963d920e2d4f9b4cb4e961a19868ac4
+guid: dd6ec56ff3704034a8b3102ae4e79865
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 334126
-  packageName: "Easy Chara \u2013 Hisa Teacher 2D Character Pack"
-  packageVersion: 1.1
-  assetPath: Assets/Sprites/Characters Assets/Easy Chara/Base/AnimationClips/Common/Climb.anim
-  uploadId: 840878

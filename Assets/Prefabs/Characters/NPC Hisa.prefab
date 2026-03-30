@@ -267,6 +267,8 @@ GameObject:
   - component: {fileID: 3029911417514329511}
   - component: {fileID: 7702911583973860912}
   - component: {fileID: 5910634011885930251}
+  - component: {fileID: 4646356706368439965}
+  - component: {fileID: 9211256973609577652}
   m_Layer: 8
   m_Name: NPC Trigger
   m_TagString: Untagged
@@ -365,7 +367,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177b07cdc4ee274498e12e966f0603d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC
-  dialogueData: {fileID: 11400000, guid: fd481c4a1502f434f96cd1aaa971ef99, type: 2}
+  dialogueStages:
+  - {fileID: 11400000, guid: 12b851305cb40e8499dd1c401afdef9d, type: 2}
+  - {fileID: 11400000, guid: 8412f0e6559bdfa469c45d88b9494f36, type: 2}
+  switchToIdleAfterFirstDialogue: 0
 --- !u!114 &5910634011885930251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +388,34 @@ MonoBehaviour:
   waitTime: 2
   loopWaypoints: 1
   arriveDistance: 0.1
+--- !u!114 &4646356706368439965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079318436467256000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d3ad470e39a2b344bbd423b51cda66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FreezeWhenOffscreen
+  extraMargin: 2
+  disableAnimator: 1
+--- !u!114 &9211256973609577652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079318436467256000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab3da16be3e3db418457b7763f8baf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCAnimationController
+  defaultIdleState: 0
+  moveState: 1
 --- !u!1 &1194549799107392685
 GameObject:
   m_ObjectHideFlags: 0

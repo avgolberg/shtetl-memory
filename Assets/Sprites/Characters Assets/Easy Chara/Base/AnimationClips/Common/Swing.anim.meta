@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 1388db077c073a14382695f0c1626ab7
+guid: 8b1ab2ff86bbb0a4b82450b26c217018
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 334126
-  packageName: "Easy Chara \u2013 Hisa Teacher 2D Character Pack"
-  packageVersion: 1.1
-  assetPath: Assets/Sprites/Characters Assets/Easy Chara/Base/AnimationClips/Common/Swing.anim
-  uploadId: 840878

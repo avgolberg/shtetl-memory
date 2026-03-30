@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 916754d9f148c9f4bb0d90cda4192d9c
+guid: ce2f3c8106aa5e147a8c0988341ac48d
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 334126
-  packageName: "Easy Chara \u2013 Hisa Teacher 2D Character Pack"
-  packageVersion: 1.1
-  assetPath: Assets/Sprites/Characters Assets/Easy Chara/Base/AnimationClips/Common/Balance.anim
-  uploadId: 840878

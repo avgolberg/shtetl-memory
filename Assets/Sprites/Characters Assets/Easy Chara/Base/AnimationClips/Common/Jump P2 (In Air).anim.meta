@@ -1,16 +1,8 @@
 fileFormatVersion: 2
-guid: bc0290e78efd19549be5ebde5b4d5bcd
+guid: 55fdb4e0628d55945b6022154d1aa015
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 334126
-  packageName: "Easy Chara \u2013 Hisa Teacher 2D Character Pack"
-  packageVersion: 1.1
-  assetPath: Assets/Sprites/Characters Assets/Easy Chara/Base/AnimationClips/Common/Jump
-    P2 (In Air).anim
-  uploadId: 840878

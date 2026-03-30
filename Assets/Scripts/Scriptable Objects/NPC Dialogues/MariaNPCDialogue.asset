@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af86c06a1cd5294e909c2ee75d2c673, type: 3}
+  m_Name: MariaNPCDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
+  npcName: Maria
+  npcPortrait: {fileID: 6120914730915384989, guid: 321acedcdc593f449b63b40bbde51ee0, type: 3}
+  dialogueLines:
+  - Right, now off to the market...
+  - "It is. Fresh beef, sour cream\u2026 nothing better."
+  - My children could eat borscht several times a week.
+  - "And I\u2019m only happy to make it for them."
+  - "Without meat? That\u2019s unusual\u2026"
+  - But everyone has their own way, I suppose.
+  - Go left, toward the central square.
+  - Nothing beats a warm meal.
+  autoProgressLines: 0101010101010101
+  endDialogueLines: 0000000000000101
+  questHandInIndex: 0000000000000000
+  journalUpdates:
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 1
+    topicId: kashrut
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  autoProgressDelay: 1.5
+  typingSpeed: 0.09
+  voiceSounds:
+  - {fileID: 8300000, guid: 107bcd6a36e288644893e2bd78e0d553, type: 3}
+  - {fileID: 8300000, guid: 9577fc1aa39f43e4b8935c8663e9a62f, type: 3}
+  - {fileID: 8300000, guid: 015808df0c57a7540bf604389b0697eb, type: 3}
+  - {fileID: 8300000, guid: 802741afe8d9ff34db8f19ad8a208bd7, type: 3}
+  - {fileID: 8300000, guid: deeb8bd54d5ef7d429721250303bdbea, type: 3}
+  voiceVolume: 0.3
+  voicePitch: 1.5
+  choices:
+  - dialogueIndex: 0
+    choices:
+    - "That smells wonderful\u2026 is that borscht?"
+    nextDialogueIndexes: 01000000
+    givesQuest: 00
+  - dialogueIndex: 3
+    choices:
+    - My great-grandmother made it without meat.
+    nextDialogueIndexes: 04000000
+    givesQuest: 00
+  - dialogueIndex: 5
+    choices:
+    - "By the way\u2026 where is the market?"
+    nextDialogueIndexes: 06000000
+    givesQuest: 00
+  quest: {fileID: 0}
+  questInProgressIndex: -1
+  questCompletedIndex: -1
+  repeatDialogueIndex: 7

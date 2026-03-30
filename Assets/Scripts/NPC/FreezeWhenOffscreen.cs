@@ -44,13 +44,13 @@ public class FreezeWhenOffscreen : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.simulated = false;
-        if (disableAnimator && animator) animator.enabled = false;
+        if (disableAnimator && animator) animator.speed = 0f;
     }
 
     void Unfreeze()
     {
         frozen = false;
         rb.simulated = true;
-        if (disableAnimator && animator) animator.enabled = true;
+        if (disableAnimator && animator) animator.speed = 1f;
     }
 }

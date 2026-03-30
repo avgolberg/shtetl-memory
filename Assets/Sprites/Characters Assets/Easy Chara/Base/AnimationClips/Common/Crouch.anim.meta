@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 65264b672aaa3f248b75e51a336569c9
+guid: 822088a6bd7d38a4da99fe28e1fd7b41
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 334126
-  packageName: "Easy Chara \u2013 Hisa Teacher 2D Character Pack"
-  packageVersion: 1.1
-  assetPath: Assets/Sprites/Characters Assets/Easy Chara/Base/AnimationClips/Common/Crouch.anim
-  uploadId: 840878

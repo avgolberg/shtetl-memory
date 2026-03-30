@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af86c06a1cd5294e909c2ee75d2c673, type: 3}
+  m_Name: HelioNPCDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
+  npcName: Kid
+  npcPortrait: {fileID: 6120914730915384989, guid: aedd9ede6301dec45b3954b5668e808b, type: 3}
+  dialogueLines:
+  - Watch out!
+  autoProgressLines: 01
+  endDialogueLines: 01
+  questHandInIndex: 00
+  journalUpdates:
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  autoProgressDelay: 1.5
+  typingSpeed: 0.08
+  voiceSounds:
+  - {fileID: 8300000, guid: a47253504d113864cb157436c9fc087b, type: 3}
+  - {fileID: 8300000, guid: f3045c1739aa25b4a9e19cb5206b1872, type: 3}
+  - {fileID: 8300000, guid: e284a523ddbcb0e49b55a809892b2913, type: 3}
+  voiceVolume: 0.3
+  voicePitch: 1.1
+  choices:
+  - dialogueIndex: 0
+    choices: []
+    nextDialogueIndexes: 
+    givesQuest: 
+  quest: {fileID: 0}
+  questInProgressIndex: -1
+  questCompletedIndex: -1

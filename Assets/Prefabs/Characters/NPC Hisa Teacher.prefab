@@ -1327,7 +1327,7 @@ Transform:
   m_GameObject: {fileID: 2900608380202561478}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.34, y: -3.15, z: 0}
+  m_LocalPosition: {x: 7.4, y: -1.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3123,6 +3123,10 @@ GameObject:
   - component: {fileID: 2724972673968235230}
   - component: {fileID: 1927501839689377998}
   - component: {fileID: 6306696497751091248}
+  - component: {fileID: 7976666803614207695}
+  - component: {fileID: 2549694389847642058}
+  - component: {fileID: 1685167883110244042}
+  - component: {fileID: 2545405610829201037}
   m_Layer: 8
   m_Name: NPC Trigger
   m_TagString: Untagged
@@ -3221,7 +3225,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177b07cdc4ee274498e12e966f0603d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC
-  dialogueData: {fileID: 11400000, guid: fd481c4a1502f434f96cd1aaa971ef99, type: 2}
+  dialogueStages:
+  - {fileID: 11400000, guid: 12b851305cb40e8499dd1c401afdef9d, type: 2}
+  - {fileID: 11400000, guid: 8412f0e6559bdfa469c45d88b9494f36, type: 2}
+  switchToIdleAfterFirstDialogue: 0
 --- !u!114 &6306696497751091248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3239,6 +3246,60 @@ MonoBehaviour:
   waitTime: 2
   loopWaypoints: 1
   arriveDistance: 0.1
+--- !u!114 &7976666803614207695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304490579735503056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d3ad470e39a2b344bbd423b51cda66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FreezeWhenOffscreen
+  extraMargin: 2
+  disableAnimator: 1
+--- !u!114 &2549694389847642058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304490579735503056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab3da16be3e3db418457b7763f8baf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCAnimationController
+  defaultIdleState: 0
+  moveState: 1
+--- !u!114 &1685167883110244042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304490579735503056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90aa6a25e3fbbf42bde765ce358fc10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterSorting
+  sortingLayerName: NPC
+  yMultiplier: 100
+--- !u!210 &2545405610829201037
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304490579735503056}
+  m_Enabled: 1
+  m_SortingLayerID: -333500105
+  m_SortingLayer: 6
+  m_SortingOrder: 2121
+  m_SortAtRoot: 0
 --- !u!1 &8594467185638344359
 GameObject:
   m_ObjectHideFlags: 0
