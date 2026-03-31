@@ -99,7 +99,7 @@ public class NPC : MonoBehaviour, IInteractable
         SyncQuestState();
 
         //Set dialogue line based on questState
-        if (dialogueData.quest == null && hasFinishedDialogueOnce && dialogueData.repeatDialogueIndex >= 0)
+        if ((dialogueData.quest == null || questState == QuestState.Completed) && hasFinishedDialogueOnce && dialogueData.repeatDialogueIndex >= 0)
         {
             dialogueIndex = dialogueData.repeatDialogueIndex;
         }
@@ -403,7 +403,7 @@ public class NPC : MonoBehaviour, IInteractable
 
         if (switchToIdleAfterFirstDialogue && !hasSwitchedAnimation && animationController != null)
         {
-            animationController.SetState(NPCAnimationController.AnimState.Idle);
+            animationController.SetDefaultIdleState(NPCAnimationController.AnimState.Idle);
             hasSwitchedAnimation = true;
         }
 

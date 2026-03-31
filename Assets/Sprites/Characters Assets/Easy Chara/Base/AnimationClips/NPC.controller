@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: fa07aa8828a287146a7bb7b0cb9fbc20, type: 2}
+  m_Motion: {fileID: 7400000, guid: c0738258323c6c7478b22c8557dc01db, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -96,7 +96,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 19f9db4f1d49c584c8f070aecc644ce3, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2b097ec5ef911e44aa2eaaaa35e1e2f4, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -247,7 +247,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 9bf78670a7fa5bf48b279b4e5af9b125, type: 2}
+  m_Motion: {fileID: 7400000, guid: 1993b5929b6161245aafbaa29ee8107c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -323,7 +323,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 9f1bd7324a6ccdf4a9abf3a4e7595552, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6d2365d264bd4be44905e185fedc7a11, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -374,7 +374,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 0ad8984c106ef3a4ea04b0482efec724, type: 2}
+  m_Motion: {fileID: 7400000, guid: cd1ab37112e3559489f3de9461c1a008, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -426,7 +426,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 8d1f0c8d6df38c942a40d8991b66e32d, type: 2}
+  m_Motion: {fileID: 7400000, guid: 177f3fb079435fb4b86befc58b652eb8, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

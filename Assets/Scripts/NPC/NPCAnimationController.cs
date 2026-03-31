@@ -21,9 +21,22 @@ public class NPCAnimationController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
     }
 
+    private void Start()
+    {
+        SetIdle();
+    }
+
     public void SetState(AnimState state)
     {
         animator.SetInteger(AnimStateHash, (int)state);
+    }
+
+    public void SetDefaultIdleState(AnimState state, bool applyNow = true)
+    {
+        defaultIdleState = state;
+
+        if (applyNow)
+            SetIdle();
     }
 
     public void SetIdle()
