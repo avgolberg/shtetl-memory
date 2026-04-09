@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FindKeys
   m_EditorClassIdentifier: Assembly-CSharp::Quest
   questID: Find_keys_65ede332-edbf-46a0-8d70-ff56b71cc369
+  giverNpcId: NPC Hisa Teacher
   questName: Find keys
   description: Find 3 keys in the box
   consumeRequiredItemsOnHandIn: 0

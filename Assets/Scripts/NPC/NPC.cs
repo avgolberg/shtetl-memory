@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour, IInteractable
 {
+    public string npcId;
     public NPCDialogue[] dialogueStages;
     private NPCDialogue dialogueData;
     private int currentStageIndex = 0;
@@ -97,11 +98,15 @@ public class NPC : MonoBehaviour, IInteractable
         waypointMover?.SetTalking(true);
 
         SyncQuestState();
+        bool isQuestDialogue = dialogueData.quest != null;
+        bool isQuestGivenByThisNpc = isQuestDialogue && dialogueData.quest.giverNpcId == npcId;
 
         //Set dialogue line based on questState
-        if ((dialogueData.quest == null || questState == QuestState.Completed) && hasFinishedDialogueOnce && dialogueData.repeatDialogueIndex >= 0)
+        if (dialogueData.quest == null || !isQuestGivenByThisNpc)
         {
-            dialogueIndex = dialogueData.repeatDialogueIndex;
+            dialogueIndex = hasFinishedDialogueOnce && dialogueData.repeatDialogueIndex >= 0
+                ? dialogueData.repeatDialogueIndex
+                : 0;
         }
         else if (questState == QuestState.NotStarted)
         {
@@ -112,13 +117,9 @@ public class NPC : MonoBehaviour, IInteractable
             if (IsQuestReadyToHandIn())
             {
                 if (TryHandInQuest())
-                {
                     dialogueIndex = dialogueData.questCompletedIndex;
-                }
                 else
-                {
                     dialogueIndex = dialogueData.questInProgressIndex;
-                }
             }
             else
             {

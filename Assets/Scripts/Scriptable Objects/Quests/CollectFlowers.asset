@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CollectFlowers
   m_EditorClassIdentifier: Assembly-CSharp::Quest
   questID: Collect_Flowers_6a1ea282-6dcb-4820-8084-a886bc5fa13a
+  giverNpcId: NPC Hisa Teacher
   questName: Collect Flowers
   description: Collect 15 flowers for a bouquet
   consumeRequiredItemsOnHandIn: 1

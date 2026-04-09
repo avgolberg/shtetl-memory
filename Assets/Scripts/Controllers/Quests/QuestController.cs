@@ -141,6 +141,18 @@ public class QuestController : MonoBehaviour
         return true;
     }
 
+    public void NotifyLocationReached(string locationId)
+    {
+        for (int i = activeQuests.Count - 1; i >= 0; i--)
+        {
+            var quest = activeQuests[i];
+            if (quest.IsCompleted)
+                continue;
+
+            quest.TryCompleteReachLocation(locationId);
+        }
+    }
+
     public bool RemoveRequiredItemsFromInventory(string questID)
     {
         QuestProgress quest = activeQuests.Find(q => q.QuestID == questID);

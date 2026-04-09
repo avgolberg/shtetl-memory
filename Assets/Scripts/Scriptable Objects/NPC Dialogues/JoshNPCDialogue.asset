@@ -22,10 +22,35 @@ MonoBehaviour:
   - Not exactly. Look at the doorway.
   - Some houses still have it. And the fence.
   - "You\u2019ll know it when you see it."
-  autoProgressLines: 01010101010101
-  endDialogueLines: 00000100000001
-  questHandInIndex: 00000100000000
-  journalUpdates: []
+  - Take care of your back while you can.
+  autoProgressLines: 0101010101010101
+  endDialogueLines: 0000010000000101
+  questHandInIndex: 0000010000000000
+  journalUpdates:
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
   autoProgressDelay: 1.5
   typingSpeed: 0.09
   voiceSounds:
@@ -46,8 +71,8 @@ MonoBehaviour:
     choices:
     - Maybe you know where this house is?
     nextDialogueIndexes: 04000000
-    givesQuest: 01
+    givesQuest: 00
   quest: {fileID: 11400000, guid: ba511577ee717b54f948c6f465f2c042, type: 2}
   questInProgressIndex: 2
   questCompletedIndex: 3
-  repeatDialogueIndex: -1
+  repeatDialogueIndex: 7

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName ="Quests/Quest")]
+[CreateAssetMenu(menuName = "Quests/Quest")]
 public class Quest : ScriptableObject
 {
     public string questID;
+    public string giverNpcId;
     public string questName;
     public string description;
     public bool consumeRequiredItemsOnHandIn = true;
@@ -19,7 +20,7 @@ public class Quest : ScriptableObject
         {
             questID = questName.Replace(' ', '_') + "_" + Guid.NewGuid().ToString();
         }
-    } 
+    }
 }
 
 [Serializable]
@@ -61,6 +62,27 @@ public class QuestProgress
                 currentAmount = 0
             });
         }
+    }    
+    public void TryCompleteReachLocation(string locationId)
+    {
+        bool updated = false;
+
+        foreach (var objective in objectives)
+        {
+            if (objective.IsCompleted)
+                continue;
+
+            if (objective.type != ObjectiveType.ReachLocation)
+                continue;
+
+            if (objective.objectiveID != locationId)
+                continue;
+
+            objective.currentAmount = objective.requiredAmount;
+            updated = true;
+        }
+
+        if (updated) QuestController.Instance.UpdateUI();
     }
 
     public bool IsCompleted => objectives.TrueForAll(o => o.IsCompleted);
