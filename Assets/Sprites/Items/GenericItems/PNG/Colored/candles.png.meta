@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 8802cdcac00f68a4e9034d65915a64af
+guid: c64bb4a14cbfbf14cb8ded17b16b2b3e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4765687774206923825
-    second: backgroundEmpty_0
+      213: 2439228211136827020
+    second: candles_0
+  - first:
+      213: -7414090908898952512
+    second: candles_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +43,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -51,7 +54,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +103,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: backgroundEmpty_0
+      name: candles_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 1
+        y: 4
+        width: 251
+        height: 543
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +118,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 134960ce7cf132240800000000000000
-      internalID: 4765687774206923825
+      spriteID: c8e0cea6221e9d120800000000000000
+      internalID: 2439228211136827020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: candles_1
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 4
+        width: 250
+        height: 542
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0caff92999bdb1990800000000000000
+      internalID: -7414090908898952512
       vertices: []
       indices: 
       edges: []
@@ -135,7 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      backgroundEmpty_0: 4765687774206923825
+      candles_0: 2439228211136827020
+      candles_1: -7414090908898952512
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

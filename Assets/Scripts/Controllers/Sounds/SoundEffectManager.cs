@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SoundEffectManager : MonoBehaviour
 {
-    private static SoundEffectManager Instance;
+    public static SoundEffectManager Instance;
     private static AudioSource audioSource;
     private static AudioSource randomPitchAudioSource;
     private static AudioSource voiceAudioSource;
@@ -30,7 +30,6 @@ public class SoundEffectManager : MonoBehaviour
             voiceAudioSource = audioSources[2];
             musicAudioSource = audioSources[3];
             soundEffectLibrary = GetComponent<SoundEffectLibrary>();
-            //DontDestroyOnLoad(gameObject);
         }
         else
         {

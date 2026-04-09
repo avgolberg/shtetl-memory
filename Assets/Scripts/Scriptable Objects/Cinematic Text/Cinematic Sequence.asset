@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53f4bc5042955a41b24ca7531dc6614, type: 3}
+  m_Name: Cinematic Sequence
+  m_EditorClassIdentifier: Assembly-CSharp::CinematicSequenceSO
+  slides:
+  - lines:
+    - My great-grandmother passed away at the age of 94.
+    - I knew her well.
+    - Or at least, I thought I did.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0.25
+    delayBetweenLines: 0.05
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 0
+    customEventId: 
+  - lines:
+    - "She didn\u2019t like talking about the past."
+    - "And we didn\u2019t push."
+    - Some things felt too heavy to ask.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0.25
+    delayBetweenLines: 0.05
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 0
+    customEventId: 
+  - lines:
+    - "She had her own small habits that didn\u2019t quite fit."
+    - Days she would disappear into herself.
+    - She fasted a few days every year.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0.25
+    delayBetweenLines: 0.05
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 0
+    customEventId: 
+  - lines:
+    - Food preferences we never questioned.
+    - In spring, she baked strange, flat bread.
+    - And she never mixed milk and meat.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0.25
+    delayBetweenLines: 0.05
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 0
+    customEventId: 
+  - lines:
+    - Who was she, really?
+    - "And if I find the answers\u2026"
+    - who does that make me?
+    - This is where my story begins.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0.25
+    delayBetweenLines: 0.05
+    triggerCharacterSelection: 1
+    triggerCustomEvent: 0
+    customEventId: 
+  - lines:
+    - After she was gone, I found a box.
+    - And one photo. A house.
+    - "\u201CMy home. Ladanivka.\u201D"
+    - I need to find this house.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0.25
+    delayBetweenLines: 0.05
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 1
+    customEventId: BoxInteraction

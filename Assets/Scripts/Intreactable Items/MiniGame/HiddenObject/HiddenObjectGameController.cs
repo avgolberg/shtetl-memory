@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ public class HiddenObjectGameController : MonoBehaviour, IMiniGame
     private bool isCompleted;
     private bool isCompleting = false;
     private bool isOpen;
+    public event Action OnCompleted;
 
 
     private void Awake()
@@ -21,7 +23,7 @@ public class HiddenObjectGameController : MonoBehaviour, IMiniGame
         targetItems = GetComponentsInChildren<HiddenObjectItem>(true).ToList();
     }
 
-    public void Open(MiniGameItem source)
+    public void Open(MiniGameItem source = null)
     {
         if (isOpen) return;
 
@@ -108,6 +110,7 @@ public class HiddenObjectGameController : MonoBehaviour, IMiniGame
     private void CompleteGame()
     {
         currentSource?.CompleteMiniGame();
+        OnCompleted?.Invoke();
         Close();
     }   
 }
