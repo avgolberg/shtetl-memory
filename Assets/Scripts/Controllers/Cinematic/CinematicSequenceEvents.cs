@@ -25,6 +25,8 @@ public class CinematicSequenceEvents : MonoBehaviour
         boxInteraction.OnCompleted -= HandleBoxMiniGameCompleted;
         QuestController.Instance.AcceptQuest(quest);
 
+        SaveController.Instance.MarkIntroSeen();
+        
         if (cinematicController != null)
             cinematicController.ResumeAfterExternalAction();
     }

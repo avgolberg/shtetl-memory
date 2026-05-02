@@ -4,6 +4,7 @@ public class CharacterSelectionUI : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private CinematicTextController cinematicController;
+    [SerializeField] private PlayerVisualSelector playerVisualSelector;
 
     public void Show()
     {
@@ -25,8 +26,11 @@ public class CharacterSelectionUI : MonoBehaviour
 
     private void ApplySelection(PlayerCharacterType type)
     {
-        print(type);
         PlayerCharacterState.SelectedCharacter = type;
+        SaveController.Instance?.SaveGame();
+
+        if (playerVisualSelector != null)
+            playerVisualSelector.ApplySelectedCharacter();
 
         panel.SetActive(false);
 
@@ -40,7 +44,7 @@ public class CharacterSelectionUI : MonoBehaviour
 
 public enum PlayerCharacterType
 {
-    Boy, Girl
+    Girl, Boy
 }
 
 public static class PlayerCharacterState

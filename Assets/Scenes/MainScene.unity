@@ -5644,7 +5644,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -333500105
   m_SortingLayer: 6
-  m_SortingOrder: 8598
+  m_SortingOrder: 8601
   m_SortAtRoot: 0
 --- !u!1 &299250872
 GameObject:
@@ -7343,7 +7343,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -333500105
   m_SortingLayer: 6
-  m_SortingOrder: 1201
+  m_SortingOrder: 1202
   m_SortAtRoot: 0
 --- !u!1 &376743862
 GameObject:
@@ -12435,7 +12435,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -333500105
   m_SortingLayer: 6
-  m_SortingOrder: 1115
+  m_SortingOrder: 1117
   m_SortAtRoot: 0
 --- !u!1 &618166751
 GameObject:
@@ -18693,7 +18693,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 183.48, y: 44.38}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &979729530
 MonoBehaviour:
@@ -19464,7 +19464,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -333500105
   m_SortingLayer: 6
-  m_SortingOrder: 8679
+  m_SortingOrder: 8678
   m_SortAtRoot: 0
 --- !u!1 &1043832303
 GameObject:
@@ -20325,6 +20325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterSelectionUI
   panel: {fileID: 2031866783}
   cinematicController: {fileID: 935305196}
+  playerVisualSelector: {fileID: 1776308384}
 --- !u!1001 &1084565266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35012,6 +35013,7 @@ GameObject:
   - component: {fileID: 1776308381}
   - component: {fileID: 1776308382}
   - component: {fileID: 1776308383}
+  - component: {fileID: 1776308384}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -35340,6 +35342,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4569c37e40169f45b204ece883e7007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerItemCollector
+--- !u!114 &1776308384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776308375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18fa0d6ddf6d31440ab5d1a5ef523859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerVisualSelector
+  girlController: {fileID: 9100000, guid: 94f87909c25114342ad31081243843e9, type: 2}
+  boyController: {fileID: 9100000, guid: 0f36505dab81f3e448ccca0bf348edb4, type: 2}
+  girlIdleSprite: {fileID: 21300000, guid: e3fb99a00f3911f428a4e79210180efb, type: 3}
+  boyIdleSprite: {fileID: -3561858456799500357, guid: 6f5c08a5f8de73a4d999f6b13053a9d0, type: 3}
 --- !u!1 &1780147171
 GameObject:
   m_ObjectHideFlags: 0
@@ -40870,7 +40888,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -333500105
   m_SortingLayer: 6
-  m_SortingOrder: 1250
+  m_SortingOrder: 1254
   m_SortAtRoot: 0
 --- !u!1 &2096799875
 GameObject:

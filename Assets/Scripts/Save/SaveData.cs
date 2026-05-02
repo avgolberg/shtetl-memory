@@ -15,6 +15,8 @@ public class SaveData
     public List<string> handinQuestIDs;
     public float sfxVolume;
     public float musicVolume;
+    public bool hasSeenIntro;
+    public PlayerCharacterType selectedCharacter;
 }
 
 [System.Serializable]

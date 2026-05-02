@@ -14,6 +14,7 @@ public class SaveController : MonoBehaviour
     private List<string> openedChestIds = new();
     private HashSet<string> openedChestIdsSet = new();
     private List<MiniGameItemSaveData> spawnedItems = new();
+    public bool HasSeenIntro { get; private set; }
 
     void Awake()
     {
@@ -44,6 +45,8 @@ public class SaveController : MonoBehaviour
         sd.handinQuestIDs = QuestController.Instance.handinQuestIDs;
         sd.sfxVolume = SoundEffectManager.SFXVolume;
         sd.musicVolume = SoundEffectManager.MusicVolume;
+        sd.hasSeenIntro = HasSeenIntro;
+        sd.selectedCharacter = PlayerCharacterState.SelectedCharacter;
 
         File.WriteAllText(saveLocation, JsonUtility.ToJson(sd));
     }
@@ -58,6 +61,9 @@ public class SaveController : MonoBehaviour
             Location targetLocation = locations.FirstOrDefault(l => l.LocationID == saveData.currentLocationID);
             SetCurrentLocation(targetLocation);
             FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D = targetLocation.MapBoundary;
+
+            HasSeenIntro = saveData.hasSeenIntro;
+            PlayerCharacterState.SelectedCharacter = saveData.selectedCharacter;
 
             SoundEffectManager.InitializeVolumes(saveData.sfxVolume, saveData.musicVolume);
             SoundEffectManager.PlayMusic(targetLocation.MusicClip, targetLocation.MusicVolume, targetLocation.MusicFadeDuration);
@@ -203,8 +209,13 @@ public class SaveController : MonoBehaviour
 
             var prefab = FindAnyObjectByType<MiniGameItemDictionary>()?.GetMiniGameItemPrefab(spawnedItem.miniGameItemID);
             if (prefab == null) continue;
-            
+
             ItemDropSpawner.SpawnItemAtposition(prefab, spawnedItem.spawnPosition);
         }
+    }
+    public void MarkIntroSeen()
+    {
+        HasSeenIntro = true;
+        SaveGame();
     }
 }

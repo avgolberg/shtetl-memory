@@ -68,6 +68,9 @@ public class CinematicTextController : MonoBehaviour
 
     private void Start()
     {
+        if (SaveController.Instance != null && SaveController.Instance.HasSeenIntro)
+            return;
+
         if (playOnStart && sequence != null)
             Play(sequence);
     }
