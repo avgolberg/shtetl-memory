@@ -3225,6 +3225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177b07cdc4ee274498e12e966f0603d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPC
+  npcId: 
   dialogueStages:
   - {fileID: 11400000, guid: 12b851305cb40e8499dd1c401afdef9d, type: 2}
   - {fileID: 11400000, guid: 8412f0e6559bdfa469c45d88b9494f36, type: 2}
@@ -3298,7 +3299,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -333500105
   m_SortingLayer: 6
-  m_SortingOrder: 2121
+  m_SortingOrder: 1044
   m_SortAtRoot: 0
 --- !u!1 &8594467185638344359
 GameObject:

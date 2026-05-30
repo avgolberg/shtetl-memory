@@ -9,7 +9,8 @@ public class CinematicTextController : MonoBehaviour
     [Header("References")]
     [SerializeField] private CanvasGroup rootCanvasGroup;
     [SerializeField] private CanvasGroup textCanvasGroup;
-    [SerializeField] private TMP_Text cinematicText;
+    [SerializeField] private TMP_Text centerText;
+    [SerializeField] private TMP_Text letterText;
 
     [Header("Sequence")]
     [SerializeField] private CinematicSequenceSO sequence;
@@ -32,7 +33,6 @@ public class CinematicTextController : MonoBehaviour
     [SerializeField] private Vector2 voiceIntervalRange = new Vector2(0.04f, 0.08f);
     [SerializeField] private float fastTypingMultiplier = 12f;
     [SerializeField] private float minFastTypingDelay = 0.0025f;
-    private bool isFastForwarding;
 
     [Header("Fade")]
     [SerializeField] private float rootFadeInDuration = 0.8f;
@@ -44,12 +44,16 @@ public class CinematicTextController : MonoBehaviour
     public UnityEvent onCharacterSelectionRequested;
     public StringEvent onCustomEventTriggered;
 
+    private bool keepLinesOnScreen;
+    private TMP_Text activeText;
+
     private bool isPlaying;
     private bool waitingForInput;
     private bool inputLocked;
     private bool waitingForExternalContinue;
 
     private bool isTyping;
+    private bool isFastForwarding;
     private float nextVoiceTime;
 
     private Coroutine playRoutine;
@@ -62,8 +66,7 @@ public class CinematicTextController : MonoBehaviour
         if (textCanvasGroup != null)
             textCanvasGroup.alpha = 0f;
 
-        if (cinematicText != null)
-            cinematicText.text = string.Empty;
+        HideAllTexts();
     }
 
     private void Start()
@@ -72,7 +75,7 @@ public class CinematicTextController : MonoBehaviour
             return;
 
         if (playOnStart && sequence != null)
-            Play(sequence);
+            Play(sequence, false);
     }
 
     private void Update()
@@ -103,13 +106,30 @@ public class CinematicTextController : MonoBehaviour
         }
 
         if (waitingForInput)
-        {
             waitingForInput = false;
-        }
     }
 
     public void Play(CinematicSequenceSO newSequence = null)
     {
+        Play(newSequence, false);
+    }
+
+    public void Play(CinematicSequenceSO newSequence = null, bool letterMode = false)
+    {
+        if (rootCanvasGroup != null)
+        {
+            rootCanvasGroup.gameObject.SetActive(true);
+            rootCanvasGroup.blocksRaycasts = true;
+            rootCanvasGroup.interactable = true;
+        }
+
+        if (textCanvasGroup != null)
+        {
+            textCanvasGroup.gameObject.SetActive(true);
+            textCanvasGroup.blocksRaycasts = true;
+            textCanvasGroup.interactable = true;
+        }
+
         if (newSequence != null)
             sequence = newSequence;
 
@@ -118,6 +138,8 @@ public class CinematicTextController : MonoBehaviour
             Debug.LogWarning("CinematicTextController: Sequence is empty.");
             return;
         }
+
+        ConfigureTextMode(letterMode);
 
         if (playRoutine != null)
             StopCoroutine(playRoutine);
@@ -152,30 +174,38 @@ public class CinematicTextController : MonoBehaviour
         if (rootCanvasGroup != null)
             yield return FadeCanvasGroup(rootCanvasGroup, rootCanvasGroup.alpha, 0f, rootFadeOutDuration);
 
+        if (rootCanvasGroup != null)
+        {
+            rootCanvasGroup.alpha = 0f;
+            rootCanvasGroup.blocksRaycasts = false;
+            rootCanvasGroup.interactable = false;
+            rootCanvasGroup.gameObject.SetActive(false);
+        }
+
+        if (textCanvasGroup != null)
+        {
+            textCanvasGroup.alpha = 0f;
+            textCanvasGroup.blocksRaycasts = false;
+            textCanvasGroup.interactable = false;
+        }
+
+        Time.timeScale = 1f;
         isPlaying = false;
+        HideAllTexts();
+
         onSequenceFinished?.Invoke();
     }
 
     private IEnumerator ShowSlideRoutine(CinematicSlideData slide)
     {
-        if (slide == null)
+        if (slide == null || activeText == null)
             yield break;
 
-        cinematicText.text = string.Empty;
+        activeText.text = string.Empty;
 
         if (slide.lines == null || slide.lines.Count == 0)
         {
-            if (slide.triggerCharacterSelection)
-            {
-                waitingForExternalContinue = true;
-                onCharacterSelectionRequested?.Invoke();
-                yield return new WaitUntil(() => waitingForExternalContinue == false);
-            }
-
-            if (slide.triggerCustomEvent && !string.IsNullOrWhiteSpace(slide.customEventId))
-            {
-                onCustomEventTriggered?.Invoke(slide.customEventId);
-            }
+            yield return HandleSlideEvents(slide);
 
             if (delayBetweenSlides > 0f)
                 yield return new WaitForSecondsRealtime(delayBetweenSlides);
@@ -185,7 +215,10 @@ public class CinematicTextController : MonoBehaviour
 
         for (int i = 0; i < slide.lines.Count; i++)
         {
-            yield return TypeLineRoutine(slide.lines[i]);
+            if (keepLinesOnScreen)
+                yield return TypeAppendLineRoutine(slide.lines[i]);
+            else
+                yield return TypeLineRoutine(slide.lines[i]);
 
             if (holdInputAfterAction)
                 yield return LockInputRoutine(inputBlockTime);
@@ -197,6 +230,17 @@ public class CinematicTextController : MonoBehaviour
                 yield return new WaitForSecondsRealtime(delayBetweenLines);
         }
 
+        yield return HandleSlideEvents(slide);
+
+        if (holdInputAfterAction)
+            yield return LockInputRoutine(inputBlockTime);
+
+        if (delayBetweenSlides > 0f)
+            yield return new WaitForSecondsRealtime(delayBetweenSlides);
+    }
+
+    private IEnumerator HandleSlideEvents(CinematicSlideData slide)
+    {
         if (slide.triggerCharacterSelection)
         {
             waitingForExternalContinue = true;
@@ -205,49 +249,106 @@ public class CinematicTextController : MonoBehaviour
         }
 
         if (slide.triggerCustomEvent && !string.IsNullOrWhiteSpace(slide.customEventId))
-        {
             onCustomEventTriggered?.Invoke(slide.customEventId);
-        }
-
-        if (holdInputAfterAction)
-            yield return LockInputRoutine(inputBlockTime);
-
-        if (delayBetweenSlides > 0f)
-            yield return new WaitForSecondsRealtime(delayBetweenSlides);
     }
-    
+
     private IEnumerator TypeLineRoutine(string line)
     {
-        if (string.IsNullOrWhiteSpace(line))
+        if (string.IsNullOrWhiteSpace(line) || activeText == null)
             yield break;
 
         isTyping = true;
         isFastForwarding = false;
 
         string trimmedLine = line.Trim();
-        cinematicText.text = string.Empty;
+        activeText.text = string.Empty;
+        nextVoiceTime = Time.unscaledTime;
+
+        for (int i = 0; i < trimmedLine.Length; i++)
+        {
+            char letter = trimmedLine[i];
+            activeText.text += letter;
+
+            TryPlayVoice(letter);
+
+            float currentDelay = isFastForwarding
+                ? Mathf.Max(typingSpeed / fastTypingMultiplier, minFastTypingDelay)
+                : typingSpeed;
+
+            yield return new WaitForSecondsRealtime(currentDelay);
+        }
+
+        activeText.text = trimmedLine;
+
+        isTyping = false;
+        isFastForwarding = false;
+    }
+
+    private IEnumerator TypeAppendLineRoutine(string line)
+    {
+        if (string.IsNullOrWhiteSpace(line) || activeText == null)
+            yield break;
+
+        isTyping = true;
+        isFastForwarding = false;
+
+        string trimmedLine = line.Trim();
+
+        if (!string.IsNullOrEmpty(activeText.text))
+            activeText.text += "\n\n";
 
         nextVoiceTime = Time.unscaledTime;
 
         for (int i = 0; i < trimmedLine.Length; i++)
         {
             char letter = trimmedLine[i];
-            cinematicText.text += letter;
+            activeText.text += letter;
 
             TryPlayVoice(letter);
 
-            float currentDelay = typingSpeed;
-
-            if (isFastForwarding)
-                currentDelay = Mathf.Max(typingSpeed / fastTypingMultiplier, minFastTypingDelay);
+            float currentDelay = isFastForwarding
+                ? Mathf.Max(typingSpeed / fastTypingMultiplier, minFastTypingDelay)
+                : typingSpeed;
 
             yield return new WaitForSecondsRealtime(currentDelay);
         }
 
-        cinematicText.text = trimmedLine;
-
         isTyping = false;
         isFastForwarding = false;
+    }
+
+    private void ConfigureTextMode(bool letterMode)
+    {
+        keepLinesOnScreen = letterMode;
+
+        HideAllTexts();
+
+        activeText = letterMode ? letterText : centerText;
+
+        if (activeText != null)
+        {
+            activeText.text = string.Empty;
+            activeText.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("CinematicTextController: Active text is not assigned.");
+        }
+    }
+
+    private void HideAllTexts()
+    {
+        if (centerText != null)
+        {
+            centerText.text = string.Empty;
+            centerText.gameObject.SetActive(false);
+        }
+
+        if (letterText != null)
+        {
+            letterText.text = string.Empty;
+            letterText.gameObject.SetActive(false);
+        }
     }
 
     private void TryPlayVoice(char letter)
@@ -268,13 +369,9 @@ public class CinematicTextController : MonoBehaviour
         float pitch = Random.Range(voicePitchRange.x, voicePitchRange.y);
 
         if (SoundEffectManager.Instance != null)
-        {
             SoundEffectManager.PlayVoice(new AudioClipData(clip, voiceVolume), pitch);
-        }
         else
-        {
             AudioSource.PlayClipAtPoint(clip, Vector3.zero, voiceVolume);
-        }
 
         nextVoiceTime = Time.unscaledTime + Random.Range(voiceIntervalRange.x, voiceIntervalRange.y);
     }

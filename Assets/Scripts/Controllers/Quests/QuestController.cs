@@ -52,7 +52,15 @@ public class QuestController : MonoBehaviour
         return false;
     }
 
-    public bool IsQuestActive(string questID) => activeQuests.Exists(q => q.QuestID == questID);
+    public bool IsQuestActive(string questID)
+    {
+        if (string.IsNullOrEmpty(questID))
+            return false;
+
+        activeQuests.RemoveAll(q => q == null);
+
+        return activeQuests.Exists(q => q.QuestID == questID);
+    }
     public void CheckInventoryForQuests()
     {
         Dictionary<int, int> itemCounts = InventoryController.Instance.GetItemCounts();

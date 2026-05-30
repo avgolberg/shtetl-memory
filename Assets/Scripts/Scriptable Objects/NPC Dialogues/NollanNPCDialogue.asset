@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af86c06a1cd5294e909c2ee75d2c673, type: 3}
+  m_Name: NollanNPCDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
+  npcName: Fisherman
+  npcPortrait: {fileID: 6120914730915384989, guid: 22c869dc176f75148a4cc7cb36788a4a, type: 3}
+  dialogueLines:
+  - Water remembers everything.
+  - "People build, destroy, forget\u2026"
+  - but the river keeps flowing,
+  - just like it did a hundred years ago.
+  autoProgressLines: 01010101
+  endDialogueLines: 00000001
+  questHandInIndex: 00000000
+  journalUpdates:
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  autoProgressDelay: 1.5
+  typingSpeed: 0.09
+  voiceSounds:
+  - {fileID: 8300000, guid: 02e1128777e03ee4a9e7c234f01f719a, type: 3}
+  - {fileID: 8300000, guid: a33e0cd72754d7d419b7e6a98b5b76b9, type: 3}
+  - {fileID: 8300000, guid: 09658260991c59448a4dbd080d0d221c, type: 3}
+  - {fileID: 8300000, guid: 04112cc6c8a48fd4a8c00310d2914eef, type: 3}
+  - {fileID: 8300000, guid: f28d7641f39366346a346b3accb99e6d, type: 3}
+  voiceVolume: 0.3
+  voicePitch: 1.5
+  choices: []
+  quest: {fileID: 0}
+  questInProgressIndex: -1
+  questCompletedIndex: -1
+  repeatDialogueIndex: -1

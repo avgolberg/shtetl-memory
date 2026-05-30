@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53f4bc5042955a41b24ca7531dc6614, type: 3}
+  m_Name: Cemetery Letter
+  m_EditorClassIdentifier: Assembly-CSharp::CinematicSequenceSO
+  slides:
+  - lines:
+    - Father, I do not know why I still write to you after all these years. Maybe
+      because there is no one left who remembers me as I was before.
+    - I still remember the smell of your workshop and the sound of people talking
+      outside our window before Shabbat. I remember how tired you looked during your
+      last winter, even when you tried not to show it to us. Even with the war growing
+      closer, none of us truly believed that our whole world could disappear so quickly.
+    - After you died, Mama sent me to stay with the family of Petro, the man who
+      worked with you for many years. I remember how often he came to the workshop
+      and stayed late talking with you about work, deliveries, and people in nearby
+      towns. Mama thought it would be good for me to earn some money, help his family
+      with sewing and housework, and spend some time away after everything that happened.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0
+    delayBetweenLines: 0
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 0
+    customEventId: 
+  - lines:
+    - I was supposed to return in a few weeks. At first everyone believed the war
+      would pass quickly. People argued about rumors, listened for news, and tried
+      to continue living normally. No one imagined what was coming for the Jews.
+    - "When the occupation began, Petro\u2019s family hid me in their house. During
+      searches I stayed in the cellar or the barn. They gave me another name, and
+      after some time I began answering to it without thinking."
+    - I still do not understand why I survived while the others did not. Everything
+      depended on one journey that was never meant to save me.
+    - "Sometimes, late in the evening, Petro\u2019s children asked me to sing songs
+      from home. I tried to remember the words, but after a while even my own voice
+      began to sound unfamiliar to me."
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0
+    delayBetweenLines: 0
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 0
+    customEventId: 
+  - lines:
+    - When the war ended, I could not make myself return to the town. I told myself
+      there was nothing left there anymore. But the truth is that I was afraid.
+    - Afraid to see the empty streets. Afraid to stand beside your grave and realize
+      how many years had passed without me there. Afraid that if I returned, all
+      of it would finally become real.
+    - So I buried everything instead. I stopped speaking about home. I locked the
+      photographs, letters, and documents away in a box and built another life around
+      the silence. Even my daughter knew almost nothing about where I came from.
+      I told myself I was protecting her from grief, but perhaps I was only protecting
+      myself from memory...
+    - Please forgive me for never coming back. Your daughter, Feiga.
+    autoAdvance: 0
+    autoAdvanceDelay: 0
+    lineFadeInDuration: 0
+    delayBetweenLines: 0
+    triggerCharacterSelection: 0
+    triggerCustomEvent: 0
+    customEventId: 
