@@ -65,6 +65,7 @@ public static class LocationCapture
         else
         {
             Camera cam = CreateCaptureCamera(out float orthoSize, out float cameraZ);
+            captureHalfWidth = orthoSize * TileWidth / TileHeight;
             log.AppendLine($"Player camera ortho size {orthoSize} (view {orthoSize * 2f * TileWidth / TileHeight:0.#} x {orthoSize * 2f:0.#} units)");
             try
             {
@@ -152,12 +153,12 @@ public static class LocationCapture
         return sb.ToString();
     }
 
-    //Camera height the player would see: walking level (median of NPCs and transitions) in the lower third of the view
+    //Camera height the player would see: walking level (median NPC height, else transitions) in the lower third of the view
     static float WalkLevelCameraY(Location location, Rect area, float orthoSize)
     {
-        List<float> feet = location.GetComponentsInChildren<NPC>(true).Select(n => n.transform.position.y)
-            .Concat(location.GetComponentsInChildren<MapTransition>(true).Select(m => m.transform.position.y))
-            .OrderBy(y => y).ToList();
+        List<float> feet = location.GetComponentsInChildren<NPC>(true).Select(n => n.transform.position.y).OrderBy(y => y).ToList();
+        if (feet.Count == 0)
+            feet = location.GetComponentsInChildren<MapTransition>(true).Select(m => m.transform.position.y).OrderBy(y => y).ToList();
         float walkY = feet.Count > 0 ? feet[feet.Count / 2] : area.center.y - orthoSize * 0.4f;
         float y = walkY + orthoSize * 0.4f;
         return area.height <= orthoSize * 2f ? area.center.y : Mathf.Clamp(y, area.yMin + orthoSize, area.yMax - orthoSize);
@@ -272,11 +273,7 @@ public static class LocationCapture
         }
         AppendList(sb, "issues", issues);
 
-        var transitions = location.GetComponentsInChildren<MapTransition>(true).Select(m =>
-        {
-            var target = new SerializedObject(m).FindProperty("targetLocation").objectReferenceValue as Location;
-            return $"{m.name} @x{m.transform.position.x:0} -> {(target != null ? target.LocationID + " " + target.LocationName : "NO TARGET")}";
-        }).ToList();
+        var transitions = location.GetComponentsInChildren<MapTransition>(true).Select(DescribeTransition).ToList();
         AppendList(sb, "transitions", transitions);
 
         var npcs = location.GetComponentsInChildren<NPC>(true).Select(n => $"{n.name} ({n.npcId}) @x{n.transform.position.x:0}").ToList();
@@ -288,6 +285,52 @@ public static class LocationCapture
                         && r.GetComponentInParent<ParallaxController>() == null && area.Overlaps(ToRect(r.bounds)))
             .GroupBy(r => r.transform.root.name).Select(g => $"{g.Key} x{g.Count()}").ToList();
         AppendList(sb, "other renderers inside boundary", foreign);
+    }
+
+    //Target, arrival point inside the target boundary, and arrival clear of any transition trigger there
+    static string DescribeTransition(MapTransition m)
+    {
+        var so = new SerializedObject(m);
+        var target = so.FindProperty("targetLocation").objectReferenceValue as Location;
+        var arrival = so.FindProperty("teleportTargetPosition").objectReferenceValue as Transform;
+        string open = so.FindProperty("isReturnTransition").boolValue ? "open" : "locked until Portal reward";
+        string head = $"{m.name} @({m.transform.position.x:0.#}, {m.transform.position.y:0.#}) [{open}]";
+        if (target == null || arrival == null) return $"{head} TRANSITION PROBLEM: missing target or arrival point";
+
+        var problems = new List<string>();
+        Vector2 p = arrival.position;
+        Rect area = target.MapBoundary != null ? BoundaryRect(target.MapBoundary) : Rect.zero;
+        if (!area.Contains(p)) problems.Add("arrival outside target boundary");
+
+        //Triggers of parallaxed waypoints shift with the camera; check them where the camera is after arriving
+        float cameraX = Mathf.Clamp(p.x, area.xMin + captureHalfWidth, area.xMax - captureHalfWidth);
+        foreach (MapTransition other in target.GetComponentsInChildren<MapTransition>(true))
+        {
+            var box = other.GetComponent<BoxCollider2D>();
+            if (box == null) continue;
+            float shift = cameraX * ParallaxEffectOf(other.transform);
+            Vector2 min = other.transform.TransformPoint(box.offset - box.size / 2f), max = other.transform.TransformPoint(box.offset + box.size / 2f);
+            if (Rect.MinMaxRect(Mathf.Min(min.x, max.x) + shift, Mathf.Min(min.y, max.y), Mathf.Max(min.x, max.x) + shift, Mathf.Max(min.y, max.y)).Contains(p))
+                problems.Add($"arrival inside trigger of {other.name}");
+        }
+        if (ParallaxEffectOf(arrival) != 0f) problems.Add("arrival point moves with parallax (depends on camera at departure)");
+
+        string result = problems.Count == 0 ? "ok" : "note: " + string.Join(", ", problems);
+        if (problems.Any(x => x.StartsWith("arrival inside") || x.StartsWith("arrival outside"))) result = "TRANSITION PROBLEM: " + string.Join(", ", problems);
+        return $"{head} -> {target.LocationID} {target.LocationName}, arrives ({p.x:0.#}, {p.y:0.#}) {result}";
+    }
+
+    static float captureHalfWidth = FallbackOrthoSize * TileWidth / TileHeight;
+
+    static float ParallaxEffectOf(Transform t)
+    {
+        float effect = 0f;
+        for (; t != null; t = t.parent)
+        {
+            var p = t.GetComponent<ParallaxController>();
+            if (p != null) effect += new SerializedObject(p).FindProperty("parallaxEffect").floatValue;
+        }
+        return effect;
     }
 
     static void AppendList(StringBuilder sb, string title, List<string> items)

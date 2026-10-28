@@ -44,7 +44,13 @@
 4. Turn the hand-placed environment objects (houses, trees, fences, graves) into prefabs in `Assets/Prefabs/Environment/`.
 5. A location template based on L2's structure: `Location` + camera bounds, Background/Parallax layers, transition pair, empty NPC/Items groups.
 6. Generalize `InteractiveGrave` into an "inspect point" (info popup or cinematic + journal + quest notification) for stalls, windows and the square.
-7. ✅ **L7 Mikvah** visuals (approved and polished, 2026-10-28). It lives **in L3's left edge**, on the way to the graves, not as a separate location. Built by `MikvahAreaBuilder`. Pattern for later areas: one small builder script per area that can be re-run, verified with LocationCapture in batch mode. Remaining: an L3 entrance (next task, L2 → L3).
+7. ✅ **L7 Mikvah** visuals (approved and polished, 2026-10-28). It lives **in L3's left edge**, on the way to the graves, not as a separate location. Built by `MikvahAreaBuilder`. Pattern for later areas: one small builder script per area that can be re-run, verified with LocationCapture in batch mode. 
+8. 🧪 **L2 ↔ L3 route** (2026-10-28, awaiting the owner's route test). Built by `Assets/Editor/ShtetlTools/LocationLinkBuilder.cs`:
+   - `L2->L3 Waypoint` appears at the street's right end (x≈185); the player arrives in L3 at x -160, on the bank right of the Fisherman.
+   - `L3->L2 Return Waypoint` appears at x≈-146, past the fence; the player arrives in L2 at x 179.5.
+   - **Development-stage decision: always open** (`isReturnTransition`). Replace with quest-based unlocking once the story order (D1) is implemented. Don't tie it to Halyna's current quest.
+   - Arrival points are non-parallaxed objects, so arrival doesn't depend on the camera at departure. The existing L1↔L2 pair still uses parallaxed TeleportPoint children (unchanged).
+   - **Rule: no new locations until the owner confirms this route works.**
 
 ### M2: Rework existing content to match the spec
 8. Prologue: funeral, box objects, Yiddish caption.

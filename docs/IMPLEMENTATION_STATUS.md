@@ -68,7 +68,8 @@ Any status other than Missing still needs a play-test.
 - Sky and ground backgrounds are looping parallax layers placed near x≈0. They look correct in the player-view tiles; in the overview they appear as a central band only (expected).
 - **L1 Forest:** the 8 prototype coins (`Collectable Items` root) are visible in L1. NPCs Hisa (x-13), Petro (x32), Pavlo (x94). The only transition is L1→L2 at x53.
 - **L2 Street:** houses span the full width; it's the best-dressed location. NPCs Maria, Moly, Helio, Halyna (Hisa Teacher). The player's edit-mode start position is in L2. The only transition is L2→L1 at x-27.
-- **L3 Cemetery:** **no transitions at all** (no way in or out). Its left-edge water block with a hard vertical edge was rebuilt as the Mikvah pond (see the coverage table).
+- **L3 Cemetery:** its left-edge water block with a hard vertical edge was rebuilt as the Mikvah pond (see the coverage table). **Since 2026-10-28 it's reachable from L2** (always-open development route, see DEVELOPMENT_PLAN M1 item 8). The capture's automated checks pass: the arrivals are inside the target bounds and clear of all triggers. Not yet runtime-confirmed.
+- **Waypoints are parallaxed** (`ParallaxController` 0.1 on each MapTransition object, sprite `treePine`; locked ones show `treePineSnow`). The capture report flags arrival points that move with parallax.
 - Parallax factors: the `L3/Parallax` gameplay group uses 0.1 (no looping); the ground layers use 0.1 (looping); groundLayer2 0.5; the clouds 0.3 and 0.6. At L3's left camera limit, gameplay objects appear 16 units left of their edit-mode x.
 - Objects named `temp` under L2 and L3 `Background/groundLayer0/1` use the `temp.jpg` ground sprite. **They're probably real ground pieces, not placeholders** (code-inspection; they render fine). `L3/Parallax/temp (1)`/`(2)` still need checking.
 - No missing scripts, no empty sprites, and no renderers outside their boundary in L1–L3.
