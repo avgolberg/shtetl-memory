@@ -19,6 +19,7 @@ A 2D educational Unity game (Unity 6000.2.13f1, URP) about a Jewish shtetl. Clau
 - Paid assets are gitignored (`Assets/Cutscene`, `Assets/Sprites/Village Assets`, `.../EasyChara Paid`). Don't delete or move them.
 - Mark claims as confirmed, inferred or needs-Unity-testing. Update `docs/IMPLEMENTATION_STATUS.md` and `docs/DEVELOPMENT_PLAN.md` when a milestone item is done.
 - Keep token use low: targeted greps, no parallel agents unless asked.
+- **Testing:** run static or automated checks yourself. Ask the owner to test only what a change affects, with a short checklist. Full regression only at milestone ends. Label issues runtime-confirmed or code-inspection.
 
 ## Current priority
-Milestone **M0** (see DEVELOPMENT_PLAN): commit and back up, fix the build scene list, fix quest and NPC-stage saving. Then **M1**: environment prefabs, a location template, and the L7 Mikvah as the proof location.
+M0 is done (backup, build list, save fixes). Next is **M1**, practical location assembly: environment prefabs, a location template, and the L7 Mikvah as the proof location.

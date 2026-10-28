@@ -35,7 +35,7 @@ public class SaveController : MonoBehaviour
         SaveData sd = new SaveData();
 
         sd.playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
-        sd.currentLocationID = currentLocation.LocationID;
+        sd.currentLocationID = currentLocation != null ? currentLocation.LocationID : null;
         sd.inventorySaveData = InventoryController.Instance.GetInventoryItems();
         sd.spawnedItemSaveData = spawnedItems;
         sd.collectedItemIds = collectedItemIds;
@@ -59,14 +59,24 @@ public class SaveController : MonoBehaviour
 
             Location[] locations = FindObjectsByType<Location>(FindObjectsSortMode.None);
             Location targetLocation = locations.FirstOrDefault(l => l.LocationID == saveData.currentLocationID);
+            if (targetLocation == null)
+            {
+                Debug.LogWarning($"Saved location '{saveData.currentLocationID}' not found, using fallback location.");
+                targetLocation = FindFallbackLocation(saveData.playerPosition);
+            }
             SetCurrentLocation(targetLocation);
-            FindFirstObjectByType<CinemachineConfiner2D>().BoundingShape2D = targetLocation.MapBoundary;
 
             HasSeenIntro = saveData.hasSeenIntro;
             PlayerCharacterState.SelectedCharacter = saveData.selectedCharacter;
 
             SoundEffectManager.InitializeVolumes(saveData.sfxVolume, saveData.musicVolume);
-            SoundEffectManager.PlayMusic(targetLocation.MusicClip, targetLocation.MusicVolume, targetLocation.MusicFadeDuration);
+
+            if (targetLocation != null)
+            {
+                var confiner = FindFirstObjectByType<CinemachineConfiner2D>();
+                if (confiner != null) confiner.BoundingShape2D = targetLocation.MapBoundary;
+                SoundEffectManager.PlayMusic(targetLocation.MusicClip, targetLocation.MusicVolume, targetLocation.MusicFadeDuration);
+            }
 
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.transform.position = saveData.playerPosition;
@@ -81,9 +91,22 @@ public class SaveController : MonoBehaviour
         }
         else
         {
+            //First launch: start in the location the player is placed in, create empty inventory, then write the save
+            SetCurrentLocation(FindFallbackLocation(GameObject.FindGameObjectWithTag("Player").transform.position));
+            InventoryController.Instance.SetInventoryItems(new List<InventorySaveData>());
             SaveGame();
-            InventoryController.Instance.SetInventoryItems(new List<InventorySaveData>()); //
         }
+    }
+
+    //Location whose boundary contains the position, otherwise the one with the lowest ID
+    private Location FindFallbackLocation(Vector3 position)
+    {
+        Location[] locations = FindObjectsByType<Location>(FindObjectsSortMode.None);
+
+        Location containing = locations.FirstOrDefault(l => l.MapBoundary != null && l.MapBoundary.OverlapPoint(position));
+        if (containing != null) return containing;
+
+        return locations.OrderBy(l => l.LocationID).FirstOrDefault();
     }
 
     public void SetCurrentLocation(Location location)

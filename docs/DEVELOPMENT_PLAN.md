@@ -20,12 +20,23 @@
   - Reconsider if console or screenshot round trips become a bottleneck.
 - **Visual check:** an Editor menu item renders a location to PNG for review when needed. The owner does the play-tests.
 
+## Testing approach (agreed 2026-10-28)
+- **Claude** runs static and automated checks where possible: diff review, GUID and reference checks, and later an Editor validation script.
+- **Owner** tests only the functionality a change affects, using a short checklist that Claude provides.
+- **Full playthrough and regression** happen only at milestone ends and for release preparation.
+- Every reported issue is labeled **runtime-confirmed** (seen in Unity) or **code-inspection** (potential).
+
 ## Milestones (in order)
 
 ### M0: Safety and blockers
-1. Commit the current work (Vytynanka, MainScene changes). Back up the gitignored paid asset folders.
-2. Fix the build settings: replace the missing `ProtoScene` with `MainScene`.
-3. Fix saving: store quest progress by `questID` and look the `Quest` up on load; save each NPC's dialogue stage.
+1. ✅ Full backup (2026-10-28): `C:\Users\Alyona\Backups\ShtetlMemory_2026-10-28`, on a different physical disk. Excludes Library and Temp. Verified: all files SHA-256-identical except one locked shader log; `git fsck` OK.
+   ✅ Committed `b8dc7d7` (Vytynanka WIP, MainScene, docs). The paid folders `Cutscene` and `EasyChara Paid` are untracked by design. 280 `Village Assets` files were committed before the ignore rule and are still tracked.
+2. ✅ Build settings now list `MainScene` (GUID `84235362192f67a469199eeee2de4987`) instead of the missing `ProtoScene`.
+3. ✅ Save fixes committed (2026-10-28). The project compiles and runs in Unity; the quest-restore-after-restart path will be checked in the next milestone's regression pass:
+   - give `QuestProgress` a serialized `questID`, and on load re-resolve `quest` from the quests the NPC dialogues reference
+   - first-run fallback for `currentLocation`
+   - null guard when the saved location is missing
+   - keep the existing save format, adding fields only
 
 ### M1: Location assembly basics
 4. Turn the hand-placed environment objects (houses, trees, fences, graves) into prefabs in `Assets/Prefabs/Environment/`.

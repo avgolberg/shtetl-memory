@@ -41,12 +41,14 @@ public enum ObjectiveType { CollectItem, ReachLocation, TalkNPC, Custom }
 [Serializable]
 public class QuestProgress
 {
+    public string questID; //Stable ID used by saves; quest reference is re-resolved on load
     public Quest quest;
     public List<QuestObjective> objectives;
 
     public QuestProgress(Quest quest)
     {
         this.quest = quest;
+        questID = quest.questID;
         objectives = new List<QuestObjective>();
 
         //Deep copy avoid modifying original
@@ -87,7 +89,7 @@ public class QuestProgress
 
     public bool IsCompleted => objectives.TrueForAll(o => o.IsCompleted);
 
-    public string QuestID => quest.questID;
+    public string QuestID => !string.IsNullOrEmpty(questID) ? questID : quest != null ? quest.questID : null;
 }
 
 [Serializable]

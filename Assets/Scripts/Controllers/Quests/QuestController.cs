@@ -11,6 +11,9 @@ public class QuestController : MonoBehaviour
     [SerializeField] private Transform listContent;
     [SerializeField] private EntryBlockUI entryPrefab;
 
+    //Optional: quests are also found automatically if anything in the scene references them
+    [SerializeField] private List<Quest> questDatabase = new();
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -188,10 +191,43 @@ public class QuestController : MonoBehaviour
     
     public void LoadQuestProgress(List<QuestProgress> savedQuests)
     {
-        activeQuests = savedQuests ?? new();
+        activeQuests = new();
+
+        foreach (var saved in savedQuests ?? new())
+        {
+            if (saved == null) continue;
+
+            //Saved object references are not stable between sessions, so resolve by ID
+            Quest quest = GetQuestByID(saved.QuestID);
+            if (quest == null)
+            {
+                Debug.LogWarning($"Saved quest '{saved.QuestID}' could not be resolved and was skipped.");
+                continue;
+            }
+
+            saved.quest = quest;
+            saved.questID = quest.questID;
+            saved.objectives ??= new();
+            activeQuests.Add(saved);
+        }
 
         CheckInventoryForQuests();
         UpdateUI();
+    }
+
+    public Quest GetQuestByID(string questID)
+    {
+        if (string.IsNullOrEmpty(questID)) return null;
+
+        Quest quest = questDatabase.Find(q => q != null && q.questID == questID);
+        if (quest != null) return quest;
+
+        //Every quest referenced by the scene (NPC dialogues, triggers, etc.) is loaded with it
+        foreach (Quest loaded in Resources.FindObjectsOfTypeAll<Quest>())
+        {
+            if (loaded.questID == questID) return loaded;
+        }
+        return null;
     }
 
     public void UpdateUI()

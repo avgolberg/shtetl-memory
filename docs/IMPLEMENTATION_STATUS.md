@@ -46,15 +46,36 @@ Any status other than Missing still needs a play-test.
 8. **Data glitch:** `CollectFlowers.asset` says "15 flowers", but its first objective is 5 red flowers.
 
 ## Known bugs and risks
-- **Build settings** list only `Assets/Scenes/ProtoScene.unity`, which doesn't exist. `MainScene` is not in the build [C].
-- **Quests likely don't load after a restart.** `SaveData.questProgressData` serializes `QuestProgress.quest` (a ScriptableObject reference) through `JsonUtility` [I/T].
-- **NPC dialogue stage isn't saved:** `NPC.currentStageIndex` is missing from `SaveData` [C].
+- ✅ **Fixed 2026-10-28:** the build settings listed only the missing `ProtoScene`. `EditorBuildSettings.asset` now lists `MainScene` [C].
+- ✅ **Save fixes (2026-10-28)**. Runtime-confirmed: the project compiles and runs with no regressions. Not yet runtime-tested: restoring a quest after restarting Unity (do it in the M1 regression pass). They fix the three code-inspection bugs below:
+  - `QuestProgress.questID` is saved, and `QuestController.GetQuestByID` re-resolves quests on load (first the optional `questDatabase` list, then any `Quest` asset loaded with the scene). Unresolvable entries are skipped with a warning.
+  - First launch picks a fallback location (the boundary containing the player, otherwise the lowest ID), initializes the inventory, then saves.
+  - A missing saved location falls back the same way.
+  - The save format only gained the `questID` field. Old saves still load: quest entries without an ID use their old reference and are dropped if it doesn't resolve.
+- **First-run save crashes** (investigated 2026-10-28): with no save file, `SaveController.Awake → LoadGame → SaveGame()` dereferences `currentLocation`, which is still null (`SaveController.cs:38`). So no file is written, and the empty-inventory setup on line 85 is skipped [C in code]. Evidence: the data folder `%USERPROFILE%/AppData/LocalLow/DefaultCompany/Messing Around/` exists but holds no `saveData.json` [C]. The console error still needs confirming [T].
+- **Quests are lost after a restart:** `QuestProgress.quest` (a ScriptableObject) is serialized by `JsonUtility` as a temporary in-memory ID. It resolves within one editor session but not after restarting Unity or in a build. Then `QuestController.Find(q => q.QuestID …)` throws on the null `quest` [C in code, T to observe].
+- **Missing location on load:** `LoadGame` assumes `currentLocationID` matches a `Location`; there's no null guard (`SaveController.cs:61–69`) [C].
+- **NPC dialogue stage is OK:** it's rebuilt on load from the saved `handinQuestIDs` (`NPC.ResolveCurrentDialogueData`) [C]. Not saved: `hasFinishedDialogueOnce`, so repeat lines restart (minor).
+- Execution order (from the `.meta` files): ItemDictionary/TransitionDictionary 300, Inventory 400, Quest 500, ScreenFader 550, SaveController 600. So load runs after the managers' Awake [C].
 - **Saving happens only** on first run, on the intro, on character selection, and from the menu Save button. No autosave [C].
+- The Player Settings product name is still **"Messing Around"** (company "DefaultCompany"). Changing it moves the save folder.
 - **Unsaved-work risk:** uncommitted changes in `MainScene.unity` and the untracked Vytynanka folder (plus its prefab and SFX).
 - **Paid assets aren't in Git.**
 - `ObjectiveType.TalkNPC` and `Custom` are declared but appear unhandled [I].
 
+## Intro skip (checked 2026-10-28; already exists, no change needed)
+- The intro plays once. After the memory-box mini-game, `CinematicSequenceEvents` calls `SaveController.MarkIntroSeen()`. On later launches, `CinematicTextController.Start` skips the intro when `HasSeenIntro` is true.
+- During playback, click, Space or Enter fast-forwards the typing and advances the slides. There's no "skip the whole intro" button.
+- Quitting before the box mini-game replays the intro. The box mini-game also gives the first quest (`CinematicSequenceEvents.quest`).
+
+## Remaining save and load risks
+- Quests that nothing in the scene references (for example a future quest given only by code) must be added to `QuestController.questDatabase` in the Inspector, or they can't be restored.
+- Two quest assets with the same `questID` (from duplicating an asset) would collide. Give each new quest a unique ID.
+- A corrupt `saveData.json` still throws in `LoadGame`; it isn't handled.
+- `FindFallbackLocation` relies on `PolygonCollider2D.OverlapPoint` during `Awake`. If the boundary colliders are disabled, it falls back to the lowest location ID ("1").
+
 ## Needs testing in Unity
+- The scripts compile. This couldn't be verified outside Unity.
 - `MainScene` opens with no missing scripts or sprites.
 - The L1 → L2 path, the quest chain, and how L3 is reached today.
 - Save, quit, load: do quests and NPC progress survive?
