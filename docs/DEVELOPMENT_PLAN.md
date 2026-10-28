@@ -39,6 +39,7 @@
    - keep the existing save format, adding fields only
 
 ### M1: Location assembly basics
+0. ✅ Location capture tool (`Assets/Editor/ShtetlTools/LocationCapture.cs`), validated in batch mode on L1–L3 (2026-10-28). Decision: no broad environment-prefab refactor; make prefabs only where a specific new location needs them.
 4. Turn the hand-placed environment objects (houses, trees, fences, graves) into prefabs in `Assets/Prefabs/Environment/`.
 5. A location template based on L2's structure: `Location` + camera bounds, Background/Parallax layers, transition pair, empty NPC/Items groups.
 6. Generalize `InteractiveGrave` into an "inspect point" (info popup or cinematic + journal + quest notification) for stalls, windows and the square.

@@ -63,6 +63,15 @@ Any status other than Missing still needs a play-test.
 - **Paid assets aren't in Git.**
 - `ObjectiveType.TalkNPC` and `Custom` are declared but appear unhandled [I].
 
+## Location capture findings (2026-10-28, from `Snapshots/`, runtime-rendered)
+- The locations are **stacked vertically** in `MainScene`, each about 384 × 62 units: L1 at y≈-38..24, L2 at y≈-113..-51, L3 at y≈-186..-123 (L3 is 450 wide). The player camera view is 62 × 35 units, so there are 7–8 tiles per location.
+- Sky and ground backgrounds are looping parallax layers placed near x≈0. They look correct in the player-view tiles; in the overview they appear as a central band only (expected).
+- **L1 Forest:** the 8 prototype coins (`Collectable Items` root) are visible in L1. NPCs Hisa (x-13), Petro (x32), Pavlo (x94). The only transition is L1→L2 at x53.
+- **L2 Street:** houses span the full width; it's the best-dressed location. NPCs Maria, Moly, Helio, Halyna (Hisa Teacher). The player's edit-mode start position is in L2. The only transition is L2→L1 at x-27.
+- **L3 Cemetery:** **no transitions at all** (no way in or out). The left edge has a flat dark-blue water block with a hard vertical edge, where the Fisherman stands. It reads as an unfinished river; candidate site for the Mikvah or river.
+- Objects named `temp` under L2 and L3 `Background/groundLayer0/1` use the `temp.jpg` ground sprite. **They're probably real ground pieces, not placeholders** (code-inspection; they render fine). `L3/Parallax/temp (1)`/`(2)` still need checking.
+- No missing scripts, no empty sprites, and no renderers outside their boundary in L1–L3.
+
 ## Intro skip (checked 2026-10-28; already exists, no change needed)
 - The intro plays once. After the memory-box mini-game, `CinematicSequenceEvents` calls `SaveController.MarkIntroSeen()`. On later launches, `CinematicTextController.Start` skips the intro when `HasSeenIntro` is true.
 - During playback, click, Space or Enter fast-forwards the typing and advances the slides. There's no "skip the whole intro" button.

@@ -19,6 +19,11 @@ A 2D educational Unity game (Unity 6000.2.13f1, URP) about a Jewish shtetl. Clau
 - Paid assets are gitignored (`Assets/Cutscene`, `Assets/Sprites/Village Assets`, `.../EasyChara Paid`). Don't delete or move them.
 - Mark claims as confirmed, inferred or needs-Unity-testing. Update `docs/IMPLEMENTATION_STATUS.md` and `docs/DEVELOPMENT_PLAN.md` when a milestone item is done.
 - Keep token use low: targeted greps, no parallel agents unless asked.
+- **Visual check:** `Assets/Editor/ShtetlTools/LocationCapture.cs` (menu **Shtetl → Capture Locations**) is read-only. Per location it writes `Snapshots/<id_name>/overview.png` (editor layout), `tile_XX.png` (player view at walking level, parallax simulated) and `Snapshots/summary.txt` (layers, transitions, NPCs, issues). `Snapshots/` is gitignored.
+  When Unity is closed, run it yourself (about 15 s; the exit code is non-zero on failure):
+  `"/d/Unity/6000.2.13f1/Editor/Unity.exe" -batchmode -projectPath "D:/Unity Projects/ShtetlMemory" -executeMethod LocationCapture.CaptureAllBatch -logFile <scratch log>`
+  The Unity editor lives at `D:\Unity\6000.2.13f1`; the `E:\` path in the `.csproj` files is stale. View only the tiles you need, since images cost tokens.
+- `NPC Hisa Teacher.prefab` picks up runtime sorting-order changes (`m_SortingOrder`); don't commit that noise.
 - **Testing:** run static or automated checks yourself. Ask the owner to test only what a change affects, with a short checklist. Full regression only at milestone ends. Label issues runtime-confirmed or code-inspection.
 
 ## Current priority

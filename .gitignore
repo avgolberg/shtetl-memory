@@ -29,3 +29,6 @@ Assets/*Recovery*
 Assets/Cutscene
 Assets/Sprites/Village Assets
 Assets/Sprites/Characters Assets/EasyChara Paid
+
+# Location capture output (Shtetl/Capture Locations)
+Snapshots/
