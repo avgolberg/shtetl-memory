@@ -27,7 +27,7 @@ Any status other than Missing still needs a play-test.
 | **L5 Cemetery:** broken matzevot, stones | Partial | Built in the scene's `L3` root; `temp` placeholders; no entry transition |
 | L5: mini-quest 3, symbols + Nathan's grave (stork) | Partial | 9 interactive graves (lion, deer, bird, candles, pitcher, bear, squirrel, stork) [C]. Nathan's name is missing; no "find the grave" quest; not gated by the donation list |
 | **L6 House of help (library):** librarian, mini-quest 5 (donation book) | Missing | — |
-| **L7 Mikvah** (pond on the way to the cemetery) | Missing | The Fisherman's dialogue has half of the spec's line but stands in the cemetery |
+| **L7 Mikvah** (pond on the way to the cemetery) | Partial: visuals done and approved (2026-10-28); not reachable yet | Built **inside L3's left edge** (runtime x≈-191..-150, before the trees and graves): natural pond with a sloped bank, three stone steps into the water, reeds, ripples. Built by `Assets/Editor/ShtetlTools/MikvahAreaBuilder.cs`. The Fisherman stands on the bank facing the water (his original facing, `NPC Body` scale -0.55; no indicators on the NPC itself), with the spec's full line in English. Five grass tufts and one stone from `L3/Parallax/Graves` were moved onto the bank. Needs testing in Unity once L3 has an entrance: talk to the Fisherman (7 lines) |
 | **Epilogue:** diary of the biography, final monologue | Missing | The journal system and cinematic text can host it |
 | Educational topics | Partial | Done: Kashrut and Mezuzah journal topics; matzevot symbols. Missing: Yom Kippur fast, Pesach, Shabbat/challah, Yiddish/schooling, synagogue/demographics, tzedakah/dowry, the unpainted square, mikvah, reizele, klezmer, "X ben Y" naming, the Holocaust/hiding |
 | Main menu, ending, credits | Missing | Only tabs, pause and a Save button exist |
@@ -68,7 +68,8 @@ Any status other than Missing still needs a play-test.
 - Sky and ground backgrounds are looping parallax layers placed near x≈0. They look correct in the player-view tiles; in the overview they appear as a central band only (expected).
 - **L1 Forest:** the 8 prototype coins (`Collectable Items` root) are visible in L1. NPCs Hisa (x-13), Petro (x32), Pavlo (x94). The only transition is L1→L2 at x53.
 - **L2 Street:** houses span the full width; it's the best-dressed location. NPCs Maria, Moly, Helio, Halyna (Hisa Teacher). The player's edit-mode start position is in L2. The only transition is L2→L1 at x-27.
-- **L3 Cemetery:** **no transitions at all** (no way in or out). The left edge has a flat dark-blue water block with a hard vertical edge, where the Fisherman stands. It reads as an unfinished river; candidate site for the Mikvah or river.
+- **L3 Cemetery:** **no transitions at all** (no way in or out). Its left-edge water block with a hard vertical edge was rebuilt as the Mikvah pond (see the coverage table).
+- Parallax factors: the `L3/Parallax` gameplay group uses 0.1 (no looping); the ground layers use 0.1 (looping); groundLayer2 0.5; the clouds 0.3 and 0.6. At L3's left camera limit, gameplay objects appear 16 units left of their edit-mode x.
 - Objects named `temp` under L2 and L3 `Background/groundLayer0/1` use the `temp.jpg` ground sprite. **They're probably real ground pieces, not placeholders** (code-inspection; they render fine). `L3/Parallax/temp (1)`/`(2)` still need checking.
 - No missing scripts, no empty sprites, and no renderers outside their boundary in L1–L3.
 

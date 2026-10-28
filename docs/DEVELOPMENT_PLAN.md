@@ -8,6 +8,7 @@
 
 ## Decisions made
 - **The 7 story locations, prologue and epilogue in STORY_SPEC are fixed scope.**
+- **English is the primary game language (2026-10-28).** All current in-game dialogue, quests, journal entries and UI text are written in English. `STORY_SPEC.md` stays in Ukrainian as the authoritative story reference; translate from it faithfully. Other languages come later (localization in M4).
 - **Keep the single-scene architecture** (`MainScene`). Each location is a root object with a `Location` component. Locations don't need separate scenes.
 - **Hybrid editing:**
   - edit Unity YAML (scenes, prefabs, assets) directly when the change is simple and safe
@@ -43,7 +44,7 @@
 4. Turn the hand-placed environment objects (houses, trees, fences, graves) into prefabs in `Assets/Prefabs/Environment/`.
 5. A location template based on L2's structure: `Location` + camera bounds, Background/Parallax layers, transition pair, empty NPC/Items groups.
 6. Generalize `InteractiveGrave` into an "inspect point" (info popup or cinematic + journal + quest notification) for stalls, windows and the square.
-7. Proof: build **L7 Mikvah** from existing forest and foliage art, move the Fisherman there, and link Road → Mikvah → Cemetery.
+7. ✅ **L7 Mikvah** visuals (approved and polished, 2026-10-28). It lives **in L3's left edge**, on the way to the graves, not as a separate location. Built by `MikvahAreaBuilder`. Pattern for later areas: one small builder script per area that can be re-run, verified with LocationCapture in batch mode. Remaining: an L3 entrance (next task, L2 → L3).
 
 ### M2: Rework existing content to match the spec
 8. Prologue: funeral, box objects, Yiddish caption.
@@ -71,6 +72,6 @@
 - **D1** Story order of the locations, and where Semen appears. Inferred: House → Synagogue → School → Market → Library → Mikvah → Cemetery.
 - **D2** Existing extra content: cut it or keep it as flavor? Covers Forest, Pavlo, Petro, Hisa and coins, Maria, the art-club kids.
 - **D3** Feiga's letter: keep it at the stork grave, or move it into the epilogue diary?
-- **D4** Shipping languages, and whether Yiddish text appears on screen.
+- **D4** ~~Primary language~~ settled: English. Still open: which languages come later, and whether Yiddish text (photo caption, donation list) appears on screen.
 - **D5** Interior and flashback art: purchased, generated, or built from the existing kits?
 - **D6** Target platform, audience age, and the grant deadline.

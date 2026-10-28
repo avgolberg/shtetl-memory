@@ -9,6 +9,7 @@ A 2D educational Unity game (Unity 6000.2.13f1, URP) about a Jewish shtetl. Clau
 4. `docs/STORY_SPEC.md`: **the authoritative story (Ukrainian).** Never rewrite or shorten it.
 
 ## Working rules
+- **Language:** all in-game text (dialogue, quests, journal, UI) is written in **English**. `docs/STORY_SPEC.md` stays in Ukrainian as the source of truth; translate from it faithfully.
 - Keep the single-scene architecture: `Assets/Scenes/MainScene.unity`, with locations as root objects that have a `Location` component.
 - Reuse existing systems (dialogue, quests, journal, rewards, transitions, mini-games) rather than rebuilding them.
 - Edit Unity YAML directly only for simple, safe changes. Use Editor scripts in `Assets/Editor/` for repetitive or many-reference changes.
