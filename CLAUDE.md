@@ -36,7 +36,7 @@ A 2D educational Unity game (Unity 6000.2.13f1, URP) about a Jewish shtetl. Clau
 
 ## Where we are (handoff 2026-10-28)
 - **Done:** M0 (backup, build list, save fixes); the capture tool; the L7 Mikvah inside L3's left edge; the always-open L2↔L3 route (runtime-confirmed); dev test saves. Details are in `docs/IMPLEMENTATION_STATUS.md` → "Session summary".
-- **Git:** branch `main`, remote `origin` = `https://github.com/avgolberg/shtetl-memory.git`. Everything from today is committed and pushed.
+- **Git:** branch `main`, remote `origin` = `https://github.com/avgolberg/shtetl-memory.git`. Everything from today is committed locally. **The push is pending:** on 2026-10-28 `git push` failed with 403, because the stored credential (Windows Credential Manager, user `alyona336`) has no write access to `avgolberg/shtetl-memory`. Check `git -c safe.directory=* rev-list --count origin/main..HEAD`, and push once the owner has fixed access. Never force-push.
   Known uncommitted noise, which stays uncommitted: `Assets/Fonts/veteran typewriter SDF.asset`, `Assets/Prefabs/Characters/NPC Hisa Teacher.prefab` (runtime sorting order), and `Thumbs.db` files.
 - **Next task:** M2 item 9, **Location 1, the great-grandmother's house** (see DEVELOPMENT_PLAN → "Next task"). Don't start other locations first.
 - **Editor tools** (`Assets/Editor/ShtetlTools/`): `LocationCapture` (read-only capture and transition checks), `MikvahAreaBuilder`, `LocationLinkBuilder`. Each builder has a menu item and a `BuildBatch` entry point and can be re-run safely. Follow the same pattern for new areas.

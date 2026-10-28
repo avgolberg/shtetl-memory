@@ -6,7 +6,7 @@ Mapped against [STORY_SPEC.md](STORY_SPEC.md). Last audit: 2026-10-28 (read-only
 Any status other than Missing still needs a play-test.
 
 ## Session summary (2026-10-28)
-**Completed and pushed to `origin/main`:**
+**Completed and committed locally on `main`** (push blocked by a GitHub 403 for the stored user `alyona336`; see CLAUDE.md):
 - **Safety:** full backup at `C:\Users\Alyona\Backups\ShtetlMemory_2026-10-28`; the Vytynanka WIP and docs committed.
 - **M0 fixes:** build list → `MainScene`; saves store quests by `questID`; first-launch save and inventory init; fallback for a missing location.
 - **`LocationCapture` tool:** overview and player-view tiles with parallax simulated; summary with layers, NPCs, issues and transition checks.
