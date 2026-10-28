@@ -5,6 +5,30 @@ Mapped against [STORY_SPEC.md](STORY_SPEC.md). Last audit: 2026-10-28 (read-only
 **Labels:** **[C]** confirmed in files · **[I]** inferred · **[T]** needs testing in Unity.
 Any status other than Missing still needs a play-test.
 
+## Session summary (2026-10-28)
+**Completed and pushed to `origin/main`:**
+- **Safety:** full backup at `C:\Users\Alyona\Backups\ShtetlMemory_2026-10-28`; the Vytynanka WIP and docs committed.
+- **M0 fixes:** build list → `MainScene`; saves store quests by `questID`; first-launch save and inventory init; fallback for a missing location.
+- **`LocationCapture` tool:** overview and player-view tiles with parallax simulated; summary with layers, NPCs, issues and transition checks.
+- **L7 Mikvah** in L3's left edge: natural pond, bank, shore rocks and reeds, the `Bank Stop` wall, the Fisherman's full line in accessible English.
+- **Always-open L2↔L3 route** with non-parallaxed arrival points; pine markers blended per location.
+- **Dev test saves** (`DevSaves/`). The installed save is currently `l2_street_end_post_intro`; your original save is backed up beside it as `saveData.backup-20261028-211459.json`.
+- **Workflow and decisions** in CLAUDE.md and DEVELOPMENT_PLAN: English, accessible English, two scene workflows, visual integration rule.
+
+**Runtime-confirmed by the owner:** the project runs; the first-launch save is written; L2↔L3 transitions work; the Fisherman's dialogue shows; the player can't walk on the water.
+
+**Remaining targeted tests (no full regression needed):**
+- the Bank Stop position: walk left past the Fisherman; you should stop on the bank top and still be able to talk to him
+- the Fisherman's new 8-line dialogue
+- quest restore after a full Unity restart (do it in the M2 regression pass)
+
+**Open known issues:** see "Known bugs and risks" and "Remaining save and load risks" below. Main ones:
+- a loaded Boy probably shows Girl visuals (code-inspection)
+- a corrupt save file isn't handled
+- the L1↔L2 arrival points move with parallax (old behaviour)
+- pine waypoint markers are temporary
+- the product name is still "Messing Around" (it's the save folder name; don't change it without moving the dev saves)
+
 ## Requirements coverage
 
 | Requirement | Status | Current implementation / gap |

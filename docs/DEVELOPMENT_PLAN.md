@@ -44,16 +44,35 @@
 
 ### M1: Location assembly basics
 0. ✅ Location capture tool (`Assets/Editor/ShtetlTools/LocationCapture.cs`), validated in batch mode on L1–L3 (2026-10-28). Decision: no broad environment-prefab refactor; make prefabs only where a specific new location needs them.
-4. Turn the hand-placed environment objects (houses, trees, fences, graves) into prefabs in `Assets/Prefabs/Environment/`.
-5. A location template based on L2's structure: `Location` + camera bounds, Background/Parallax layers, transition pair, empty NPC/Items groups.
+4. ⏸ Deferred by decision: environment prefabs only when a specific location needs them (no broad refactor).
+5. ⏸ Deferred: a location template, built when the first new outdoor location needs one.
 6. Generalize `InteractiveGrave` into an "inspect point" (info popup or cinematic + journal + quest notification) for stalls, windows and the square.
 7. ✅ **L7 Mikvah** visuals (approved and polished, 2026-10-28). It lives **in L3's left edge**, on the way to the graves, not as a separate location. Built by `MikvahAreaBuilder`. Pattern for later areas: one small builder script per area that can be re-run, verified with LocationCapture in batch mode. 
-8. 🧪 **L2 ↔ L3 route** (2026-10-28, awaiting the owner's route test). Built by `Assets/Editor/ShtetlTools/LocationLinkBuilder.cs`:
+8. ✅ **L2 ↔ L3 route** (2026-10-28; runtime-confirmed by the owner: transitions work, the Fisherman's dialogue shows, no walking on water). Built by `Assets/Editor/ShtetlTools/LocationLinkBuilder.cs`:
    - `L2->L3 Waypoint` appears at the street's right end (x≈185); the player arrives in L3 at x -160, on the bank right of the Fisherman.
    - `L3->L2 Return Waypoint` appears at x≈-146, past the fence; the player arrives in L2 at x 179.5.
    - **Development-stage decision: always open** (`isReturnTransition`). Replace with quest-based unlocking once the story order (D1) is implemented. Don't tie it to Halyna's current quest.
    - Arrival points are non-parallaxed objects, so arrival doesn't depend on the camera at departure. The existing L1↔L2 pair still uses parallaxed TeleportPoint children (unchanged).
-   - **Rule: no new locations until the owner confirms this route works.**
+   - Waypoint pines are tinted and layered per location (dev markers).
+
+## Next task (start here on 2026-10-29): M2 item 9, Location 1 "Дім прабабусі" (great-grandmother's house)
+Source: STORY_SPEC "Локація №1". The existing content lives in L2 Street (`NPC Hisa Teacher` prefab = Halyna; dialogues `Halyna NPCDialogue Part0–2`; quests `FindHouse`, `FindKeys`, `CollectFlowers`; Key Choice mini-game).
+1. **Mini-quest 1** (find the house from the photo): already works (`FindHouse`, ReachLocation `grandma_house`). Keep it.
+2. **Halyna (70+)**: rewrite her dialogue per the spec, in accessible English:
+   - a Jewish family lived here; they were killed in the war
+   - she doesn't know their surname
+   - her grandmother said they shopped at the market every Friday
+   - after the war the authorities let her large family move in (her father worked at a factory)
+   - only an old wardrobe was left; she has a key but never opened it
+   Remove what contradicts the spec: the flower quest, her husband's jewelry box, the mezuzah mark on her door. Decide whether to delete or just unlink the `CollectFlowers` asset.
+3. **Mini-quest 2**: a bundle of keys → pick the right key → open the chest of drawers. Reuse the Key Choice mini-game; re-theme the `FindKeys` quest.
+4. **Finds**:
+   - family photo in the hallway (an unpainted square is visible on the wall)
+   - school photo, which leads to the School
+   - wedding invitation, which leads to the Synagogue
+   Use items plus journal entries. Their unlock effects depend on D1, so build the items now and wire the unlocks after D1.
+5. **House interior**: there's no interior art yet (D5). Block it out with existing art or placeholders and list the exact art needed.
+Workflow: inspect the relevant assets and the scene section first, then build with a small builder script and check it with captures. Give the owner a short targeted test, using a dev save preset at Halyna's house.
 
 ### M2: Rework existing content to match the spec
 8. Prologue: funeral, box objects, Yiddish caption.
