@@ -80,6 +80,8 @@ Any status other than Missing still needs a play-test.
 - Quitting before the box mini-game replays the intro. The box mini-game also gives the first quest (`CinematicSequenceEvents.quest`).
 
 ## Remaining save and load risks
+- **Runtime-confirmed (2026-10-28):** the first-launch save is now written (`saveData.json` created at 20:22 with valid content).
+- **Code-inspection: a loaded Boy may show Girl visuals.** `PlayerVisualSelector.Awake` (default execution order) applies `PlayerCharacterState` before `SaveController` (order 600) loads `selectedCharacter`, and nothing re-applies it after loading. A fresh selection in the intro works; a reload with Boy is likely wrong. Not fixed yet.
 - Quests that nothing in the scene references (for example a future quest given only by code) must be added to `QuestController.questDatabase` in the Inspector, or they can't be restored.
 - Two quest assets with the same `questID` (from duplicating an asset) would collide. Give each new quest a unique ID.
 - A corrupt `saveData.json` still throws in `LoadGame`; it isn't handled.

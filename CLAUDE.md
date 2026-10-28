@@ -24,6 +24,7 @@ A 2D educational Unity game (Unity 6000.2.13f1, URP) about a Jewish shtetl. Clau
   When Unity is closed, run it yourself (about 15 s; the exit code is non-zero on failure):
   `"/d/Unity/6000.2.13f1/Editor/Unity.exe" -batchmode -projectPath "D:/Unity Projects/ShtetlMemory" -executeMethod LocationCapture.CaptureAllBatch -logFile <scratch log>`
   The Unity editor lives at `D:\Unity\6000.2.13f1`; the `E:\` path in the `.csproj` files is stale. View only the tiles you need, since images cost tokens.
+- **Dev test saves:** `DevSaves/<preset>.json` + `DevSaves/Use-DevSave.ps1 <preset>` (backs up, then installs to `%USERPROFILE%\AppData\LocalLow\DefaultCompany\Messing Around\saveData.json`). Build presets from the real schema (`Save/SaveData.cs`, `QuestProgress`). Post-intro state = `hasSeenIntro: true` + an active `Find_house_4f12c69d-…` quest (the intro's memory box grants no items). Presets: `l2_street_end_post_intro` (L2 at x 177, next to the L2→L3 waypoint).
 - `NPC Hisa Teacher.prefab` picks up runtime sorting-order changes (`m_SortingOrder`); don't commit that noise.
 - **Testing:** run static or automated checks yourself. Ask the owner to test only what a change affects, with a short checklist. Full regression only at milestone ends. Label issues runtime-confirmed or code-inspection.
 
