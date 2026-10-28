@@ -14,11 +14,14 @@ public static class LocationLinkBuilder
     const string ScenePath = "Assets/Scenes/MainScene.unity";
     const string TemplatePath = "L2/L2->L1 Return Waypoint";
 
+    //Editor workflow: run from the menu, then save the scene yourself (Ctrl+S). Captures are refreshed automatically.
     [MenuItem("Shtetl/Build Location Links")]
     public static void BuildMenu()
     {
+        if (!LocationCapture.CanEditMainScene()) return;
         Build();
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        Debug.Log(LocationCapture.CaptureAll() + "\nLocation links rebuilt. Save the scene (Ctrl+S) to keep them.");
     }
 
     public static void BuildBatch()
@@ -72,6 +75,7 @@ public static class LocationLinkBuilder
         GameObject template = FindPath(TemplatePath);
         GameObject go = Object.Instantiate(template, location.transform);
         go.name = name;
+        ApplyLook(go.GetComponent<SpriteRenderer>(), location.LocationID);
 
         //Compensate the waypoint's parallax for the camera position right after arriving here
         float effect = 0f;
@@ -88,6 +92,25 @@ public static class LocationLinkBuilder
         arrive.position = new Vector3(arrival.x, arrival.y, 0f);
 
         return (go.GetComponent<MapTransition>(), arrive);
+    }
+
+    //Development marker (pine) blended into each location: behind the foreground props, tinted to the local palette.
+    //Final transition visuals are still to be designed.
+    static void ApplyLook(SpriteRenderer sr, string locationId)
+    {
+        switch (locationId)
+        {
+            case "2": //Street: behind houses and fences, muted like the background pines
+                sr.sortingLayerName = "Ground2";
+                sr.sortingOrder = 10;
+                sr.color = new Color(0.70f, 0.80f, 0.78f);
+                break;
+            case "3": //Cemetery: behind trees and fence, darker version of the L3 tree tint
+                sr.sortingLayerName = "Ground1";
+                sr.sortingOrder = 2;
+                sr.color = new Color(0.60f, 0.64f, 0.57f);
+                break;
+        }
     }
 
     //Camera x when the player stands at x: the confiner keeps the view inside the location boundary

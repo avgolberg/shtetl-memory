@@ -16,16 +16,20 @@ MonoBehaviour:
   npcPortrait: {fileID: 6120914730915384989, guid: 22c869dc176f75148a4cc7cb36788a4a, type: 3}
   dialogueLines:
   - Water remembers everything.
-  - "People build, destroy, forget\u2026"
+  - "People build, destroy and forget\u2026"
   - but the river keeps flowing,
   - just like it did a hundred years ago.
-  - It washes away weariness and pain, and brings life back.
-  - That is why people are drawn here again and again,
+  - It washes away tiredness and pain.
+  - It gives life back.
+  - That is why people keep coming back here,
   - no matter how the world changes.
-  autoProgressLines: 01010101010101
-  endDialogueLines: 00000000000001
-  questHandInIndex: 00000000000000
+  autoProgressLines: 0101010101010101
+  endDialogueLines: 0000000000000001
+  questHandInIndex: 0000000000000000
   journalUpdates:
+  - trigger: 0
+    topicId:
+    stageIndex: 0
   - trigger: 0
     topicId:
     stageIndex: 0

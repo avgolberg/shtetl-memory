@@ -19,11 +19,14 @@ public static class MikvahAreaBuilder
     static readonly Color WaterColor = new Color(0.20f, 0.40f, 0.46f);
     static readonly Color FoliageTint = new Color(0.71f, 0.74f, 0.65f); //matches the existing L3 trees
 
+    //Editor workflow: run from the menu, then save the scene yourself (Ctrl+S). Captures are refreshed automatically.
     [MenuItem("Shtetl/Build Mikvah Area")]
     public static void BuildMenu()
     {
+        if (!LocationCapture.CanEditMainScene()) return;
         Build();
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        Debug.Log(LocationCapture.CaptureAll() + "\nMikvah area rebuilt. Save the scene (Ctrl+S) to keep it.");
     }
 
     public static void BuildBatch()
@@ -74,14 +77,16 @@ public static class MikvahAreaBuilder
         SpriteRenderer ground = Find("L3/Background/groundLayer0/groundLayer0 (1)").GetComponent<SpriteRenderer>();
         BankSlope(area, ground, new Vector2(WaterRightEdge - 0.2f, GroundY + 0.1f), 36f, 18f);
 
-        //Stone steps: same stone, evenly spaced down the bank slope into the water (natural mikvah)
-        for (int i = 0; i < 3; i++)
-            Place(area, $"Step Stone {i + 1}", "54", WaterRightEdge - 1.9f - i * 1.9f, GroundY - 1.5f - i * 1.4f, 1.3f - i * 0.1f, 6, flip: i == 1);
-
-        //Reeds in the water, clear of the steps
-        Place(area, "Reeds Edge A", "20", -177.5f, GroundY - 1.3f, 3.0f, 7);
-        Place(area, "Reeds Edge B", "21", -180.5f, GroundY - 1.4f, 3.4f, 7, flip: true);
+        //Natural shore where the bank meets the water: rocks at the waterline, reeds in the shallows, grass on top
         Place(area, "Bank Rock", "57", WaterRightEdge + 0.1f, GroundY - 0.6f, 1.4f, 6); //rounds off the top of the bank
+        Place(area, "Shore Rock Large", "56", WaterRightEdge - 1.9f, GroundY - 1.6f, 1.7f, 6);
+        Place(area, "Shore Rock Small", "54", WaterRightEdge - 3.6f, GroundY - 1.5f, 0.7f, 6, flip: true);
+        Place(area, "Shore Reeds A", "20", WaterRightEdge - 4.7f, GroundY - 1.7f, 3.0f, 7);
+        Place(area, "Shore Reeds B", "21", WaterRightEdge - 5.8f, GroundY - 1.8f, 2.4f, 7, flip: true);
+        Place(area, "Bank Grass", "18", WaterRightEdge + 1.6f, GroundY - 0.2f, 1.1f, 5);
+
+        //Invisible wall at the top of the bank: the player stops beside the Fisherman instead of walking out over the bank
+        BankStop(area, Find("L3/Background/groundLayer0/temp/temp").gameObject.layer, WaterRightEdge + 0.6f);
 
         //Far shore reeds, so the pond reads as a calm natural pool rather than an endless river
         Place(area, "Reeds Far A", "19", -187.5f, GroundY - 0.6f, 2.4f, 7);
@@ -148,6 +153,17 @@ public static class MikvahAreaBuilder
         go.transform.localScale = new Vector3(scale, scale, 1f);
         float y = bottomY - sprite.bounds.min.y * scale;
         go.transform.position = new Vector3(runtimeX - ParallaxShift, y, parent.position.z);
+    }
+
+    //Solid collider; lives in the Mikvah group so it moves with the parallaxed ground and water colliders
+    static void BankStop(Transform parent, int layer, float runtimeX)
+    {
+        var go = new GameObject("Bank Stop");
+        go.layer = layer;
+        go.transform.SetParent(parent, false);
+        var box = go.AddComponent<BoxCollider2D>();
+        box.size = new Vector2(1f, 12f);
+        go.transform.position = new Vector3(runtimeX - 0.5f - ParallaxShift, GroundY + 5f, parent.position.z);
     }
 
     //Narrow copy of a ground strip, rotated so its top edge runs from bankTop down-left into the water

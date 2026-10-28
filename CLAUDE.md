@@ -10,6 +10,12 @@ A 2D educational Unity game (Unity 6000.2.13f1, URP) about a Jewish shtetl. Clau
 
 ## Working rules
 - **Language:** all in-game text (dialogue, quests, journal, UI) is written in **English**. `docs/STORY_SPEC.md` stays in Ukrainian as the source of truth; translate from it faithfully.
+- **Accessible English:** many players aren't native English speakers. Use clear, natural, simple English: common words, short sentences (about 12 words or fewer per dialogue line), no idioms or rare vocabulary. Keep the historical and educational meaning of STORY_SPEC.
+- **Two scene workflows:**
+  - **Unity closed:** run the builders and the capture yourself in batch mode (`-executeMethod <Builder>.BuildBatch`; they save the scene and capture).
+  - **Unity open:** don't restart it. Ask the owner to exit Play mode, run the menu item (**Shtetl → Build …**; it refuses in Play mode or outside MainScene, and captures automatically), then press **Ctrl+S**. Then read `Snapshots/` yourself.
+  - Check with `tasklist //FI "IMAGENAME eq Unity.exe"` before choosing. Batch mode aborts if the project is open.
+- **New environment objects** must match the local palette (tint like neighbouring props), sorting layer and order (behind or in front of the right props), and scale. Check them in a zoomed capture crop before showing the owner.
 - Keep the single-scene architecture: `Assets/Scenes/MainScene.unity`, with locations as root objects that have a `Location` component.
 - Reuse existing systems (dialogue, quests, journal, rewards, transitions, mini-games) rather than rebuilding them.
 - Edit Unity YAML directly only for simple, safe changes. Use Editor scripts in `Assets/Editor/` for repetitive or many-reference changes.

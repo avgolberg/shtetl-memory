@@ -9,6 +9,9 @@
 ## Decisions made
 - **The 7 story locations, prologue and epilogue in STORY_SPEC are fixed scope.**
 - **English is the primary game language (2026-10-28).** All current in-game dialogue, quests, journal entries and UI text are written in English. `STORY_SPEC.md` stays in Ukrainian as the authoritative story reference; translate from it faithfully. Other languages come later (localization in M4).
+- **Accessible English (2026-10-28):** the audience includes many non-native speakers. Write dialogue, quests, journal entries and UI in clear, natural, simple English: common words, short sentences, no idioms. Keep the historical and educational meaning of STORY_SPEC.
+- **Transition visuals:** the pine-tree waypoints are development markers only (blended into each location's palette and sorting). The final transition design is still to be decided; the village art has only shop signs and a `fenceGate`.
+- **Scene workflows (2026-10-28):** with Unity closed, Claude runs the builders in batch mode. With Unity open, the owner runs the **Shtetl → …** menu items and saves with Ctrl+S; the builders capture automatically, so Claude can check the result without a restart.
 - **Keep the single-scene architecture** (`MainScene`). Each location is a root object with a `Location` component. Locations don't need separate scenes.
 - **Hybrid editing:**
   - edit Unity YAML (scenes, prefabs, assets) directly when the change is simple and safe

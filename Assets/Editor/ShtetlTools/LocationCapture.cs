@@ -31,6 +31,22 @@ public static class LocationCapture
         EditorUtility.RevealInFinder(Path.Combine(OutputRoot, "summary.txt"));
     }
 
+    //Guard for menu builders: never change the scene in Play mode or when another scene is open
+    public static bool CanEditMainScene()
+    {
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            EditorUtility.DisplayDialog("Shtetl tools", "Exit Play mode first.", "OK");
+            return false;
+        }
+        if (SceneManager.GetActiveScene().path != ScenePath)
+        {
+            EditorUtility.DisplayDialog("Shtetl tools", $"Open {ScenePath} first.", "OK");
+            return false;
+        }
+        return true;
+    }
+
     public static void CaptureAllBatch()
     {
         int exitCode = 0;
