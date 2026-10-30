@@ -14,6 +14,13 @@ public class ItemDictionary : MonoBehaviour
         {
             if(itemPrefabs[i] != null)
             {
+                int firstIndex = itemPrefabs.IndexOf(itemPrefabs[i]);
+                if(firstIndex != i)
+                {
+                    //A second entry would renumber the item and break the quests that use its first ID
+                    Debug.LogError($"Item {itemPrefabs[i].name} is listed twice in ItemDictionary (IDs {firstIndex + 1} and {i + 1}). Run Shtetl > Fix Flower Quest.");
+                    continue;
+                }
                 itemPrefabs[i].itemId = i + 1;
             }
         }

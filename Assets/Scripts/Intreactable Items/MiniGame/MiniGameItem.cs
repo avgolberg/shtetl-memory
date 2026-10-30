@@ -7,6 +7,9 @@ public class MiniGameItem : MonoBehaviour, IInteractable
     public string Name;
     public Sprite updatedSprite;
     public Vector3 spawnPosition;
+    [SerializeField] private string questObjectiveId; //Optional: Custom quest objective completed with the mini-game
+    [SerializeField] private InspectPoint revealOnComplete; //Optional: what the player finds, shown now and on later visits
+    [SerializeField] private bool removeOnComplete; //Gone once solved (and after a reload), e.g. Halyna's key box
     private IMiniGame miniGame;
     private bool isCompleted;
 
@@ -19,24 +22,34 @@ public class MiniGameItem : MonoBehaviour, IInteractable
 
     void Start()
     {
-        if (SaveController.Instance.IsItemSpawned(uniqueID))
+        var itemData = SaveController.Instance.GetSpawnedItemData(uniqueID);
+        if (itemData != null)
         {
-            var itemData = SaveController.Instance.GetSpawnedItemData(uniqueID);
             isCompleted = itemData.isCompleted;
-            spawnPosition = itemData.spawnPosition;
+            if (itemData.wasSpawned)
+                spawnPosition = itemData.spawnPosition;
             UpdateVisualState();
         }
     }
 
+    public bool IsCompleted => isCompleted;
+    public bool RemovesOnComplete => removeOnComplete;
+
     public bool CanInteract()
     {
-        return !isCompleted;
+        if (isCompleted)
+            return revealOnComplete != null && revealOnComplete.CanInteract();
+
+        return true;
     }
 
     public void Interact()
     {
         if (isCompleted)
+        {
+            revealOnComplete?.Interact();
             return;
+        }
 
         miniGame?.Open(this);
     }
@@ -46,10 +59,22 @@ public class MiniGameItem : MonoBehaviour, IInteractable
         isCompleted = true;
         SaveController.Instance.MarkMiniGameCompleted(miniGameItemID, uniqueID, spawnPosition);
         UpdateVisualState();
+
+        if (!string.IsNullOrEmpty(questObjectiveId))
+            QuestController.Instance.CompleteObjective(questObjectiveId);
+
+        revealOnComplete?.Interact();
     }
 
     private void UpdateVisualState()
     {
+        if (isCompleted && removeOnComplete)
+        {
+            //Destroyed at the end of the frame, after the mini-game has closed
+            Destroy(gameObject);
+            return;
+        }
+
         if (isCompleted && updatedSprite != null)
         {
             SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();

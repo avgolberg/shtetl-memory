@@ -29,6 +29,52 @@ Any status other than Missing still needs a play-test.
 - pine waypoint markers are temporary
 - the product name is still "Messing Around" (it's the save folder name; don't change it without moving the dev saves)
 
+## M2.1 rework after the owner's play-test (2026-10-30; complete, runtime-confirmed by the owner)
+Runtime-confirmed by the owner (first version): the main sequence works. Reported: too linear, text overflow, Halyna and the door competing for E, a slow "float" after transitions, the market reminder never shown.
+- **Sequence:** the owner's flower quest and the hidden-object key search in the husband's box are back (see DEVELOPMENT_PLAN → M2.1). `FindKeys` is the key search again; the chest of drawers has its own quest `OpenChest`. Halyna has 5 stages (`Part0`–`Part4`). `FindHouse` gives no reward; `FindKeys` opens the door. Flowers: 3 of each colour (18 are on the street). Key items are named "Key with a tag" and "Old key" (inventory and the box's target list).
+- **Halyna vs the door:** the cause was her patrol (x 55.6 ↔ 63.0) crossing the door at 58.3. She now paces in her garden left of the door, and E picks the **nearest** interactable (`InteractionDetector`). A `QuestLocationTrigger` (`grandma_house`) on her talk zone completes `FindHouse` when you meet her there.
+- **Market reminder:** it was unreachable. `NPC` chose its stage only in `Start`, so after a hand-in the next talk repeated the old stage until a reload. Now `StartDialogue` re-resolves the stage (affects every NPC with quest stages). The market belongs to Maria; Halyna's last stage is personal.
+- **Transitions:** the player is placed on the ground at the arrival point (`MapTransition.PlaceOnGround`). Before, they arrived above the ground and sank slowly, because pausing zeroes velocity every frame.
+- **Dialogue typing:** the whole line is laid out first and revealed with `maxVisibleCharacters` (no words jumping between lines, auto-size stable). Short pauses after punctuation (`NPC.PauseAfter`).
+- **UI text layout (`UITextLayoutFixer`):** dialogue text uses the panel area right of the portrait (679 × 101, auto-size 36→26, 3 lines max). Name, choices, info popup title and description, notifications (410 wide, so they no longer overlap the dialogue panel; text 2–3 lines, auto-size 30→20), quest and journal rows (heights follow the wrapped text), Key Choice row (buttons share the width), key and target labels (wrap and auto-size). Every NPC line in the game was measured with the real font: all fit at size 36 in at most 2 lines.
+- **Flower quest fix (`FlowerQuestFixer`, menu Shtetl → Fix Flower Quest; play-test 2026-10-30):** the purple flower was listed twice in `ItemDictionary`, so at runtime it got ID 8 instead of 7 and never counted (the wallet also got 9 instead of 8, and the box's wallet gave a purple flower). The duplicate is removed; prefab IDs and hidden-object IDs now match the list (1 Coin, 2 Item, 3 Key with a tag, 4 Old key, 5 Red, 6 Blue, 7 Purple, 8 Wallet, 9 Photo). All 18 flowers (6 of each colour, 3 needed) lie on the street ground. `ItemDictionary` now logs an error for a duplicated entry instead of silently renumbering.
+- **Key box removed when solved:** `MiniGameItem.removeOnComplete` (on `Box.prefab`) destroys the box after the hidden-object search, and `SaveController.LoadSpawnedItems` doesn't respawn a completed box. It uses the existing saved mini-game state (`isCompleted`), no new save data. Not yet runtime-checked: the box stays gone after save and reload.
+- **Dialogue controls (`DialogueController` + `NPC`):** Space shows the whole typing line, the next press goes to the next line (one step per press; a pending auto progress is cancelled so it can't skip a second line); choices still need a click. Revealing a line early now also runs its journal update and quest hand-in (before, it skipped them). Development only (`UNITY_EDITOR || DEVELOPMENT_BUILD`, not in release builds): **F8** or the top-right "DEV: Skip dialogue" button plays the rest of the conversation through the same line logic and stops at the next choice or the end.
+
+## M2.1: Location 1, the house (first version, 2026-10-30; where it differs, the rework above applies)
+- **Scene** (`HouseInteriorBuilder`, re-runnable; doesn't touch the Mikvah): new location **"House Interior"** (ID `4`, root at (0, -240), one still camera view 62.2 × 35, floor top y -250). Street door `L2/Parallax/Houses/house/Halyna House Door` (child of the house, so it moves with its parallax 0.1; locked until the `FindHouse` Portal reward, transition reward ID 3); return arrival right of the door. Interior exit is always open. `Chest of Drawers` = `MiniGameItem` (Key Choice, ID 2) + `Drawer Contents` (`InspectPoint`, 4 pages).
+- **Story data:** Halyna `Part0` (spec story; hands in `FindHouse` → 1 tagged + 3 plain keys + door), `Part1` (`FindKeys`, re-themed "The old chest of drawers": Custom objectives `open_chest_of_drawers`, `house_finds_seen`), `Part2` (repeat lines, market hint). New quests `LeadSchool`, `LeadSynagogue` (ReachLocation `school` / `synagogue`; completed in M3). New journal topics `family_house`, `family_photo`, `school_photo`, `wedding_invitation`. `CollectFlowers`, the hidden-object key box and the `mezuzah` topic are unlinked from Halyna, not deleted.
+- **The unpainted square** appears only *inside* the old family photo (owner decision); nobody explains it yet (Semen does in M3.4).
+- **Code:**
+  - `SaveData.storyFlags` + `SaveController.SetFlag/HasFlag`: completed Custom objectives and unlocked transitions. Old saves load (the field is new).
+  - `QuestController.CompleteObjective(id)`: Custom objectives; a flag counts for quests accepted later.
+  - `MapTransition.Unlock()` (Portal rewards) is remembered; restored in `Start`.
+  - `InspectPoint` (new): popup pages with optional journal stage, Custom objective and quest start; closing early still applies the unseen pages.
+  - `GraveInfoUI`: optional action label ("Next"; E turns the page), close callback, ignores the key press that opened it, `IsOpen`.
+  - `MiniGameItem`: optional `questObjectiveId` and `revealOnComplete`; scene-placed items no longer count as "spawned" (they were duplicated on load).
+  - `KeyChoiceGameController`: the last key can be the correct one; old buttons are cleared on reopen.
+  - `InteractionDetector`: acts once per press (Interact is a Hold action, so a tap sent started + canceled); keeps every interactable in range and falls back to the previous one.
+- **UI fit (measured with the real font):** every new dialogue line is at most 2 lines in the dialogue box; the longest choice is about 560 + 40 px (max 650); popup titles are one line; page texts are at most 3 of 5 lines.
+- **Runtime-confirmed by the owner (2026-10-30, after the rework):** the full house sequence, from the photo to the finds and leads. Halyna's auto-advance delay is 2.5 s for non-native readers.
+
+## Art needed
+Placeholders are named `PH_` in the scene. Shared style brief, references and scale: DEVELOPMENT_PLAN → "Custom art"; the plan of 2026-10-30, section "Art workflow".
+
+**Batch A: Halyna's house interior (M2.1), final spec**
+Room frame = one camera view = 3840 × 2160 px (61.7 px per world unit). Floor line (where feet stand) at **y 1697 px from the top**. A character is about 4.2 units = **260 px** tall in this frame. Positions are the centres measured from the left edge.
+| ID | Asset | Type | Size / placement | Replaces |
+|---|---|---|---|---|
+| A1 | Room background: plastered wall, wooden floor below the floor line, low ceiling beam at the top, **the exit door painted in at x 439 px** (door 200 × 350 px, standing on the floor line), **a window at x 2228 px**, centre y 1296 px (about 285 px square). Empty wall space for the wardrobe (x 1364) and the chest of drawers (x 2968). No unpainted square on today's wall. Calm and a little worn, Soviet-era village house that was once a Jewish home. | Background, opaque | 3840 × 2160 | PH_Wall, PH_Wainscot, PH_CeilingBeam, PH_Floor, PH_ExitDoor, PH_Window* |
+| A2 | Old wooden chest of drawers, pre-war, worn; **two states, same canvas: closed / top drawer pulled out** (papers and photos visible) | Interactive sprite, transparent | object about 470 × 320 px on a 520 × 380 canvas, bottom-aligned (sits on the floor line) | PH_ChestOfDrawers, PH_DrawerLine |
+| A3 | Old tall wardrobe, closed (the "old wardrobe" Halyna mentions) | Sprite, transparent | about 420 × 720 px, bottom-aligned | PH_Wardrobe |
+| — | **A4–A7 must be four different illustrations**; today all pages share one placeholder image. | | | |
+| A4 | Close-up: faded photo of a big Jewish family (1930s clothes) standing in their hallway; **behind them on the wall, a small unpainted square** of bare plaster | Popup illustration | **4:3, 1300 × 950 px** (popup image box 645 × 471) | page "Family photo" |
+| A5 | Close-up: 1930s school class photo, girls and boys with a teacher | Popup illustration | 4:3, 1300 × 950 | page "School photo" |
+| A6 | Close-up: 1930s wedding invitation card with decorative borders, **blank text areas** (the game adds text) | Popup illustration | 4:3, 1300 × 950 | page "Invitation" |
+| A7 | Close-up: the open drawer seen from above with old photos and papers | Popup illustration | 4:3, 1300 × 950 | page "Old drawer" |
+| A8 *(only if needed)* | Halyna, 70+, headscarf and cardigan, the player's chibi proportions | Character sheet | match the Girl frames (601 × 502), idle + talk | Hisa Teacher model |
+Style references: `Snapshots/2_L2_Street/tile_05.png` (Halyna's house outside: teal door and trim, cream walls), `Snapshots/4_House_Interior/tile_01.png` (current block-out with the exact positions).
+
 ## Requirements coverage
 
 | Requirement | Status | Current implementation / gap |
@@ -38,10 +84,10 @@ Any status other than Missing still needs a play-test.
 | Hero is Yasha or Sonya | Partial | Boy/girl selection exists (`CharacterSelectionUI.cs`) [C]. The names are not confirmed [T] |
 | Feiga's biography (1922, hiding, hospital, 1947 marriage, Inna) | Missing | — |
 | **L1 House:** mini-quest 1, find the house from the photo | Implemented [T] | L2 Street, `FindHouse.asset` (ReachLocation) [C] |
-| L1: Halyna's dialogue | Partial | `Halyna NPCDialogue Part0–2` on the `NPC Hisa Teacher` prefab. The content differs from the spec |
-| L1: mini-quest 2, bundle of keys → open the chest of drawers | Partial | Key Choice mini-game + `FindKeys.asset`. The story context is a jewelry box |
-| L1: finds (family photo with the unpainted square, school photo → School, invitation → Synagogue) | Missing | Could use Portal rewards |
-| L1: house interior | Missing | — |
+| L1: Halyna's dialogue | Implemented [T] | Rewritten per the spec (M2.1) |
+| L1: mini-quest 2, bundle of keys → open the chest of drawers | Implemented [T] | The box search gives the keys (`FindKeys`); Key Choice on the `Chest of Drawers` (`OpenChest`) (M2.1) |
+| L1: finds (family photo with the unpainted square, school photo → School, invitation → Synagogue) | Implemented [T] | `InspectPoint` pages + journal + the `LeadSchool` / `LeadSynagogue` quests; the locations come in M3 |
+| L1: house interior | Implemented with placeholders [T] | `House Interior` location; art Batch A |
 | **L2 Synagogue / House of Culture:** windows, mezuzah recesses | Missing | A Mezuzah journal topic exists, but it's tied to Halyna's door |
 | L2: mini-quest 6, Vytynanka | Partial | Gameplay exists but is **uncommitted** [C]. On completion it only closes; no quest or reward hook [I] |
 | L2: administrator dialogue | Missing | — |

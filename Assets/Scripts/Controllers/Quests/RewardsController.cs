@@ -52,7 +52,7 @@ public class RewardsController : MonoBehaviour
 
         if (teleportPrefab == null) return;
 
-        teleportPrefab.GetComponent<MapTransition>().ChangeSprite();
+        teleportPrefab.GetComponent<MapTransition>().Unlock();
     }
 
     public void GiveMiniGameReward(int miniGameID, GameObject source)

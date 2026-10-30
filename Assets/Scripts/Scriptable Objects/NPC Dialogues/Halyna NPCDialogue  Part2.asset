@@ -15,24 +15,25 @@ MonoBehaviour:
   npcName: Halyna
   npcPortrait: {fileID: -6471082416391893753, guid: 53d5f5efd048d2d4081b29c56deb11a6, type: 3}
   dialogueLines:
-  - And look what I found. A small box full of odds and ends.
-  - It belonged to my husband. Keys, coins, you know how it goes.
-  - The only thing that stayed here from the previous family...
-  - was a jewelry box. If the key survived, it is probably inside.
-  - Take it. Maybe you will find what we need.
-  - Every Friday they walked to the market where she worked.
-  - Alll dressed up.  Like it was a holiday.
-  - "Ah\u2026 that. The old owners had something there."
-  - A small little case.
-  - My father once tried to sand it away. Said it looked strange.
-  - But the mark never disappeared.
-  - Well... after all these years...
-  - Maybe this was waiting for you all along.
-  - Maybe it is time to open it again.
-  - I hope you find what you're looking for.
-  autoProgressLines: 010101010101010101010101010101
-  endDialogueLines: 000000000000000000000001000001
-  questHandInIndex: 000000000001000100000000000000
+  - "A Jewish family lived here before us."
+  - "They were killed during the war."
+  - "I heard very little about them."
+  - "I don't even know their family name."
+  - "My grandmother said they always shopped at the market on Fridays."
+  - "After the war, the authorities let my family live here."
+  - "We had many children, and my father worked at a factory."
+  - "Only an old wardrobe was left from the old family."
+  - "I have a key somewhere, but I never opened it."
+  - "It must be in that box, with all the other keys."
+  - "But it's such a mess! Could you find the old keys?"
+  - "Thank you. My eyes are not what they used to be."
+  - "Did you find the old keys, dear?"
+  - "Yes, these are the old keys!"
+  - "Come inside, dear. Let's see what they open."
+  - "The door is open. I'll wait here in the garden."
+  autoProgressLines: 01010101010101010101010101010101
+  endDialogueLines: 00000000000000000000000101000000
+  questHandInIndex: 00000000000000000000000000000000
   journalUpdates:
   - trigger: 0
     topicId: 
@@ -46,27 +47,18 @@ MonoBehaviour:
   - trigger: 0
     topicId: 
     stageIndex: 0
-  - trigger: 0
-    topicId: 
-    stageIndex: 0
-  - trigger: 0
-    topicId: 
-    stageIndex: 0
-  - trigger: 0
-    topicId: 
-    stageIndex: 0
-  - trigger: 0
-    topicId: 
-    stageIndex: 0
-  - trigger: 0
-    topicId: 
-    stageIndex: 0
-  - trigger: 0
-    topicId: 
-    stageIndex: 0
   - trigger: 1
-    topicId: mezuzah
-    stageIndex: 1
+    topicId: family_house
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
   - trigger: 0
     topicId: 
     stageIndex: 0
@@ -79,8 +71,20 @@ MonoBehaviour:
   - trigger: 0
     topicId: 
     stageIndex: 0
-  autoProgressDelay: 1.5
-  typingSpeed: 0.05
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  autoProgressDelay: 2.5
+  typingSpeed: 0.06
   voiceSounds:
   - {fileID: 8300000, guid: 3df71c6804778de438bb2a703f65f1da, type: 3}
   - {fileID: 8300000, guid: e4a69de1b37b05e46ab21968a2ba063d, type: 3}
@@ -92,25 +96,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 86b419b05dee91748843bb6be90ab5f7, type: 3}
   - {fileID: 8300000, guid: 9d2ad1f2c502baa4a93d95e854c5ba41, type: 3}
   voiceVolume: 0.3
-  voicePitch: 1
+  voicePitch: 0.85
   choices:
-  - dialogueIndex: 4
-    choices:
-    - Maybe you remember anything else?
-    - What is this mark on the door?
-    nextDialogueIndexes: 0500000007000000
-    givesQuest: 0101
-  - dialogueIndex: 6
-    choices:
-    - Okay...
-    nextDialogueIndexes: 0b000000
-    givesQuest: 00
   - dialogueIndex: 10
     choices:
-    - Something strange...
+    - "I'll look for them."
     nextDialogueIndexes: 0b000000
-    givesQuest: 00
+    givesQuest: 01
   quest: {fileID: 11400000, guid: 30e4b76b44934bc40bcd8ddd44b4c221, type: 2}
-  questInProgressIndex: 11
-  questCompletedIndex: 12
+  questInProgressIndex: 12
+  questCompletedIndex: 13
   repeatDialogueIndex: -1

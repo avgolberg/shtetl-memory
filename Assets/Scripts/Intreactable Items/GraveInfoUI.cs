@@ -17,12 +17,25 @@ public class GraveInfoUI : MonoBehaviour
     [SerializeField] private Button readLetterButton;
 
     private System.Action currentLetterAction;
+    private System.Action currentClosedAction; //Called when the player closes the popup instead of pressing the action button
+    private TMP_Text actionButtonText;
+    private string defaultActionLabel;
+    private bool keyRunsAction;
+    private int openedFrame;
 
     private bool isOpen;
+    public bool IsOpen => isOpen;
 
     private void Awake()
     {
         Instance = this;
+
+        if (readLetterButton != null)
+        {
+            actionButtonText = readLetterButton.GetComponentInChildren<TMP_Text>(true);
+            if (actionButtonText != null)
+                defaultActionLabel = actionButtonText.text;
+        }
 
         if (panel != null)
             panel.SetActive(false);
@@ -39,18 +52,28 @@ public class GraveInfoUI : MonoBehaviour
 
     private void Update()
     {
-        if (!isOpen)
+        //Skip the frame the popup opened in: the key press that opened it must not close it
+        if (!isOpen || Time.frameCount == openedFrame)
             return;
 
-        if (Keyboard.current != null &&
-            (Keyboard.current.escapeKey.wasPressedThisFrame ||
-            Keyboard.current.eKey.wasPressedThisFrame))
+        if (Keyboard.current == null)
+            return;
+
+        if (Keyboard.current.eKey.wasPressedThisFrame && keyRunsAction && currentLetterAction != null)
+        {
+            OnReadLetterClicked();
+        }
+        else if (Keyboard.current.escapeKey.wasPressedThisFrame ||
+                 Keyboard.current.eKey.wasPressedThisFrame)
         {
             Hide();
         }
     }
 
-    public void Show(Sprite image, string symbolTitle, string description, System.Action letterAction = null)
+    //actionLabel: text for the action button (e.g. "Next"); when set, E also runs the action instead of closing.
+    //closedAction: runs when the player closes the popup without using the action button.
+    public void Show(Sprite image, string symbolTitle, string description, System.Action letterAction = null,
+                     string actionLabel = null, System.Action closedAction = null)
     {
         if (panel == null)
         {
@@ -71,6 +94,11 @@ public class GraveInfoUI : MonoBehaviour
             descriptionText.text = description;
 
         currentLetterAction = letterAction;
+        currentClosedAction = closedAction;
+        keyRunsAction = !string.IsNullOrEmpty(actionLabel);
+
+        if (actionButtonText != null)
+            actionButtonText.text = keyRunsAction ? actionLabel : defaultActionLabel;
 
         if (readLetterButton != null)
         {
@@ -83,6 +111,7 @@ public class GraveInfoUI : MonoBehaviour
 
         panel.SetActive(true);
         isOpen = true;
+        openedFrame = Time.frameCount;
         Time.timeScale = 0f;
     }
 
@@ -90,6 +119,7 @@ public class GraveInfoUI : MonoBehaviour
     {
         var action = currentLetterAction;
         currentLetterAction = null;
+        currentClosedAction = null;
 
         Hide();
 
@@ -99,6 +129,8 @@ public class GraveInfoUI : MonoBehaviour
 
     public void Hide()
     {
+        var closedAction = currentClosedAction;
+        currentClosedAction = null;
         isOpen = false;
 
         if (panel != null)
@@ -109,5 +141,6 @@ public class GraveInfoUI : MonoBehaviour
 
         Time.timeScale = 1f;
         currentLetterAction = null;
+        closedAction?.Invoke();
     }
 }

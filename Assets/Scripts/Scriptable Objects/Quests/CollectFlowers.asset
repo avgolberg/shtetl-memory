@@ -14,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Quest
   questID: Collect_Flowers_6a1ea282-6dcb-4820-8084-a886bc5fa13a
   giverNpcId: NPC Hisa Teacher
-  questName: Collect Flowers
-  description: Collect 15 flowers for a bouquet
+  questName: Flowers for Halyna's friend
+  description: Pick wildflowers on the street for a birthday bouquet.
   consumeRequiredItemsOnHandIn: 1
   objectives:
   - objectiveID: 5
-    description: Collect 5 Red Flowers
+    description: Pick red flowers
     type: 0
     targetItemType: 1
-    requiredAmount: 5
+    requiredAmount: 3
     currentAmount: 0
   - objectiveID: 6
-    description: Collect 5 Blue Flowers
+    description: Pick blue flowers
     type: 0
     targetItemType: 1
-    requiredAmount: 5
+    requiredAmount: 3
     currentAmount: 0
   - objectiveID: 7
-    description: Collect 5 Purple Flowers
+    description: Pick purple flowers
     type: 0
     targetItemType: 1
-    requiredAmount: 5
+    requiredAmount: 3
     currentAmount: 0
   questRewards:
   - type: 2

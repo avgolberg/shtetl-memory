@@ -11,7 +11,7 @@ public class NPC : MonoBehaviour, IInteractable
     private int dialogueIndex;
     private Coroutine typingCoroutine;
     private Coroutine autoProgressCoroutine;
-    private bool isTyping, isDialogueActive;
+    private bool isTyping, isDialogueActive, isChoosing;
     private float nextVoiceTime;
     private enum QuestState { NotStarted, InProgress, Completed }
     private QuestState questState = QuestState.NotStarted;
@@ -97,6 +97,8 @@ public class NPC : MonoBehaviour, IInteractable
         dialogueUI.SetActiveNPC(this);
         waypointMover?.SetTalking(true);
 
+        //A quest may have been handed in since the last talk: move on to the stage that follows it
+        ResolveCurrentDialogueData();
         SyncQuestState();
         bool isQuestDialogue = dialogueData.quest != null;
         bool isQuestGivenByThisNpc = isQuestDialogue && dialogueData.quest.giverNpcId == npcId;
@@ -132,6 +134,7 @@ public class NPC : MonoBehaviour, IInteractable
         }
 
         isDialogueActive = true;
+        isChoosing = false;
 
         dialogueUI.SetNPCInfo(dialogueData.npcName, dialogueData.npcPortrait);
         dialogueUI.ShowDialogueUI(true);
@@ -166,14 +169,16 @@ public class NPC : MonoBehaviour, IInteractable
             yield break;
 
         isTyping = true;
-        dialogueUI.SetDialogueText("");
+        string line = dialogueData.dialogueLines[dialogueIndex];
+        dialogueUI.SetDialogueText(line, true);
 
-        foreach (char letter in dialogueData.dialogueLines[dialogueIndex])
+        for (int i = 0; i < line.Length; i++)
         {
             if (!isDialogueActive)
                 yield break;
 
-            dialogueUI.SetDialogueText(dialogueUI.dialogueText.text += letter);
+            char letter = line[i];
+            dialogueUI.SetVisibleCharacters(i + 1);
             if (!char.IsWhiteSpace(letter) && Time.unscaledTime >= nextVoiceTime)
             {
                 AudioClip clip = dialogueData.voiceSounds[
@@ -186,26 +191,65 @@ public class NPC : MonoBehaviour, IInteractable
 
                 nextVoiceTime = Time.unscaledTime + Random.Range(0.04f, 0.08f);
             }
-            yield return new WaitForSecondsRealtime(dialogueData.typingSpeed);
+            yield return new WaitForSecondsRealtime(dialogueData.typingSpeed * PauseAfter(letter, line, i));
         }
 
         isTyping = false;
         typingCoroutine = null;
 
+        OnLineShown();
+    }
+
+    //Runs once per line when its text is complete, whether it was typed out or revealed early
+    void OnLineShown()
+    {
         if (!isDialogueActive)
-            yield break;
+            return;
 
         HandleJournalUpdateForCurrentLine();
 
         if (HandleQuestHandInJump())
-            yield break;
+            return;
 
         // Auto progress
         if (dialogueData.autoProgressLines.Length > dialogueIndex &&
             dialogueData.autoProgressLines[dialogueIndex])
         {
+            if (autoProgressCoroutine != null)
+                StopCoroutine(autoProgressCoroutine);
+
             autoProgressCoroutine = StartCoroutine(AutoProgress());
         }
+    }
+
+    //Space: shows the whole typing line, or goes on to the next line. Choices wait for the player's click.
+    public void Advance()
+    {
+        if (!isDialogueActive || isChoosing)
+            return;
+
+        NextLine();
+    }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    //Development only: plays the rest of the conversation at once through the normal line logic (journal updates,
+    //quest hand-ins, rewards, stage changes) and stops at the next choice, which the tester still makes
+    public void DevSkipToChoiceOrEnd()
+    {
+        for (int guard = 0; guard < 500 && isDialogueActive && !isChoosing; guard++)
+            NextLine();
+    }
+#endif
+
+    //Short natural pauses after punctuation; the NPC's typingSpeed sets the overall pace
+    static float PauseAfter(char letter, string line, int index)
+    {
+        bool lineEnds = index == line.Length - 1;
+        if (lineEnds) return 1f;
+        if (letter == '.' && line[index + 1] == '.') return 1f; //"..." pauses once, after the last dot
+        if (letter == '.' || letter == '!' || letter == '?') return 6f;
+        if (letter == ',' || letter == ':' || letter == ';' || letter == '…') return 3f;
+        return 1f;
     }
 
     void NextLine()
@@ -225,15 +269,15 @@ public class NPC : MonoBehaviour, IInteractable
             dialogueUI.SetDialogueText(dialogueData.dialogueLines[dialogueIndex]);
             isTyping = false;
 
-            if (dialogueData.autoProgressLines.Length > dialogueIndex &&
-            dialogueData.autoProgressLines[dialogueIndex] && isDialogueActive)
-            {
-                if (autoProgressCoroutine != null)
-                    StopCoroutine(autoProgressCoroutine);
-
-                autoProgressCoroutine = StartCoroutine(AutoProgress());
-            }
+            OnLineShown();
             return;
+        }
+
+        //A pending auto progress would skip a second line after this one
+        if (autoProgressCoroutine != null)
+        {
+            StopCoroutine(autoProgressCoroutine);
+            autoProgressCoroutine = null;
         }
 
         dialogueUI.ClearChoices();
@@ -336,10 +380,12 @@ public class NPC : MonoBehaviour, IInteractable
         }
         dialogueUI.FitChoiceButtonsWidth();
         dialogueUI.AdjustDialoguePanelPosition(choice.choices.Length);
+        isChoosing = true;
     }
 
     void ChooseOption(int nextIndex, bool givesQuest)
     {
+        isChoosing = false;
         if (givesQuest)
         {
             QuestController.Instance.AcceptQuest(dialogueData.quest);
@@ -385,6 +431,7 @@ public class NPC : MonoBehaviour, IInteractable
     {
         isDialogueActive = false;
         isTyping = false;
+        isChoosing = false;
 
         if (typingCoroutine != null)
         {

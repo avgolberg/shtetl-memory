@@ -32,8 +32,34 @@ public class QuestController : MonoBehaviour
             ItemPickupUIController.Instance.ShowItemPickup("New quest: \n" + quest.questName, questIcon);
         }
 
+        ApplyStoryFlags();
         CheckInventoryForQuests();
         UpdateUI();
+    }
+
+    //Custom objectives are completed by story events (a solved mini-game, an inspected find).
+    //The event is remembered, so a quest that is accepted later counts it too.
+    public void CompleteObjective(string objectiveId)
+    {
+        if (string.IsNullOrEmpty(objectiveId)) return;
+
+        SaveController.Instance.SetFlag(objectiveId);
+        ApplyStoryFlags();
+        UpdateUI();
+    }
+
+    private void ApplyStoryFlags()
+    {
+        foreach (QuestProgress quest in activeQuests)
+        {
+            foreach (QuestObjective objective in quest.objectives)
+            {
+                if (objective.type == ObjectiveType.Custom && SaveController.Instance.HasFlag(objective.objectiveID))
+                {
+                    objective.currentAmount = objective.requiredAmount;
+                }
+            }
+        }
     }
 
     public bool CanCollectObjectiveItem(ItemType itemType)
@@ -211,6 +237,7 @@ public class QuestController : MonoBehaviour
             activeQuests.Add(saved);
         }
 
+        ApplyStoryFlags();
         CheckInventoryForQuests();
         UpdateUI();
     }

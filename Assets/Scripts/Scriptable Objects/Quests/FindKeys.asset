@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Quest
   questID: Find_keys_65ede332-edbf-46a0-8d70-ff56b71cc369
   giverNpcId: NPC Hisa Teacher
-  questName: Find keys
-  description: Find 3 keys in the box
+  questName: The old keys
+  description: Find the old keys in Halyna's box.
   consumeRequiredItemsOnHandIn: 0
   objectives:
   - objectiveID: 3
-    description: Collect 1 key wih a tag
+    description: Find the key with a tag
     type: 0
     targetItemType: 2
     requiredAmount: 1
     currentAmount: 0
   - objectiveID: 4
-    description: Collect 2 ordinary keys
+    description: Find the old keys
     type: 0
     targetItemType: 2
     requiredAmount: 2
     currentAmount: 0
   questRewards:
-  - type: 2
-    rewardID: 2
+  - type: 1
+    rewardID: 3
     amount: 1

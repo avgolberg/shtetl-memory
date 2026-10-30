@@ -13,6 +13,7 @@ public class SaveData
     public List<JournalTopicSaveData> journalTopics;
     public List<QuestProgress> questProgressData;
     public List<string> handinQuestIDs;
+    public List<string> storyFlags; //Story events that happened (custom quest objectives, unlocked transitions)
     public float sfxVolume;
     public float musicVolume;
     public bool hasSeenIntro;

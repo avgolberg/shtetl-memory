@@ -23,6 +23,12 @@
   - Its costs: setup, third-party compatibility with Unity 6000.2, and its tool list using up context on every turn.
   - Reconsider if console or screenshot round trips become a bottleneck.
 - **Visual check:** an Editor menu item renders a location to PNG for review when needed. The owner does the play-tests.
+- **Story flexibility (2026-10-30):** STORY_SPEC is the approved foundation but still a draft. Claude may make small, sensible narrative improvements (clues, bridging lines) that keep historical accuracy and the key story facts; significant changes are discussed with the owner first. Example: the wedding invitation names the synagogue.
+- **Custom art (2026-10-30):** the owner generates matching 2D art with ChatGPT. For each milestone Claude lists reusable assets and grouped art requests (what, where, type, size, transparency, layer, style references). Gameplay goes ahead with clearly named `PH_` placeholders, listed in IMPLEMENTATION_STATUS → "Art needed".
+- **Game length and depth (2026-10-30):** the whole game targets about 60–90 minutes, with meaningful optional side quests and some nonlinearity, never padding. Reuse the owner's mechanics (hidden-object search, Key Choice, collecting, Vytynanka) to give each location a small investigation or challenge, not only dialogue.
+- **NPC voices (2026-10-30):** each NPC gets a distinct voice through the `NPCDialogue` settings (typingSpeed, voicePitch, voiceVolume, autoProgressDelay, voiceSounds) and a speaking style, in accessible English. Halyna: typing 0.06, pitch 0.85, delay 2.5, warm ("dear"). The market belongs to **Maria** (her existing lines point to the market), not Halyna.
+- **Leads are non-linear (2026-10-30):** the house finds open the School and the Synagogue as investigation leads; either can come first.
+- **Dialogue UI fit:** every dialogue line must fit the dialogue box (about 630 × 78 px at size 36 in the 1920×1080 reference: 2 lines, roughly 60 characters). Choices are one line at size 26 (max button 650 px). Popup titles fit one line (600 px at size 70, about 15 characters); popup texts at most 5 lines. Measure new text against `Assets/Fonts/veteran typewriter.ttf`.
 
 ## Testing approach (agreed 2026-10-28)
 - **Claude** runs static and automated checks where possible: diff review, GUID and reference checks, and later an Editor validation script.
@@ -55,28 +61,28 @@
    - Arrival points are non-parallaxed objects, so arrival doesn't depend on the camera at departure. The existing L1↔L2 pair still uses parallaxed TeleportPoint children (unchanged).
    - Waypoint pines are tinted and layered per location (dev markers).
 
-## Next task (start here on 2026-10-29): M2 item 9, Location 1 "Дім прабабусі" (great-grandmother's house)
-Source: STORY_SPEC "Локація №1". The existing content lives in L2 Street (`NPC Hisa Teacher` prefab = Halyna; dialogues `Halyna NPCDialogue Part0–2`; quests `FindHouse`, `FindKeys`, `CollectFlowers`; Key Choice mini-game).
-1. **Mini-quest 1** (find the house from the photo): already works (`FindHouse`, ReachLocation `grandma_house`). Keep it.
-2. **Halyna (70+)**: rewrite her dialogue per the spec, in accessible English:
-   - a Jewish family lived here; they were killed in the war
-   - she doesn't know their surname
-   - her grandmother said they shopped at the market every Friday
-   - after the war the authorities let her large family move in (her father worked at a factory)
-   - only an old wardrobe was left; she has a key but never opened it
-   Remove what contradicts the spec: the flower quest, her husband's jewelry box, the mezuzah mark on her door. Decide whether to delete or just unlink the `CollectFlowers` asset.
-3. **Mini-quest 2**: a bundle of keys → pick the right key → open the chest of drawers. Reuse the Key Choice mini-game; re-theme the `FindKeys` quest.
-4. **Finds**:
-   - family photo in the hallway (an unpainted square is visible on the wall)
-   - school photo, which leads to the School
-   - wedding invitation, which leads to the Synagogue
-   Use items plus journal entries. Their unlock effects depend on D1, so build the items now and wire the unlocks after D1.
-5. **House interior**: there's no interior art yet (D5). Block it out with existing art or placeholders and list the exact art needed.
-Workflow: inspect the relevant assets and the scene section first, then build with a small builder script and check it with captures. Give the owner a short targeted test, using a dev save preset at Halyna's house.
+## M2.1 Location 1, the great-grandmother's house (✅ complete, runtime-confirmed by the owner 2026-10-30)
+Built by `HouseInteriorBuilder` (menu **Shtetl → Build House Interior**); UI fixes by `UITextLayoutFixer` (**Shtetl → Fix UI Text Layout**); item numbering by `FlowerQuestFixer` (**Shtetl → Fix Flower Quest**). Details in IMPLEMENTATION_STATUS → "M2.1".
+Flow (the owner's original mechanics restored):
+1. Find the house (`FindHouse`; meeting Halyna in her garden also counts).
+2. Halyna recognises it but is in a hurry: pick wildflowers for her friend's 70th birthday (`CollectFlowers`, 3 of each colour).
+3. Handing in the flowers brings out her husband's old box. She tells the spec story; the key she never used must be in the box.
+4. Hidden-object search in the box for the old keys (`FindKeys`); the box disappears once solved. Handing the keys in opens her door; she waits in the garden.
+5. Inside: Key Choice on the chest of drawers (`OpenChest`) → 4 popup pages: drawer, family photo, school photo (starts `LeadSchool`), invitation (starts `LeadSynagogue`). Hand in to Halyna.
+Test with the dev save `l2_halyna_house_post_intro`. Art: Batch A (IMPLEMENTATION_STATUS → "Art needed").
+Open idea: Halyna mentions a wardrobe (spec), the keys open a chest of drawers (spec). Unifying them into one piece of furniture would remove a small inconsistency; ask the owner.
+
+## Next tasks (in order)
+1. **Autosave** at meaningful milestones (decided 2026-10-30): important discoveries, quest acceptance and completion, location transitions; keep the manual Save button. M2.1 is confirmed; start when the owner asks.
+2. **M2.2 Prologue rework** (Batch B art).
+3. **M3.1 Synagogue / House of Culture**: completes `LeadSynagogue` (ReachLocation `synagogue`).
+4. **M3.2 School**: completes `LeadSchool` (ReachLocation `school`). The professor mentions "your vytynanka": give him a line variant for players who come before the Synagogue (the leads are not linear).
+5. M3.3 Market, M3.4 Semen + Library, M3.5 Cemetery finale, M4 Epilogue and delivery.
+Proposed story order (D1): House → Synagogue → School → Market → Mikvah → Semen at the cemetery gate → Library → Cemetery (stork grave) → Epilogue.
 
 ### M2: Rework existing content to match the spec
 8. Prologue: funeral, box objects, Yiddish caption.
-9. L1 House: Halyna's dialogue per the spec, the key quest opening the chest of drawers, the 3 finds unlocking School and Synagogue, the house interior.
+9. ✅ (complete, runtime-confirmed 2026-10-30) L1 House: Halyna's dialogue per the spec, the key quest opening the chest of drawers, the 3 finds starting the School and Synagogue leads, the house interior (placeholders until Batch A).
 10. L5 Cemetery: clean up, entry transition, the "find Nathan ben Shlomo" quest gated by the donation list, a decision on the letter.
 11. Repurpose or cut the `L1 Forest` content (pending decision D2).
 
@@ -101,5 +107,5 @@ Workflow: inspect the relevant assets and the scene section first, then build wi
 - **D2** Existing extra content: cut it or keep it as flavor? Covers Forest, Pavlo, Petro, Hisa and coins, Maria, the art-club kids.
 - **D3** Feiga's letter: keep it at the stork grave, or move it into the epilogue diary?
 - **D4** ~~Primary language~~ settled: English. Still open: which languages come later, and whether Yiddish text (photo caption, donation list) appears on screen.
-- **D5** Interior and flashback art: purchased, generated, or built from the existing kits?
+- **D5** ~~Interior and flashback art~~ settled: the owner generates custom art (batches A–H).
 - **D6** Target platform, audience age, and the grant deadline.

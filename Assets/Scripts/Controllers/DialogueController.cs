@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class DialogueController : MonoBehaviour
@@ -22,14 +24,41 @@ public class DialogueController : MonoBehaviour
         else Destroy(gameObject); //Make sure only one instance
     }
 
+    //Space shows the whole line, or the next line (one step per press). F8 is a development-only skip.
+    void Update()
+    {
+        if (ActiveNPC == null || Keyboard.current == null) return;
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            ActiveNPC.Advance();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        else if (Keyboard.current.f8Key.wasPressedThisFrame)
+            ActiveNPC.DevSkipToChoiceOrEnd();
+#endif
+    }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    //Development only: not compiled into release builds
+    void OnGUI()
+    {
+        if (ActiveNPC == null) return;
+        if (GUI.Button(new Rect(Screen.width - 250, 10, 240, 32), "DEV: Skip dialogue (F8)"))
+            ActiveNPC.DevSkipToChoiceOrEnd();
+    }
+#endif
+
     public void SetActiveNPC(NPC npc)
     {
         ActiveNPC = npc;
     }
-    
+
     public void ShowDialogueUI(bool show)
     {
         dialoguePanel.SetActive(show); //Toggle UI visability
+
+        //A button left selected (e.g. the close button) would also react to Space
+        if (show && EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void SetNPCInfo(string npcName, Sprite portrait)
@@ -38,9 +67,17 @@ public class DialogueController : MonoBehaviour
         portraitImage.sprite = portrait;
     }
 
-    public void SetDialogueText(string text)
+    //The whole line is set at once, so wrapping and auto-size are final from the first letter;
+    //a typed line starts hidden and is revealed with SetVisibleCharacters
+    public void SetDialogueText(string text, bool typed = false)
     {
         dialogueText.text = text;
+        dialogueText.maxVisibleCharacters = typed ? 0 : int.MaxValue;
+    }
+
+    public void SetVisibleCharacters(int count)
+    {
+        dialogueText.maxVisibleCharacters = count;
     }
 
     public void ClearChoices()

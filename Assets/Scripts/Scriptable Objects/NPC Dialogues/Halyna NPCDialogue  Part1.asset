@@ -15,20 +15,21 @@ MonoBehaviour:
   npcName: Halyna
   npcPortrait: {fileID: -6471082416391893753, guid: 53d5f5efd048d2d4081b29c56deb11a6, type: 3}
   dialogueLines:
-  - "Anyway\u2026 I was just about to go out."
-  - My friend turned seventy today. Imagine that!
-  - I promised her a bouquet.
-  - These days I prefer flowers to cake. Easier on the teeth.
-  - Wildflowers grow around the street.
-  - Would you help me gather a few?
-  - Well...
-  - While you do that, I'll see if I can find something inside.
-  - Your photograph reminded me of it.
-  - Flowers from the street smell better than the ones from shops.
-  - Oh! You actually did it. Beautiful! She'll love these.
-  autoProgressLines: 0101010101010101010101
-  endDialogueLines: 0000000000000100010100
-  questHandInIndex: 0000000000000000000100
+  - "My friend turns seventy today. Imagine that!"
+  - "I promised her a bouquet of wildflowers."
+  - "Flowers are better than cake. Easier on the teeth!"
+  - "Wildflowers grow all along this street."
+  - "Would you help me pick a few?"
+  - "All right. I'll be here."
+  - "Thank you, dear! While you pick them..."
+  - "I'll look for something inside. Your photo reminded me."
+  - "Flowers from the street smell better than shop ones."
+  - "Oh, you did it! Beautiful. She'll love them."
+  - "And look, I found my husband's old box."
+  - "Now, about this house..."
+  autoProgressLines: 010101010101010101010101
+  endDialogueLines: 000000000001000101000000
+  questHandInIndex: 000000000000000000000000
   journalUpdates:
   - trigger: 0
     topicId: 
@@ -63,8 +64,11 @@ MonoBehaviour:
   - trigger: 0
     topicId: 
     stageIndex: 0
-  autoProgressDelay: 1.5
-  typingSpeed: 0.05
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  autoProgressDelay: 2.5
+  typingSpeed: 0.06
   voiceSounds:
   - {fileID: 8300000, guid: 3df71c6804778de438bb2a703f65f1da, type: 3}
   - {fileID: 8300000, guid: e4a69de1b37b05e46ab21968a2ba063d, type: 3}
@@ -76,15 +80,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 86b419b05dee91748843bb6be90ab5f7, type: 3}
   - {fileID: 8300000, guid: 9d2ad1f2c502baa4a93d95e854c5ba41, type: 3}
   voiceVolume: 0.3
-  voicePitch: 1
+  voicePitch: 0.85
   choices:
-  - dialogueIndex: 5
+  - dialogueIndex: 4
     choices:
-    - Sure!
-    - Maybe next time...
-    nextDialogueIndexes: 0700000006000000
+    - "Sure!"
+    - "Maybe later."
+    nextDialogueIndexes: 0600000005000000
     givesQuest: 0100
   quest: {fileID: 11400000, guid: a41c66c449176d54fbb65cb7ded5f0e2, type: 2}
-  questInProgressIndex: 9
-  questCompletedIndex: 10
+  questInProgressIndex: 8
+  questCompletedIndex: 9
   repeatDialogueIndex: -1

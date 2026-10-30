@@ -40,6 +40,7 @@ public class KeyChoiceGameController : MonoBehaviour, IMiniGame
     {
         BuildKeyList();
         isCompleted = false;
+        ClearButtons();
         if (availableKeys.Count == 0)
         {
             SetFeedback("No keys available.");
@@ -47,7 +48,7 @@ public class KeyChoiceGameController : MonoBehaviour, IMiniGame
             return;
         }
 
-        correctKeyId = Random.Range(1, availableKeys.Count);
+        correctKeyId = Random.Range(1, availableKeys.Count + 1); //Button ids are 1..Count
         SetFeedback("Which key fits the lock?");
         BuildButtons();
     }
@@ -56,6 +57,17 @@ public class KeyChoiceGameController : MonoBehaviour, IMiniGame
     {
         availableKeys.Clear();
         availableKeys = InventoryController.Instance.GetItemsByType(ItemType.Key);
+    }
+
+    //Buttons from an earlier attempt would otherwise stay in the panel
+    private void ClearButtons()
+    {
+        foreach (KeyChoiceButton button in spawnedButtons)
+        {
+            if (button != null)
+                Destroy(button.gameObject);
+        }
+        spawnedButtons.Clear();
     }
 
     private void BuildButtons()

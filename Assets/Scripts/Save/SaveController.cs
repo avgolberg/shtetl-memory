@@ -14,6 +14,8 @@ public class SaveController : MonoBehaviour
     private List<string> openedChestIds = new();
     private HashSet<string> openedChestIdsSet = new();
     private List<MiniGameItemSaveData> spawnedItems = new();
+    private List<string> storyFlags = new();
+    private HashSet<string> storyFlagsSet = new();
     public bool HasSeenIntro { get; private set; }
 
     void Awake()
@@ -43,6 +45,7 @@ public class SaveController : MonoBehaviour
         sd.journalTopics = JournalController.Instance.GetSaveData();
         sd.questProgressData = QuestController.Instance.activeQuests;
         sd.handinQuestIDs = QuestController.Instance.handinQuestIDs;
+        sd.storyFlags = storyFlags;
         sd.sfxVolume = SoundEffectManager.SFXVolume;
         sd.musicVolume = SoundEffectManager.MusicVolume;
         sd.hasSeenIntro = HasSeenIntro;
@@ -86,6 +89,7 @@ public class SaveController : MonoBehaviour
             LoadSpawnedItems(saveData.spawnedItemSaveData);
             LoadCollectedItemIds(saveData.collectedItemIds);
             LoadOpenedChestIds(saveData.openedChestIds);
+            LoadStoryFlags(saveData.storyFlags); //Before quests: custom objectives are completed from the flags
             QuestController.Instance.LoadQuestProgress(saveData.questProgressData);
             QuestController.Instance.handinQuestIDs = saveData.handinQuestIDs;
         }
@@ -153,6 +157,25 @@ public class SaveController : MonoBehaviour
         openedChestIdsSet = new HashSet<string>(openedChestIds);
     }
 
+    public void SetFlag(string flag)
+    {
+        if (storyFlagsSet.Add(flag))
+        {
+            storyFlags.Add(flag);
+        }
+    }
+
+    public bool HasFlag(string flag)
+    {
+        return storyFlagsSet.Contains(flag);
+    }
+
+    public void LoadStoryFlags(List<string> flags)
+    {
+        storyFlags = flags ?? new List<string>();
+        storyFlagsSet = new HashSet<string>(storyFlags);
+    }
+
     public void MarkItemSpawned(int miniGameId, string uniqueId, Vector3 spawnPos)
     {
         if (spawnedItems == null)
@@ -185,13 +208,14 @@ public class SaveController : MonoBehaviour
 
         var itemData = spawnedItems.Find(i => i.uniqueID == uniqueId);
 
+        //No entry yet: the item was placed in the scene, not spawned by a reward, so it must not be spawned again on load
         if (itemData == null)
         {
             spawnedItems.Add(new MiniGameItemSaveData
             {
                 miniGameItemID = miniGameId,
                 uniqueID = uniqueId,
-                wasSpawned = true,
+                wasSpawned = false,
                 isCompleted = true,
                 spawnPosition = spawnPos
             });
@@ -232,6 +256,7 @@ public class SaveController : MonoBehaviour
 
             var prefab = FindAnyObjectByType<MiniGameItemDictionary>()?.GetMiniGameItemPrefab(spawnedItem.miniGameItemID);
             if (prefab == null) continue;
+            if (spawnedItem.isCompleted && prefab.GetComponent<MiniGameItem>()?.RemovesOnComplete == true) continue;
 
             ItemDropSpawner.SpawnItemAtposition(prefab, spawnedItem.spawnPosition);
         }

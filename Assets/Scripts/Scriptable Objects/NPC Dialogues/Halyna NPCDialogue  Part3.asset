@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af86c06a1cd5294e909c2ee75d2c673, type: 3}
+  m_Name: Halyna NPCDialogue  Part3
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialogue
+  npcName: Halyna
+  npcPortrait: {fileID: -6471082416391893753, guid: 53d5f5efd048d2d4081b29c56deb11a6, type: 3}
+  dialogueLines:
+  - "Go on in. Try every key."
+  - "One of them must fit."
+  - "Did one of the keys fit, dear?"
+  - "You opened it? After all these years..."
+  - "I'm glad someone from the family found these things."
+  autoProgressLines: 0101010101
+  endDialogueLines: 0001010001
+  questHandInIndex: 0000000000
+  journalUpdates:
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  - trigger: 0
+    topicId: 
+    stageIndex: 0
+  autoProgressDelay: 2.5
+  typingSpeed: 0.06
+  voiceSounds:
+  - {fileID: 8300000, guid: 3df71c6804778de438bb2a703f65f1da, type: 3}
+  - {fileID: 8300000, guid: e4a69de1b37b05e46ab21968a2ba063d, type: 3}
+  - {fileID: 8300000, guid: 6f658ae42d19f4d4295eb7c3627dc3f8, type: 3}
+  - {fileID: 8300000, guid: ba2af97afff31a3459c0fa61a64f68cf, type: 3}
+  - {fileID: 8300000, guid: a47253504d113864cb157436c9fc087b, type: 3}
+  - {fileID: 8300000, guid: f3045c1739aa25b4a9e19cb5206b1872, type: 3}
+  - {fileID: 8300000, guid: e284a523ddbcb0e49b55a809892b2913, type: 3}
+  - {fileID: 8300000, guid: 86b419b05dee91748843bb6be90ab5f7, type: 3}
+  - {fileID: 8300000, guid: 9d2ad1f2c502baa4a93d95e854c5ba41, type: 3}
+  voiceVolume: 0.3
+  voicePitch: 0.85
+  choices:
+  - dialogueIndex: 0
+    choices:
+    - "Thank you, Halyna!"
+    nextDialogueIndexes: 01000000
+    givesQuest: 01
+  quest: {fileID: 11400000, guid: 2ba8044c7b2b4e8e9a7a92326c249795, type: 2}
+  questInProgressIndex: 2
+  questCompletedIndex: 3
+  repeatDialogueIndex: -1
