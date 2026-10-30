@@ -125,6 +125,7 @@ public static class LocationCapture
         Rect area = BoundaryRect(location.MapBoundary);
         if (area.width < 0.01f || area.height < 0.01f)
             return $"[{label}] FAILED: mapBoundary has no area.";
+        if (location.CameraSize > 0f) orthoSize = location.CameraSize; //The camera zooms in this location
 
         string dir = Path.Combine(OutputRoot, label);
         if (Directory.Exists(dir)) Directory.Delete(dir, true);

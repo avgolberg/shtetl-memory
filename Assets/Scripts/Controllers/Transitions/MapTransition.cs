@@ -51,8 +51,7 @@ public class MapTransition : MonoBehaviour, IInteractable
         await ScreenFader.Instance.FadeOut();
         SoundEffectManager.PlayMusic(targetLocation.MusicClip, targetLocation.MusicVolume, targetLocation.MusicFadeDuration);
 
-        confiner.BoundingShape2D = targetLocation.MapBoundary;
-        confiner.InvalidateBoundingShapeCache();
+        targetLocation.ApplyToCamera(confiner);
 
         player.transform.position = teleportTargetPosition.position;
         PlaceOnGround(player);

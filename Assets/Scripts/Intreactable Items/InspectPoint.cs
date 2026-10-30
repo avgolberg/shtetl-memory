@@ -11,6 +11,7 @@ public class InspectPoint : MonoBehaviour, IInteractable
         public Sprite image;
         public string title;
         [TextArea] public string text;
+        [TextArea] public string imageText; //Optional: printed on the image (e.g. an invitation's wording)
         public string journalTopicId; //Optional
         public int journalStage;
         public string questObjectiveId; //Optional: Custom objective completed when the page is seen
@@ -42,7 +43,8 @@ public class InspectPoint : MonoBehaviour, IInteractable
             pages[index].text,
             hasNext ? () => ShowPage(index + 1) : null,
             hasNext ? "Next" : null,
-            hasNext ? () => ApplyRemaining(index + 1) : null
+            hasNext ? () => ApplyRemaining(index + 1) : null,
+            pages[index].imageText
         );
     }
 

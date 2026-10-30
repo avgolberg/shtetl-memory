@@ -86,6 +86,58 @@ public static class UITextLayoutFixer
         AutoSize((TMP_Text)so.FindProperty("descriptionText").objectReferenceValue, 26f, true);
     }
 
+    //The info popup (GraveInfoUI) fits its content at runtime; here: a less see-through panel, so the room behind it
+    //doesn't distract, and the text printed on an image (e.g. the invitation's wording), over the image's blank centre.
+    //Idempotent; also run by Shtetl → Apply House Art.
+    public static void FixDiscoveryPopup()
+    {
+        var popup = Object.FindFirstObjectByType<GraveInfoUI>(FindObjectsInactive.Include);
+        var so = new SerializedObject(popup);
+        var panel = (GameObject)so.FindProperty("panel").objectReferenceValue;
+        var image = (Image)so.FindProperty("graveImage").objectReferenceValue;
+        var description = (TMP_Text)so.FindProperty("descriptionText").objectReferenceValue;
+
+        var background = panel.GetComponent<Image>();
+        Undo.RecordObject(background, "Popup opacity");
+        Color color = background.color;
+        color.a = 0.94f; //was 0.79
+        background.color = color;
+
+        Transform existing = image.transform.Find("ImageText");
+        GameObject textObject;
+        if (existing != null)
+        {
+            textObject = existing.gameObject;
+        }
+        else
+        {
+            textObject = Object.Instantiate(description.gameObject, image.transform);
+            textObject.name = "ImageText";
+            Undo.RegisterCreatedObjectUndo(textObject, "Popup image text");
+        }
+        var text = textObject.GetComponent<TMP_Text>();
+        Undo.RecordObject(text, "Popup image text");
+        Undo.RecordObject(text.rectTransform, "Popup image text");
+        text.rectTransform.anchorMin = new Vector2(0.17f, 0.24f); //Inside the invitation's border, between the
+        text.rectTransform.anchorMax = new Vector2(0.83f, 0.74f); //synagogue at the top and the rings at the bottom
+        text.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        text.rectTransform.offsetMin = Vector2.zero;
+        text.rectTransform.offsetMax = Vector2.zero;
+        text.text = "";
+        text.alignment = TextAlignmentOptions.Center;
+        text.color = new Color(0.30f, 0.21f, 0.15f); //Faded ink
+        text.raycastTarget = false;
+        text.enableAutoSizing = true;
+        text.fontSizeMax = 34f;
+        text.fontSizeMin = 20f;
+        text.textWrappingMode = TextWrappingModes.Normal;
+        text.overflowMode = TextOverflowModes.Overflow;
+        textObject.SetActive(false);
+
+        so.FindProperty("imageOverlayText").objectReferenceValue = text;
+        so.ApplyModifiedProperties();
+    }
+
     //Quest and item notifications: the text fills the popup right of the icon and may take two or three lines
     static void FixNotifications()
     {

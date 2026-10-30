@@ -11,6 +11,12 @@ public class GraveInfoUI : MonoBehaviour
     [SerializeField] private Image graveImage;
     [SerializeField] private TMP_Text symbolTitleText;
     [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private TMP_Text imageOverlayText; //Optional: text printed on the image (e.g. an invitation's wording)
+
+    //The panel fits its content (top to bottom: image, title, description, buttons), in panel pixels
+    const float ImageMaxWidth = 645f, ImageMaxHeight = 471f;
+    const float TopPadding = 30f, ImageTitleGap = 16f, TitleDescriptionGap = 8f, DescriptionButtonsGap = 28f, BottomPadding = 43f;
+    const float DescriptionMaxHeight = 235f; //Five lines
 
     [Header("Buttons")]
     [SerializeField] private Button closeButton;
@@ -72,8 +78,9 @@ public class GraveInfoUI : MonoBehaviour
 
     //actionLabel: text for the action button (e.g. "Next"); when set, E also runs the action instead of closing.
     //closedAction: runs when the player closes the popup without using the action button.
+    //imageText: optional text printed on the image.
     public void Show(Sprite image, string symbolTitle, string description, System.Action letterAction = null,
-                     string actionLabel = null, System.Action closedAction = null)
+                     string actionLabel = null, System.Action closedAction = null, string imageText = null)
     {
         if (panel == null)
         {
@@ -93,6 +100,12 @@ public class GraveInfoUI : MonoBehaviour
         if (descriptionText != null)
             descriptionText.text = description;
 
+        if (imageOverlayText != null)
+        {
+            imageOverlayText.text = imageText ?? "";
+            imageOverlayText.gameObject.SetActive(!string.IsNullOrEmpty(imageText));
+        }
+
         currentLetterAction = letterAction;
         currentClosedAction = closedAction;
         keyRunsAction = !string.IsNullOrEmpty(actionLabel);
@@ -110,9 +123,52 @@ public class GraveInfoUI : MonoBehaviour
         }
 
         panel.SetActive(true);
+        FitToContent(image);
         isOpen = true;
         openedFrame = Time.frameCount;
         Time.timeScale = 0f;
+    }
+
+    //Sizes the image to its sprite and the description to its text, then the panel (centred) around them,
+    //so short pages don't leave large empty areas
+    private void FitToContent(Sprite image)
+    {
+        if (graveImage == null || symbolTitleText == null || descriptionText == null || closeButton == null) return;
+
+        float imageWidth = 0f, imageHeight = 0f;
+        if (image != null)
+        {
+            float aspect = image.rect.width / image.rect.height;
+            imageHeight = Mathf.Min(ImageMaxHeight, ImageMaxWidth / aspect);
+            imageWidth = imageHeight * aspect;
+        }
+        var imageFrame = (RectTransform)graveImage.rectTransform.parent;
+        imageFrame.gameObject.SetActive(image != null);
+        imageFrame.sizeDelta = new Vector2(imageWidth, imageHeight);
+        graveImage.rectTransform.sizeDelta = new Vector2(imageWidth, imageHeight);
+
+        //Measured at the full height first, so auto-size keeps the size it would use there
+        RectTransform description = descriptionText.rectTransform;
+        description.sizeDelta = new Vector2(description.sizeDelta.x, DescriptionMaxHeight);
+        descriptionText.ForceMeshUpdate();
+        float descriptionHeight = string.IsNullOrEmpty(descriptionText.text)
+            ? 0f
+            : Mathf.Min(DescriptionMaxHeight, Mathf.Ceil(descriptionText.GetRenderedValues(true).y) + 8f);
+        description.sizeDelta = new Vector2(description.sizeDelta.x, descriptionHeight);
+
+        //Bottom-anchored rows, from the bottom up; the image hangs from the top
+        var buttons = (RectTransform)closeButton.transform.parent;
+        buttons.anchoredPosition = new Vector2(buttons.anchoredPosition.x, BottomPadding);
+        float descriptionY = BottomPadding + buttons.sizeDelta.y + DescriptionButtonsGap;
+        description.anchoredPosition = new Vector2(description.anchoredPosition.x, descriptionY);
+        RectTransform title = symbolTitleText.rectTransform;
+        float titleY = descriptionY + descriptionHeight + TitleDescriptionGap;
+        title.anchoredPosition = new Vector2(title.anchoredPosition.x, titleY);
+        imageFrame.anchoredPosition = new Vector2(imageFrame.anchoredPosition.x, -TopPadding);
+
+        var panelRect = (RectTransform)panel.transform;
+        float imageBlock = image != null ? imageHeight + ImageTitleGap : 0f;
+        panelRect.sizeDelta = new Vector2(panelRect.sizeDelta.x, titleY + title.sizeDelta.y + imageBlock + TopPadding);
     }
 
     private void OnReadLetterClicked()

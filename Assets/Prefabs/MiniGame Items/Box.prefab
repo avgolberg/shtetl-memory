@@ -165,4 +165,5 @@ MonoBehaviour:
   Name: Box with Keys
   updatedSprite: {fileID: 21300000, guid: 4e020a7cc188f244abf83fb94b735e66, type: 3}
   removeOnComplete: 1
+  goneAfterQuest: {fileID: 11400000, guid: 30e4b76b44934bc40bcd8ddd44b4c221, type: 2}
   miniGameUI: {fileID: 1984160678195349669, guid: 7c678d8bfbd05974f92562a18c444aca, type: 3}

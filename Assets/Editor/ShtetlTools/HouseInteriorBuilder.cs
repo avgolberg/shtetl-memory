@@ -2,12 +2,11 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
 
 // Builds Location 1 from STORY_SPEC: the inside of Halyna's house (the great-grandmother's house) as its own location,
 // the door from the L2 street, the chest of drawers (Key Choice mini-game) and its three finds.
-// Visuals are clearly named PH_ placeholders until the Batch A art arrives; the layout constants below are what the art
-// is specified against (see docs/IMPLEMENTATION_STATUS.md, "Art needed").
+// The room is the Batch A art (ApplyArt): the painted room, the wardrobe, the chest of drawers (closed / open) and the
+// three finds' close-ups. "Shtetl → Apply House Art" places only the art in the existing room, without a rebuild.
 // Idempotent: rebuilds the "House Interior" root and the street door; doesn't touch other areas (e.g. the Mikvah).
 // Batch: Unity.exe -batchmode -projectPath <project> -executeMethod HouseInteriorBuilder.BuildBatch -logFile <log>
 public static class HouseInteriorBuilder
@@ -16,27 +15,79 @@ public static class HouseInteriorBuilder
     const string RootName = "House Interior";
     const string LocationId = "4";
     const string StreetDoorName = "Halyna House Door";
+    const string ChestName = "Chest of Drawers";
 
-    //One camera view (orthographic size 17.5, 16:9), so the camera stays still inside the house
+    //One still camera view of the painted room. The painting is drawn closer than the streets (its door is about three
+    //players tall at the street zoom), so the camera zooms in here: orthographic size 8.75 instead of 17.5.
     static readonly Vector2 Center = new Vector2(0f, -240f);
-    const float Width = 62.22f, Height = 35f;
-    const float FloorTop = -250f; //Walking level: 7.5 units above the bottom of the view, like the streets
+    const float CameraSize = 8.75f;
+    const float Height = CameraSize * 2f, Width = Height * 16f / 9f;
 
     //Where the painted door of Halyna's house appears in Snapshots/2_L2_Street/tile_05.png (camera x 54.3)
     const float StreetDoorApparentX = 58.27f, CaptureCameraX = 54.3f;
     const float StreetArrivalY = -85.4f, StreetDoorCenterY = -83f, StreetArrivalOffset = 2.8f;
 
-    //Interior layout, x relative to the room centre
-    const float ExitDoorX = -24f, EntryArrivalX = -19f, WardrobeX = -9f, WindowX = 5f, ChestX = 17f;
+    //Batch A art. Layout in pixels of the room painting (1672 × 941), measured from its top-left corner.
+    const string ArtFolder = "Assets/Sprites/Interiors/Halyna House/";
+    const float RoomArtWidth = 1672f, RoomArtHeight = 941f;
+    const float FloorPx = 748f; //Where the feet stand: the front edge of the rug
+    const float ExitDoorPx = 110f, EntryArrivalPx = 560f; //The open doorway on the left; arrive in front of the chair
+    //Feet of each piece: the wardrobe by the door (the small pictures hang behind it), the chest under the big framed
+    //picture, so the player walks into the room to reach it
+    static readonly Vector2 WardrobePx = new Vector2(336f, 692f);
+    static readonly Vector2 ChestPx = new Vector2(1140f, 698f);
+    const float ChestHeight = 2.75f, WardrobeHeight = 5.7f;
+    //From the sprites' alpha: opaque height and bottom row (closed and open chest share one canvas and frame)
+    const float ChestOpaquePx = 779f, ChestBottomPx = 927f, ChestCanvasHeight = 1024f;
+    const float WardrobeOpaquePx = 1374f, WardrobeBottomPx = 1458f, WardrobeCanvasHeight = 1536f;
+    //The chest's first position: saves know it by name + position (MiniGameItem.fixedSaveId keeps that ID after moving)
+    static readonly Vector2 LegacyChestPosition = new Vector2(17f, -248.7f);
+    //The unfinished square (amah al amah) is explained later (Semen, STORY_SPEC); here it only raises the question
+    const string FamilyPhotoText = "A big Jewish family sits at the table at home. Behind them, one small square of the wall was left unfinished. Why?";
+    //Semen's parents' wedding (STORY_SPEC, agreed 2026-10-30); the donation link is revealed later, not here
+    const string InvitationImageText = "With joy, we invite you\nto celebrate the marriage\nof Rivka and David.\n\nLadanivka Synagogue\n1937";
 
-    static readonly Color WallColor = new Color(0.80f, 0.75f, 0.64f);
-    static readonly Color WainscotColor = new Color(0.66f, 0.58f, 0.47f);
-    static readonly Color BeamColor = new Color(0.42f, 0.30f, 0.22f);
-    static readonly Color FloorColor = new Color(0.48f, 0.33f, 0.24f);
-    static readonly Color DoorColor = new Color(0.29f, 0.44f, 0.41f); //teal like the street doors
-    static readonly Color GlassColor = new Color(0.66f, 0.78f, 0.80f);
-    static readonly Color WardrobeColor = new Color(0.40f, 0.26f, 0.17f);
-    static readonly Color ChestColor = new Color(0.52f, 0.34f, 0.22f);
+    static float ArtPixelsPerUnit => RoomArtWidth / Width;
+    static float FloorTop => ArtY(FloorPx);
+    static float ArtX(float px) => Center.x - Width / 2f + px / ArtPixelsPerUnit;
+    static float ArtY(float py) => Center.y + RoomArtHeight / ArtPixelsPerUnit / 2f - py / ArtPixelsPerUnit;
+
+    //Places the art in the existing room only: no rebuild, so the street door, Halyna, quests and saves stay as they are
+    [MenuItem("Shtetl/Apply House Art")]
+    public static void ApplyArtMenu()
+    {
+        if (!LocationCapture.CanEditMainScene()) return;
+        GameObject root = EditorSceneManager.GetActiveScene().GetRootGameObjects().FirstOrDefault(g => g.name == RootName);
+        if (root == null)
+        {
+            Debug.LogError($"'{RootName}' not found. Run Shtetl → Build House Interior first.");
+            return;
+        }
+        ApplyArt(root.transform);
+        UITextLayoutFixer.FixDiscoveryPopup();
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        Debug.Log(LocationCapture.CaptureAll() + "\nHouse art applied. Save the scene (Ctrl+S) to keep it.");
+    }
+
+    public static void ApplyArtBatch()
+    {
+        int exitCode = 0;
+        try
+        {
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            ApplyArt(Find(RootName));
+            UITextLayoutFixer.FixDiscoveryPopup();
+            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+            string summary = LocationCapture.CaptureAll();
+            if (summary.Contains("FAILED") || summary.Contains("TRANSITION PROBLEM")) exitCode = 2;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogException(e);
+            exitCode = 1;
+        }
+        EditorApplication.Exit(exitCode);
+    }
 
     //Editor workflow: run from the menu, then save the scene yourself (Ctrl+S). Captures are refreshed automatically.
     [MenuItem("Shtetl/Build House Interior")]
@@ -74,8 +125,6 @@ public static class HouseInteriorBuilder
             .FirstOrDefault(t => new SerializedObject(t).FindProperty("locationId").stringValue == "grandma_house")?.transform;
         if (house == null) throw new System.Exception("Halyna's house (QuestLocationTrigger 'grandma_house') not found.");
 
-        Sprite square = Find("L3/Background/Fog/Square (2)").GetComponent<SpriteRenderer>().sprite;
-        int groundLayer = Find("L2/Background/groundLayer0/temp/temp").gameObject.layer;
         GameObject waypointTemplate = Find("L2/L2->L1 Return Waypoint").gameObject;
 
         //Room root and boundary
@@ -84,10 +133,8 @@ public static class HouseInteriorBuilder
         var root = new GameObject(RootName);
         root.layer = street.gameObject.layer;
         root.transform.position = new Vector3(Center.x, Center.y, 0f);
-        var boundary = root.AddComponent<PolygonCollider2D>();
+        var boundary = root.AddComponent<PolygonCollider2D>(); //Sized by ApplyArt
         boundary.isTrigger = true;
-        float hw = Width / 2f, hh = Height / 2f;
-        boundary.points = new[] { new Vector2(-hw, -hh), new Vector2(hw, -hh), new Vector2(hw, hh), new Vector2(-hw, hh) };
         var location = root.AddComponent<Location>();
         var streetSo = new SerializedObject(street);
         var so = new SerializedObject(location);
@@ -98,25 +145,10 @@ public static class HouseInteriorBuilder
         so.FindProperty("musicVolume").floatValue = streetSo.FindProperty("musicVolume").floatValue * 0.6f; //quieter inside
         so.ApplyModifiedPropertiesWithoutUndo();
 
-        //Placeholder room (PH_ = replace with Batch A art)
-        float left = Center.x - hw, bottom = Center.y - hh, top = Center.y + hh;
-        Block(root.transform, "PH_Wall", square, WallColor, Center.x, Center.y, Width, Height, "Background", 0);
-        Block(root.transform, "PH_Wainscot", square, WainscotColor, Center.x, FloorTop + 1.5f, Width, 3f, "Background", 1);
-        Block(root.transform, "PH_CeilingBeam", square, BeamColor, Center.x, top - 0.75f, Width, 1.5f, "Background", 1);
-        Block(root.transform, "PH_Floor", square, FloorColor, Center.x, (bottom + FloorTop) / 2f, Width, FloorTop - bottom, "Ground2", 0);
-        Block(root.transform, "PH_ExitDoor", square, DoorColor, X(ExitDoorX), FloorTop + 2.8f, 3.2f, 5.6f, "Background", 2);
-        Block(root.transform, "PH_WindowFrame", square, DoorColor, X(WindowX), FloorTop + 6.5f, 4.6f, 4.6f, "Background", 2);
-        Block(root.transform, "PH_WindowGlass", square, GlassColor, X(WindowX), FloorTop + 6.5f, 4f, 4f, "Background", 3);
-        Block(root.transform, "PH_Wardrobe", square, WardrobeColor, X(WardrobeX), FloorTop + 2.9f, 3.4f, 5.8f, "Ground1", 10);
-
-        //Floor and walls the player can't pass
-        Solid(root.transform, "Floor Collider", groundLayer, Center.x, (bottom + FloorTop) / 2f, Width, FloorTop - bottom);
-        Solid(root.transform, "Left Wall", groundLayer, left - 0.5f, Center.y, 1f, Height);
-        Solid(root.transform, "Right Wall", groundLayer, left + Width + 0.5f, Center.y, 1f, Height);
-
-        //Doors: the street door opens when Halyna gives the keys (FindHouse reward); the way out is always open
-        Transform entryArrival = Point(root.transform, "House Interior Entry Arrival", X(EntryArrivalX), FloorTop + 3f);
-        MapTransition exit = Door(root.transform, "House Interior Exit", waypointTemplate, X(ExitDoorX), FloorTop + 2.8f, 3.2f, 5.6f);
+        //Doors: the street door opens when Halyna gives the keys (FindHouse reward); the way out is always open.
+        //ApplyArt places the room's door, arrival, floor and walls on the painting.
+        Transform entryArrival = Point(root.transform, "House Interior Entry Arrival", Center.x, Center.y);
+        MapTransition exit = Door(root.transform, "House Interior Exit", waypointTemplate, Center.x, Center.y, 1f, 1f);
 
         Transform oldDoor = house.Find(StreetDoorName);
         if (oldDoor != null) Object.DestroyImmediate(oldDoor.gameObject);
@@ -137,7 +169,9 @@ public static class HouseInteriorBuilder
         int doorRewardId = RegisterTransition(streetDoor);
 
         //Chest of drawers: Key Choice mini-game, then the three finds
-        BuildChest(root.transform, square);
+        BuildChest(root.transform);
+        ApplyArt(root.transform);
+        UITextLayoutFixer.FixDiscoveryPopup();
         SetQuestRewards(doorRewardId);
         RegisterJournalTopics("FamilyHouse", "FamilyPhoto", "SchoolPhoto", "WeddingInvitation");
         SetUpHalyna(StreetDoorApparentX); //where the door appears while the player is beside Halyna
@@ -146,23 +180,149 @@ public static class HouseInteriorBuilder
         Debug.Log($"House interior built. Street door edit x {doorEditX:0.##} (parallax {effect}), arrival x {arrivalX:0.##}, reward id {doorRewardId}.");
     }
 
-    static float X(float relative) => Center.x + relative;
+    //The art: painted room (camera zoom, boundary, floor, walls, door), wardrobe, chest of drawers and the finds' images.
+    //Works on a fresh build and on the existing scene; removes the old PH_ placeholders.
+    static void ApplyArt(Transform root)
+    {
+        Sprite room = ImportSprite("house_interior.png", ArtPixelsPerUnit, new Vector2(0.5f, 0.5f), false);
+        Vector2 chestPivot = new Vector2(0.5f, (ChestCanvasHeight - ChestBottomPx) / ChestCanvasHeight);
+        Sprite chestClosed = ImportSprite("chest_closed.png", ChestOpaquePx / ChestHeight, chestPivot, true);
+        Sprite chestOpen = ImportSprite("chest_open.png", ChestOpaquePx / ChestHeight, chestPivot, true);
+        Sprite wardrobe = ImportSprite("wardrobe.png", WardrobeOpaquePx / WardrobeHeight,
+            new Vector2(0.5f, (WardrobeCanvasHeight - WardrobeBottomPx) / WardrobeCanvasHeight), true);
+        Sprite familyPhoto = ImportSprite("Finds/feiga_family_photo.png", 100f, new Vector2(0.5f, 0.5f), false);
+        Sprite schoolPhoto = ImportSprite("Finds/feiga_school_photo.png", 100f, new Vector2(0.5f, 0.5f), false);
+        Sprite invitation = ImportSprite("Finds/wedding_invitation.png", 100f, new Vector2(0.5f, 0.5f), false);
 
-    static void BuildChest(Transform root, Sprite square)
+        foreach (Transform placeholder in root.GetComponentsInChildren<Transform>(true).Where(t => t.name.StartsWith("PH_")).ToList())
+            Object.DestroyImmediate(placeholder.gameObject);
+
+        //One still view: the boundary is exactly what the zoomed camera sees
+        float hw = Width / 2f, hh = Height / 2f;
+        root.GetComponent<PolygonCollider2D>().points = new[] { new Vector2(-hw, -hh), new Vector2(hw, -hh), new Vector2(hw, hh), new Vector2(-hw, hh) };
+        var location = new SerializedObject(root.GetComponent<Location>());
+        location.FindProperty("cameraSize").floatValue = CameraSize;
+        location.ApplyModifiedPropertiesWithoutUndo();
+
+        Art(root, "Room Background", room, Center.x, Center.y, "Background", 0);
+        Art(root, "Wardrobe", wardrobe, ArtX(WardrobePx.x), ArtY(WardrobePx.y), "Ground1", 10);
+
+        //Floor and walls the player can't pass
+        int groundLayer = Find("L2/Background/groundLayer0/temp/temp").gameObject.layer;
+        float left = Center.x - hw, bottom = Center.y - hh;
+        Solid(root, "Floor Collider", groundLayer, Center.x, (bottom + FloorTop) / 2f, Width, FloorTop - bottom);
+        Solid(root, "Left Wall", groundLayer, left - 0.5f, Center.y, 1f, Height);
+        Solid(root, "Right Wall", groundLayer, left + Width + 0.5f, Center.y, 1f, Height);
+
+        //The painted open doorway is the way out; the player arrives in front of the chair, clear of the chest and door
+        Transform exit = root.Find("House Interior Exit");
+        exit.position = new Vector3(ArtX(ExitDoorPx), FloorTop + 3f, 0f);
+        exit.GetComponent<BoxCollider2D>().size = new Vector2(3.8f, 6f);
+        root.Find("House Interior Entry Arrival").position = new Vector3(ArtX(EntryArrivalPx), FloorTop + 2f, 0f);
+
+        //Chest of drawers: one object, closed until the Key Choice is solved, then open (MiniGameItem.updatedSprite,
+        //also restored from the save). Its save ID is kept from before the move.
+        Transform chest = root.Find(ChestName);
+        var item = new SerializedObject(chest.GetComponent<MiniGameItem>());
+        var saveId = item.FindProperty("fixedSaveId");
+        if (string.IsNullOrEmpty(saveId.stringValue)) saveId.stringValue = GlobalHelper.GenerateUniqueID(chest.gameObject);
+        item.FindProperty("updatedSprite").objectReferenceValue = chestOpen;
+        item.ApplyModifiedPropertiesWithoutUndo();
+        chest.position = new Vector3(ArtX(ChestPx.x), ArtY(ChestPx.y), 0f);
+        var chestRenderer = chest.GetComponent<SpriteRenderer>();
+        if (chestRenderer == null) chestRenderer = chest.gameObject.AddComponent<SpriteRenderer>();
+        chestRenderer.sprite = chestClosed;
+        chestRenderer.sortingLayerName = "Ground1";
+        chestRenderer.sortingOrder = 10;
+        var trigger = chest.GetComponent<BoxCollider2D>();
+        trigger.size = new Vector2(4.4f, 3.6f);
+        trigger.offset = new Vector2(0f, ChestHeight / 2f + 0.2f);
+
+        //A different close-up on each page of the drawer's contents
+        var pages = new SerializedObject(chest.GetComponentInChildren<InspectPoint>(true));
+        var list = pages.FindProperty("pages");
+        var images = new System.Collections.Generic.Dictionary<string, Sprite>
+        {
+            { "Old drawer", chestOpen }, { "Family photo", familyPhoto }, { "School photo", schoolPhoto }, { "Invitation", invitation }
+        };
+        for (int i = 0; i < list.arraySize; i++)
+        {
+            var page = list.GetArrayElementAtIndex(i);
+            string title = page.FindPropertyRelative("title").stringValue;
+            if (images.TryGetValue(title, out Sprite image))
+                page.FindPropertyRelative("image").objectReferenceValue = image;
+            else
+                Debug.LogWarning($"Drawer page '{title}' has no Batch A image.");
+            if (title == "Family photo") page.FindPropertyRelative("text").stringValue = FamilyPhotoText; //Matches the art
+            page.FindPropertyRelative("imageText").stringValue = title == "Invitation" ? InvitationImageText : "";
+        }
+        pages.ApplyModifiedPropertiesWithoutUndo();
+
+        Debug.Log($"House art applied: room {Width:0.##} x {Height:0.##} (camera size {CameraSize}), floor y {FloorTop:0.##}, " +
+                  $"chest x {chest.position.x:0.##} (save ID '{saveId.stringValue}'), wardrobe x {ArtX(WardrobePx.x):0.##}.");
+    }
+
+    //Sprite import: one sprite, no mipmaps, clamped; the furniture's canvases are multiples of 4 and can be compressed
+    static Sprite ImportSprite(string file, float pixelsPerUnit, Vector2 pivot, bool compress)
+    {
+        string path = ArtFolder + file;
+        if (AssetImporter.GetAtPath(path) == null) AssetDatabase.ImportAsset(path);
+        var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null) throw new System.Exception($"Art not found: {path}");
+
+        importer.textureType = TextureImporterType.Sprite;
+        importer.spriteImportMode = SpriteImportMode.Single;
+        var settings = new TextureImporterSettings();
+        importer.ReadTextureSettings(settings);
+        settings.spritePixelsPerUnit = pixelsPerUnit;
+        settings.spriteAlignment = (int)SpriteAlignment.Custom;
+        settings.spritePivot = pivot;
+        settings.spriteMeshType = SpriteMeshType.FullRect;
+        settings.mipmapEnabled = false;
+        settings.alphaIsTransparency = true;
+        settings.filterMode = FilterMode.Bilinear;
+        settings.wrapMode = TextureWrapMode.Clamp;
+        settings.npotScale = TextureImporterNPOTScale.None;
+        importer.SetTextureSettings(settings);
+        importer.maxTextureSize = 2048;
+        importer.textureCompression = compress ? TextureImporterCompression.CompressedHQ : TextureImporterCompression.Uncompressed;
+        importer.SaveAndReimport();
+
+        Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        if (sprite == null) throw new System.Exception($"No sprite imported from {path}");
+        return sprite;
+    }
+
+    //A sprite at its import size (scale 1); reuses the child if it exists
+    static void Art(Transform parent, string name, Sprite sprite, float x, float y, string sortingLayer, int order)
+    {
+        Transform t = parent.Find(name);
+        if (t == null)
+        {
+            t = new GameObject(name).transform;
+            t.SetParent(parent, false);
+        }
+        t.localScale = Vector3.one;
+        t.position = new Vector3(x, y, 0f);
+        var sr = t.GetComponent<SpriteRenderer>();
+        if (sr == null) sr = t.gameObject.AddComponent<SpriteRenderer>();
+        sr.sprite = sprite;
+        sr.color = Color.white;
+        sr.sortingLayerName = sortingLayer;
+        sr.sortingOrder = order;
+    }
+
+    static void BuildChest(Transform root)
     {
         GameObject boxPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/MiniGame Items/Box 1.prefab");
-        Sprite boxSprite = boxPrefab.GetComponent<SpriteRenderer>().sprite;
-        Sprite photoSprite = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Items/Photo.prefab").GetComponent<Image>().sprite;
 
-        var chest = new GameObject("Chest of Drawers");
+        //Created where it first stood, so ApplyArt keeps the save ID that existing saves use, then moves it
+        var chest = new GameObject(ChestName);
         chest.layer = boxPrefab.layer;
         chest.transform.SetParent(root, false);
-        chest.transform.position = new Vector3(X(ChestX), FloorTop + 1.3f, 0f);
+        chest.transform.position = LegacyChestPosition;
         var trigger = chest.AddComponent<BoxCollider2D>();
         trigger.isTrigger = true;
-        trigger.size = new Vector2(4.5f, 4f);
-        Block(chest.transform, "PH_ChestOfDrawers", square, ChestColor, X(ChestX), FloorTop + 1.3f, 3.8f, 2.6f, "Ground1", 10);
-        Block(chest.transform, "PH_DrawerLine", square, WardrobeColor, X(ChestX), FloorTop + 1.6f, 3.4f, 0.15f, "Ground1", 11);
 
         var contents = new GameObject("Drawer Contents");
         contents.transform.SetParent(chest.transform, false);
@@ -172,17 +332,16 @@ public static class HouseInteriorBuilder
         var pages = new SerializedObject(inspect);
         var list = pages.FindProperty("pages");
         list.arraySize = 4;
-        //Placeholder images (PH): the Batch A close-ups replace them.
+        //ApplyArt sets each page's image (matched by title).
         //Titles fit one line of the popup title (600 px at size 70); texts stay within its 5-line description box.
-        SetPage(list.GetArrayElementAtIndex(0), boxSprite, "Old drawer",
+        SetPage(list.GetArrayElementAtIndex(0), null, "Old drawer",
             "The drawer is open. Inside are old photos and papers.", "", null, "");
-        SetPage(list.GetArrayElementAtIndex(1), photoSprite, "Family photo",
-            "A big Jewish family stands in their hallway. Behind them, a small square on the wall has no paint.",
-            "family_photo", null, "");
-        SetPage(list.GetArrayElementAtIndex(2), photoSprite, "School photo",
+        SetPage(list.GetArrayElementAtIndex(1), null, "Family photo",
+            FamilyPhotoText, "family_photo", null, "");
+        SetPage(list.GetArrayElementAtIndex(2), null, "School photo",
             "An old class photo: girls and boys with their teacher. Did great-grandma study at this school?",
             "school_photo", leadSchool, "");
-        SetPage(list.GetArrayElementAtIndex(3), photoSprite, "Invitation",
+        SetPage(list.GetArrayElementAtIndex(3), null, "Invitation",
             "An old invitation to a wedding in the synagogue. Where was the synagogue?",
             "wedding_invitation", leadSynagogue, "house_finds_seen");
         pages.ApplyModifiedPropertiesWithoutUndo();
@@ -369,28 +528,18 @@ public static class HouseInteriorBuilder
         return t;
     }
 
-    static void Block(Transform parent, string name, Sprite square, Color color, float x, float y, float width, float height,
-                      string sortingLayer, int order)
-    {
-        var go = new GameObject(name);
-        go.transform.SetParent(parent, false);
-        var sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = square;
-        sr.color = color;
-        sr.sortingLayerName = sortingLayer;
-        sr.sortingOrder = order;
-        Vector3 parentScale = parent.lossyScale;
-        go.transform.localScale = new Vector3(width / square.bounds.size.x / parentScale.x, height / square.bounds.size.y / parentScale.y, 1f);
-        go.transform.position = new Vector3(x, y, 0f);
-    }
-
+    //A solid box collider; reuses the child if it exists
     static void Solid(Transform parent, string name, int layer, float x, float y, float width, float height)
     {
-        var go = new GameObject(name);
+        Transform t = parent.Find(name);
+        GameObject go = t != null ? t.gameObject : new GameObject(name);
         go.layer = layer;
         go.transform.SetParent(parent, false);
         go.transform.position = new Vector3(x, y, 0f);
-        go.AddComponent<BoxCollider2D>().size = new Vector2(width, height);
+        var box = go.GetComponent<BoxCollider2D>();
+        if (box == null) box = go.AddComponent<BoxCollider2D>();
+        box.size = new Vector2(width, height);
+        box.offset = Vector2.zero;
     }
 
     static float ParallaxEffect(Transform t)

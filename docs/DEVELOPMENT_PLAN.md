@@ -82,7 +82,7 @@ Proposed story order (D1): House → Synagogue → School → Market → Mikvah 
 
 ### M2: Rework existing content to match the spec
 8. Prologue: funeral, box objects, Yiddish caption.
-9. ✅ (complete, runtime-confirmed 2026-10-30) L1 House: Halyna's dialogue per the spec, the key quest opening the chest of drawers, the 3 finds starting the School and Synagogue leads, the house interior (placeholders until Batch A).
+9. ✅ (complete, runtime-confirmed 2026-10-30) L1 House: Halyna's dialogue per the spec, the key quest opening the chest of drawers, the 3 finds starting the School and Synagogue leads, the house interior (Batch A art integrated 2026-10-30; Play mode test pending).
 10. L5 Cemetery: clean up, entry transition, the "find Nathan ben Shlomo" quest gated by the donation list, a decision on the letter.
 11. Repurpose or cut the `L1 Forest` content (pending decision D2).
 

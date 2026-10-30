@@ -10,18 +10,29 @@ public class MiniGameItem : MonoBehaviour, IInteractable
     [SerializeField] private string questObjectiveId; //Optional: Custom quest objective completed with the mini-game
     [SerializeField] private InspectPoint revealOnComplete; //Optional: what the player finds, shown now and on later visits
     [SerializeField] private bool removeOnComplete; //Gone once solved (and after a reload), e.g. Halyna's key box
+    [SerializeField] private string fixedSaveId; //Optional: keeps the save ID (name + position) when a placed item is moved
+    [SerializeField] private Quest goneAfterQuest; //Optional, with removeOnComplete: also gone once this quest is done (the key box after FindKeys)
     private IMiniGame miniGame;
     private bool isCompleted;
 
     void Awake()
     {
-        uniqueID = GlobalHelper.GenerateUniqueID(gameObject);
+        uniqueID = string.IsNullOrEmpty(fixedSaveId) ? GlobalHelper.GenerateUniqueID(gameObject) : fixedSaveId;
         miniGame = FindFirstObjectByType<MiniGameRegistry>(FindObjectsInactive.Include)
         ?.GetMiniGame(miniGameItemID);
     }
 
     void Start()
     {
+        //Its purpose is done even if the search itself was never marked solved (e.g. closed early in an older version)
+        if (removeOnComplete && goneAfterQuest != null &&
+            (QuestController.Instance.IsQuestCompleted(goneAfterQuest.questID) || QuestController.Instance.IsQuestHandedIn(goneAfterQuest.questID)))
+        {
+            SaveController.Instance.MarkMiniGameCompleted(miniGameItemID, uniqueID, spawnPosition); //Not spawned again
+            Destroy(gameObject);
+            return;
+        }
+
         var itemData = SaveController.Instance.GetSpawnedItemData(uniqueID);
         if (itemData != null)
         {

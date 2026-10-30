@@ -76,8 +76,7 @@ public class SaveController : MonoBehaviour
 
             if (targetLocation != null)
             {
-                var confiner = FindFirstObjectByType<CinemachineConfiner2D>();
-                if (confiner != null) confiner.BoundingShape2D = targetLocation.MapBoundary;
+                targetLocation.ApplyToCamera(FindFirstObjectByType<CinemachineConfiner2D>());
                 SoundEffectManager.PlayMusic(targetLocation.MusicClip, targetLocation.MusicVolume, targetLocation.MusicFadeDuration);
             }
 

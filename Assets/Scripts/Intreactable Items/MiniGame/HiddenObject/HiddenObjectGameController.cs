@@ -36,23 +36,42 @@ public class HiddenObjectGameController : MonoBehaviour, IMiniGame
 
     public void Close()
     {
+        //Closed during the short pause after the last find: the search is still solved (closing stops the coroutine)
+        if (isCompleting && !isCompleted)
+        {
+            CompleteGame();
+            return;
+        }
+
         isOpen = false;
-        gameObject.SetActive(false);        
+        gameObject.SetActive(false);
         PauseController.SetPause(false);
         currentSource = null;
     }
 
     public void InitializeGame()
     {
+        //Items found before the window was closed stay found (they are already in the inventory)
         isCompleted = false;
-        foundCount = 0;
+        isCompleting = false;
+        foundCount = targetItems.Count(item => item.IsFound);
 
         foreach (var item in targetItems)
         {
             item.Init(this);
         }
-        
+
         BuildTargetsList(targetItems);
+        foreach (var item in targetItems.Where(item => item.IsFound))
+        {
+            slotsByItem[item].SetFound(true);
+        }
+
+        if (foundCount >= targetItems.Count)
+        {
+            isCompleting = true;
+            StartCoroutine(CompleteWithDelay());
+        }
     }
 
     public void BuildTargetsList(List<HiddenObjectItem> targetItems)
@@ -109,6 +128,7 @@ public class HiddenObjectGameController : MonoBehaviour, IMiniGame
 
     private void CompleteGame()
     {
+        isCompleted = true;
         currentSource?.CompleteMiniGame();
         OnCompleted?.Invoke();
         Close();
