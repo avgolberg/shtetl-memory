@@ -10,7 +10,8 @@ using UnityEngine;
 // Sky, clouds and the far layer are copies of L2's, so the town looks the same. Unlike L2, the walking ground and
 // everything on it stand still (no parallax), so edit positions are exactly where things appear.
 // Touches only its own objects: the "Market Square" root and the L2 waypoint pair below. Doesn't call other builders.
-// Idempotent: the root, the L2 waypoint and its arrival point are replaced on every run.
+// Idempotent: the root's contents, the L2 waypoint and its arrival point are replaced on every run. The root itself and
+// its Location are kept, and so is the "House of Culture Entrance" group (HouseOfCultureBuilder's door into Location 6).
 // Batch: Unity.exe -batchmode -projectPath <project> -executeMethod MarketSquareBuilder.BuildBatch -logFile <log>
 public static class MarketSquareBuilder
 {
@@ -20,6 +21,7 @@ public static class MarketSquareBuilder
     const string WaypointTemplatePath = "L2/L2->L1 Return Waypoint";
     const string StreetWaypointName = "L2->Market Square Waypoint";
     const string SquareWaypointName = "Market Square->L2 Waypoint";
+    public const string EntranceGroupName = "House of Culture Entrance"; //Owned by HouseOfCultureBuilder; kept on rebuilds
 
     //Below the house interior (y -249..-231); same frame as L2 (boundary 15 above to 47 below the root)
     static readonly Vector2 Origin = new Vector2(0f, -330f);
@@ -87,13 +89,13 @@ public static class MarketSquareBuilder
         Location street = FindLocation("2");
         GameObject template = Find(WaypointTemplatePath).gameObject;
 
-        //Root, boundary, end walls
-        foreach (var old in EditorSceneManager.GetActiveScene().GetRootGameObjects().Where(g => g.name == RootName))
-            Object.DestroyImmediate(old);
-        var root = new GameObject(RootName);
+        //Root, boundary, end walls. An existing root and its Location are kept (other builders' transitions point at
+        //this Location), only the contents are rebuilt; the House of Culture entrance group is left in place.
+        GameObject root = PrepareRoot();
         root.layer = street.gameObject.layer;
         root.transform.position = new Vector3(Origin.x, Origin.y, 0f);
-        var boundary = root.AddComponent<PolygonCollider2D>();
+        var boundary = root.GetComponent<PolygonCollider2D>();
+        if (boundary == null) boundary = root.AddComponent<PolygonCollider2D>();
         boundary.isTrigger = true;
         boundary.points = new[]
         {
@@ -107,7 +109,8 @@ public static class MarketSquareBuilder
             wall.size = new Vector2(WallWidth, WallHeight);
         }
 
-        var location = root.AddComponent<Location>();
+        var location = root.GetComponent<Location>();
+        if (location == null) location = root.AddComponent<Location>();
         var streetSo = new SerializedObject(street);
         var so = new SerializedObject(location);
         so.FindProperty("locationID").stringValue = LocationId;
@@ -129,10 +132,27 @@ public static class MarketSquareBuilder
         Link(squareWaypoint, street, streetArrival);
 
         BuildPlaceholders(root.transform, background);
+        //The kept House of Culture entrance follows the façade door if it moved
+        if (root.transform.Find(EntranceGroupName) != null) HouseOfCultureBuilder.AlignEntrance(root.transform);
 
         Debug.Log($"Market Square built: x {-HalfWidth}..{HalfWidth}, root y {Origin.y}. " +
                   $"L2 waypoint edit x {streetWaypoint.transform.position.x:0.##} (appears at {StreetWaypointShownX}), arrival {StreetArrivalX}; " +
                   $"square waypoint {SquareWaypointX}, arrival {SquareArrivalX}.");
+    }
+
+    //The square's root: kept if it exists (its children and end walls are removed, except the House of Culture
+    //entrance, which HouseOfCultureBuilder owns), otherwise created
+    static GameObject PrepareRoot()
+    {
+        GameObject[] roots = EditorSceneManager.GetActiveScene().GetRootGameObjects().Where(g => g.name == RootName).ToArray();
+        for (int i = 1; i < roots.Length; i++) Object.DestroyImmediate(roots[i]);
+        if (roots.Length == 0) return new GameObject(RootName);
+
+        GameObject root = roots[0];
+        foreach (Transform child in root.transform.Cast<Transform>().ToList())
+            if (child.name != EntranceGroupName) Object.DestroyImmediate(child.gameObject);
+        foreach (var wall in root.GetComponents<BoxCollider2D>()) Object.DestroyImmediate(wall);
+        return root;
     }
 
     //A copy of L2's background: the sky, clouds and far layer keep their parallax; the two walking-ground layers
@@ -249,9 +269,12 @@ public static class MarketSquareBuilder
         var group = new GameObject("Placeholders").transform;
         group.SetParent(root, false);
 
-        //House of Culture: wall, roof band, two rows of tall windows, door, the mezuzah recess on the right doorpost, the sign
-        float baseY = GroundY(background, CultureX - CultureWidth / 2f, CultureX + CultureWidth / 2f);
-        Transform culture = Block(group, "PH_House of Culture", square, CultureX, baseY, CultureWidth, CultureHeight, PlaceholderWall, 1);
+        //House of Culture: wall, roof band, one row of tall windows, door, the mezuzah recess on the right doorpost, the sign.
+        //The façade stands on the ground at the door (where the player's feet are); the wall reaches down to the lowest
+        //ground under it, so it never floats where the ground dips (about 1.4 lower at x 24 than at the door)
+        float baseY = GroundY(background, CultureX - DoorWidth / 2f, CultureX + DoorWidth / 2f);
+        float wallBottom = GroundY(background, CultureX - CultureWidth / 2f, CultureX + CultureWidth / 2f);
+        Transform culture = Block(group, "PH_House of Culture", square, CultureX, wallBottom, CultureWidth, baseY + CultureHeight - wallBottom, PlaceholderWall, 1);
         Block(culture, "PH_Roof", square, CultureX, baseY + CultureHeight - 0.5f, CultureWidth + 1.5f, 2.5f, PlaceholderRoof, 2);
         foreach (float dx in CultureWindowX)
             Block(culture, "PH_Window", square, CultureX + dx, baseY + WindowBottom, WindowWidth, WindowHeight, PlaceholderGlass, 2);
