@@ -29,6 +29,20 @@ Any status other than Missing still needs a play-test.
 - pine waypoint markers are temporary
 - the product name is still "Messing Around" (it's the save folder name; don't change it without moving the dev saves)
 
+## M2.2 B1a: Market Square shell (2026-10-31; complete, runtime-confirmed by the owner)
+Built by `Assets/Editor/ShtetlTools/MarketSquareBuilder.cs` (menu **Shtetl → Build Market Square**, batch `MarketSquareBuilder.BuildBatch`). Re-runnable: it replaces only the `Market Square` root and its own L2 objects (`L2->Market Square Waypoint` + `… Arrival`), and calls no other builder.
+- **Location 5 "Market Square"**: root at (0, -330), below the house interior; boundary x -72..72, y -377..-315 (144 × 62, the same height frame as L2); end walls like L2's (inner faces at x ±64.5); default zoom 17.5; L2's music.
+- **Background:** a copy of `L2/Background`. Sky, clouds and the far town layer (`groundLayer2`, distant houses and trees) keep their parallax. The walking ground (`groundLayer0` with its colliders, `groundLayer1`) stands still (parallax 0, no looping), so the square's gameplay objects are plain world positions with no parallax compensation. The copied outer ground pieces (x ±128, ±192) are not created.
+- **Placeholders (`PH_`, `Ground1`, with labels), right to left:** House of Culture 30 × 18 + roof at x 17..47 (provisional proportions: one row of 4 tall windows for the double-height hall, door at x 32, mezuzah recess on the right doorpost, sign board "Budynok kultury"); plaza: well (x 0) and notice board (x 7); market: 3 stall frames at x -46, -34, -22 (space -54..-8, for M3.3); reserved post at x -59 for a later School / Library exit (no transition). Bases are placed on the ground by edit-mode raycasts (lowest point under each piece).
+- **Transitions (always open; development pines):**
+  - `L2->Market Square Waypoint`: a copy of the L2 pine (parallax 0.1), edit x -167.48 → appears at x -183.5 at L2's left wall when the camera is at the street's left limit. Sorted `Ground1` order 3, in front of the street's trees (orders 1–2; behind them the cypress hid it). Its sprite is lowered 2.94 onto the ground and its trigger offset raised by the same amount (trigger unchanged in the world). Arrives in the square at (58.8, -349).
+  - `Market Square->L2 Waypoint` at x 64.3 (no parallax) → L2 arrival (-178, -85.4), right of the pine.
+- **Finding:** L2's outer ground pieces (`groundLayer0/temp`, `groundLayer1/temp`) are **inactive** in the scene; in play the looping ground moves the active pieces under the player. Edit-mode ground checks on L2 must sample the same point within the active centre piece (the pieces repeat every 64).
+- **`LocationCapture`:** a location without NPCs now frames its tiles from the arrival points that lead into it (before: the transition markers' height, which cut off the square's ground).
+- **Dev saves:** `l2_left_end_post_intro` (L2 at x -170, next to the new pine), `market_square_post_intro` (in the square at its arrival point).
+- **Runtime-confirmed by the owner (2026-10-31):** L2 ↔ Market Square both ways, no transition loops; the player lands and stays on the ground; camera limits and walls; the House of Culture fits the gameplay camera; music continues; save and load inside the square; starting directly in the square; the L2 pine stands on the ground.
+- **Capture note:** a faint vertical cloud seam (a tile edge of the copied L2 cloud layer) shows in the square's captures; not reported in Play mode.
+
 ## M2.1 rework after the owner's play-test (2026-10-30; complete, runtime-confirmed by the owner)
 Runtime-confirmed by the owner (first version): the main sequence works. Reported: too linear, text overflow, Halyna and the door competing for E, a slow "float" after transitions, the market reminder never shown.
 - **Sequence:** the owner's flower quest and the hidden-object key search in the husband's box are back (see DEVELOPMENT_PLAN → M2.1). `FindKeys` is the key search again; the chest of drawers has its own quest `OpenChest`. Halyna has 5 stages (`Part0`–`Part4`). `FindHouse` gives no reward; `FindKeys` opens the door. Flowers: 3 of each colour (18 are on the street). Key items are named "Key with a tag" and "Old key" (inventory and the box's target list).
@@ -67,6 +81,13 @@ Placeholders are named `PH_` in the scene. Shared style brief, references and sc
 - Popup pages: the family photo, school photo and invitation each have their own image (their black scan surround was made transparent). "Old drawer" uses `chest_open`. The family photo shows the family at the table, so the page text and journal line now say that. The family photo text only raises the question of the unfinished square (*amah al amah*, explained later by Semen). The invitation shows the agreed wording on the card (Rivka and David, Ladanivka Synagogue, 1937; STORY_SPEC) through `InspectPoint.Page.imageText` and `GraveInfoUI.imageOverlayText`. `GraveInfoUI` now fits the panel to its content (image by its aspect, description by its text, panel centred); the panel is 94% opaque (was 79%).
 - **Still optional:** A7 (open drawer seen from above, 4:3) would suit the "Old drawer" page better than the furniture sprite. A8 (Halyna) only if needed.
 
+**Batch C: Market Square and House of Culture (M2.2): placeholders in place since B1a (2026-10-31); art not requested yet.** Flat-colour style like the L2 village; sizes are recommendations.
+- **C1 House of Culture façade** (`PH_House of Culture`): transparent PNG, about 2048 px wide. A distinctive historic former-synagogue building, not a generic administrative block; tall arched windows (some re-glazed or partly bricked up), steps, door, a small mezuzah recess on the right doorpost, sign «Будинок культури». Must stay comfortably inside the gameplay camera (placeholder: 30 × 18 units + roof; L2 houses are about 14 tall).
+- **C7 Square props** (`PH_Well`, `PH_Notice Board`; later a workshop poster): transparent, about 512–1024 px each.
+- **C8 Transition signpost or archway** for L2 ↔ Market Square (now development pines): transparent, about 512 × 768.
+- **C9 Market stalls** (`PH_Market Stall` ×3): later, with M3.3.
+- The interior (C2–C6: foyer / hall paintings, trace close-ups, visitors' book page, workshop table) waits for the approved B1b layout.
+
 ## Requirements coverage
 
 | Requirement | Status | Current implementation / gap |
@@ -80,7 +101,7 @@ Placeholders are named `PH_` in the scene. Shared style brief, references and sc
 | L1: mini-quest 2, bundle of keys → open the chest of drawers | Implemented [T] | The box search gives the keys (`FindKeys`); Key Choice on the `Chest of Drawers` (`OpenChest`) (M2.1) |
 | L1: finds (family photo with the unpainted square, school photo → School, invitation → Synagogue) | Implemented [T] | `InspectPoint` pages + journal + the `LeadSchool` / `LeadSynagogue` quests; the locations come in M3 |
 | L1: house interior | Implemented with Batch A art [T] | `House Interior` location (camera zoom 8.75) |
-| **L2 Synagogue / House of Culture:** windows, mezuzah recesses | Missing | A Mezuzah journal topic exists, but it's tied to Halyna's door |
+| **L2 Synagogue / House of Culture:** windows, mezuzah recesses | Partial: location shell (B1a, runtime-confirmed 2026-10-31) | Market Square (Location 5) with a `PH_` House of Culture façade, reached from L2's left end. Missing: the interior (B1b), the traces (B2), Oksana (B3). A Mezuzah journal topic exists, but it's tied to Halyna's door |
 | L2: mini-quest 6, Vytynanka | ✅ Implemented and tested in Unity (B0, 2026-10-31) | Workshop screen; paper colour, continuous cutting along the traced lines, unfold, baked silhouette, backing paper, item "My vytynanka" in the chosen colours, journal, save; opened by F9 for testing until the workshop table exists (B3). Flags `vytynanka_made`, `vytynanka_paper_*`, `vytynanka_mount_*`; item ID 10 (DEVELOPMENT_PLAN → M2.2 → B0) |
 | L2: administrator dialogue | Missing | — |
 | **Semen (Shimon)**: education, house of help, unpainted square, mikvah, donation list | Missing | The spec doesn't say where he appears (cemetery? [I]) |

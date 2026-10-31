@@ -73,10 +73,21 @@ Test with the dev save `l2_halyna_house_post_intro`. Art: Batch A (IMPLEMENTATIO
 Open idea: Halyna mentions a wardrobe (spec), the keys open a chest of drawers (spec). Unifying them into one piece of furniture would remove a small inconsistency; ask the owner.
 
 ## M2.2 Former Synagogue / House of Culture (in progress, started 2026-10-31)
-Location identity: "reading a building" (traces of its first purpose), the Vytynanka workshop, the administrator Oksana, a gradual lead to Semen. Blocks: B0 mini-game → B1 location shell → B2 traces → B3 Oksana and quest flow → B4 polish and docs → B5 art (Batch C).
+Location identity: "reading a building" (traces of its first purpose), the Vytynanka workshop, the administrator Oksana, a gradual lead to Semen. Blocks: B0 mini-game → B1a Market Square shell → B1b House of Culture interior shell → B2 traces → B3 Oksana and quest flow → B4 square dressing, polish and docs → B5 art (Batch C).
 Owner decisions (2026-10-31):
 - **D-a** This is M2.2. Autosave comes separately later.
-- **D-b** Don't move or replace L2 houses. Claude recommends where the building goes (L2 or a new town square that could also hold the market) before B1.
+- **D-b** ✅ Decided: a separate **Market Square** (Location 5), reached from L2's left end near Maria (Option B). L2 had no room for a public building; the square also holds the market (M3.3) and reserves a later School / Library connection. Don't move or replace L2 houses, Halyna's house, the Mikvah or the cemetery route.
+- **N1** The square and the House of Culture are always open, also before the wedding invitation is found.
+- **N2** Oksana reveals the building's history through the invitation **or** the architectural traces. The Vytynanka workshop is never a dialogue gate.
+- **N5** The optional visitors' book clue is signed only "S.", with no date.
+- **N6** Cautious wording for the former Torah ark area (e.g. "Old people say the holy cabinet stood here").
+- **N7** The façade sign reads «Будинок культури» in Ukrainian (art); the location name in the UI is "Market Square".
+- **N9** No generic historical reconstruction illustrations for now.
+- **N10** Space is reserved for a later School / Library connection; nothing is implemented.
+- Population figures (STORY_SPEC's 60–70%, "several synagogues, this the biggest") and any precise building history stay **provisional until verified**. No unapproved historical facts or new story revelations.
+- **Semen lead:** the quest must work whether or not the player has already met him: an objective such as "Ask Semen about the old synagogue", not "Meet Semen".
+- **House of Culture art:** the placeholder proportions are provisional. The final building needs a distinctive historic character (not a generic administrative block) and must stay comfortably inside the gameplay camera.
+- **Before B1b:** Claude shows a functional interior layout proposal; the owner decides whether two connected views are really needed.
 - **D-c** Keep the 1937 wedding. Don't state closure dates, wartime uses or Soviet rebuilding dates without historical support. The informal community help that paid for the wedding is a provisional solution.
 - **D-d** Oksana may run the papercutting workshop if it fits her character.
 - **D-e** Keep the optional visitors' book clue ("I came to see where my parents were married. — S.").
@@ -107,8 +118,14 @@ Owner decisions (2026-10-31):
   - The professor's dialogue: with `vytynanka_made` (or item 10) he recognises "your vytynanka" and talks about Jewish reyzelekh and Ukrainian vytynanka (STORY_SPEC, Location 3); without it, a natural hint to visit the House of Culture workshop. The workshop never gates the House of Culture itself (owner).
 - Temporary test entry, development builds and the editor only: **F9** opens it anywhere, **Shift+F9** resets the reward and colours (the journal entry stays). Remove or keep as a dev tool after B3.
 
+**B1a Market Square shell: ✅ complete, runtime-confirmed and approved by the owner (2026-10-31).** Built by `MarketSquareBuilder` (menu **Shtetl → Build Market Square**; re-runnable, touches only the `Market Square` root and its own L2 waypoint pair, calls no other builder). Details in IMPLEMENTATION_STATUS → "M2.2 B1a".
+- Location **5 "Market Square"**, root at (0, -330), 144 × 62 (about 2.3 camera views, 18 s to walk across; L2 takes 46 s), default zoom, L2's music.
+- Layout, right to left (world x): arrival from L2 (58.8) · House of Culture (17..47, door 32) · plaza with well and notice board (0..7) · market with three stall frames (-54..-8, for M3.3) · reserved post for a later School / Library exit (-59, no transition). All `PH_` placeholders.
+- Transitions (always open, development pines): L2 left end (pine appears at x -183.5 at the left wall, in front of the trees) → square arrival (58.8, -349); square pine (64.3) → L2 arrival (-178, -85.4).
+- Next: **B1b** needs the owner's approval of an interior layout proposal first (one view or two connected views).
+
 ## Next tasks (in order)
-1. **M2.2 Synagogue / House of Culture** (above): completes `LeadSynagogue` (ReachLocation `synagogue`).
+1. **M2.2 Synagogue / House of Culture** (above): B1b interior layout proposal → B1b … B5. Completes `LeadSynagogue` (ReachLocation `synagogue`). Known risk for B1b: `NotifyLocationReached` only checks active quests, so a visit before the invitation would not count later (fix with a remembered flag, like Custom objectives).
 2. **Autosave** at meaningful milestones (decided 2026-10-30): important discoveries, quest acceptance and completion, location transitions; keep the manual Save button. Separate task, when the owner asks.
 3. **Prologue rework** (Batch B art).
 4. **M3.2 School**: completes `LeadSchool` (ReachLocation `school`). The professor mentions "your vytynanka" (item "My vytynanka" / flag `vytynanka_made`): give him a line variant for players who come before the Synagogue (the leads are not linear).
@@ -124,7 +141,7 @@ Proposed story order (D1): House → Synagogue → School → Market → Mikvah 
 ### M3: New locations (story order is pending decision D1)
 12. L2 Synagogue / House of Culture: Vytynanka connected to quest, reward and journal; the administrator.
 13. L3 School: the professor and reizele.
-14. L4 Market: 5 flashback stalls.
+14. L4 Market: 5 flashback stalls, in the Market Square's reserved market space (built in M2.2 B1a; the plaza can hold the klezmer flashback).
 15. L6 Library: the librarian and the donation-book mini-quest.
 16. Semen's dialogue chain, plus the educational journal topics.
 

@@ -170,10 +170,17 @@ public static class LocationCapture
         return sb.ToString();
     }
 
-    //Camera height the player would see: walking level (median NPC height, else transitions) in the lower third of the view
+    //Camera height the player would see: walking level (median NPC height, else the arrival points that lead here,
+    //else transitions) in the lower third of the view
     static float WalkLevelCameraY(Location location, Rect area, float orthoSize)
     {
         List<float> feet = location.GetComponentsInChildren<NPC>(true).Select(n => n.transform.position.y).OrderBy(y => y).ToList();
+        if (feet.Count == 0)
+            feet = Object.FindObjectsByType<MapTransition>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Select(m => new SerializedObject(m))
+                .Where(so => so.FindProperty("targetLocation").objectReferenceValue == location)
+                .Select(so => so.FindProperty("teleportTargetPosition").objectReferenceValue as Transform)
+                .Where(t => t != null).Select(t => t.position.y).OrderBy(y => y).ToList();
         if (feet.Count == 0)
             feet = location.GetComponentsInChildren<MapTransition>(true).Select(m => m.transform.position.y).OrderBy(y => y).ToList();
         float walkY = feet.Count > 0 ? feet[feet.Count / 2] : area.center.y - orthoSize * 0.4f;
