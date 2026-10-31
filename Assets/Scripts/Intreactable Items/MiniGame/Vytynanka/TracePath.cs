@@ -16,6 +16,16 @@ public class TracePath : MonoBehaviour
     public bool ClosePathToStart => closePathToStart;
     public TracePoint FirstPoint => points != null && points.Length > 0 ? points[0] : null;
 
+    //The hand-placed points in order: the geometry of this cut line (VytynankaMiniGame cuts along them continuously)
+    public TracePoint[] Points
+    {
+        get
+        {
+            if (points == null) CachePoints();
+            return points;
+        }
+    }
+
     private void Awake()
     {
         CachePoints();
@@ -91,4 +101,4 @@ public class TracePath : MonoBehaviour
         foreach (var point in points)
             point.Hide();
     }
-}
+}

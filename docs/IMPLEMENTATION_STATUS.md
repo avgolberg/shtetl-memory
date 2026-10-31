@@ -6,7 +6,7 @@ Mapped against [STORY_SPEC.md](STORY_SPEC.md). Last audit: 2026-10-28 (read-only
 Any status other than Missing still needs a play-test.
 
 ## Session summary (2026-10-28)
-**Completed and committed locally on `main`** (push blocked by a GitHub 403 for the stored user `alyona336`; see CLAUDE.md):
+**Completed and committed on `main`** (the push was blocked by a GitHub 403 that day; fixed since, everything is on GitHub):
 - **Safety:** full backup at `C:\Users\Alyona\Backups\ShtetlMemory_2026-10-28`; the Vytynanka WIP and docs committed.
 - **M0 fixes:** build list → `MainScene`; saves store quests by `questID`; first-launch save and inventory init; fallback for a missing location.
 - **`LocationCapture` tool:** overview and player-view tiles with parallax simulated; summary with layers, NPCs, issues and transition checks.
@@ -81,7 +81,7 @@ Placeholders are named `PH_` in the scene. Shared style brief, references and sc
 | L1: finds (family photo with the unpainted square, school photo → School, invitation → Synagogue) | Implemented [T] | `InspectPoint` pages + journal + the `LeadSchool` / `LeadSynagogue` quests; the locations come in M3 |
 | L1: house interior | Implemented with Batch A art [T] | `House Interior` location (camera zoom 8.75) |
 | **L2 Synagogue / House of Culture:** windows, mezuzah recesses | Missing | A Mezuzah journal topic exists, but it's tied to Halyna's door |
-| L2: mini-quest 6, Vytynanka | Partial | Gameplay exists but is **uncommitted** [C]. On completion it only closes; no quest or reward hook [I] |
+| L2: mini-quest 6, Vytynanka | ✅ Implemented and tested in Unity (B0, 2026-10-31) | Workshop screen; paper colour, continuous cutting along the traced lines, unfold, baked silhouette, backing paper, item "My vytynanka" in the chosen colours, journal, save; opened by F9 for testing until the workshop table exists (B3). Flags `vytynanka_made`, `vytynanka_paper_*`, `vytynanka_mount_*`; item ID 10 (DEVELOPMENT_PLAN → M2.2 → B0) |
 | L2: administrator dialogue | Missing | — |
 | **Semen (Shimon)**: education, house of help, unpainted square, mikvah, donation list | Missing | The spec doesn't say where he appears (cemetery? [I]) |
 | **L3 School (art college):** professor, reizele | Missing | — |
@@ -121,7 +121,7 @@ Placeholders are named `PH_` in the scene. Shared style brief, references and sc
 - Execution order (from the `.meta` files): ItemDictionary/TransitionDictionary 300, Inventory 400, Quest 500, ScreenFader 550, SaveController 600. So load runs after the managers' Awake [C].
 - **Saving happens only** on first run, on the intro, on character selection, and from the menu Save button. No autosave [C].
 - The Player Settings product name is still **"Messing Around"** (company "DefaultCompany"). Changing it moves the save folder.
-- **Unsaved-work risk:** uncommitted changes in `MainScene.unity` and the untracked Vytynanka folder (plus its prefab and SFX).
+- ✅ **Unsaved-work risk** (2026-10-28): resolved; the Vytynanka work and `MainScene` were committed in `b8dc7d7`.
 - **Paid assets aren't in Git.**
 - `ObjectiveType.TalkNPC` and `Custom` are declared but appear unhandled [I].
 

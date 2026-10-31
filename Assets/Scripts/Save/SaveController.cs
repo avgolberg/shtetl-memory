@@ -169,6 +169,13 @@ public class SaveController : MonoBehaviour
         return storyFlagsSet.Contains(flag);
     }
 
+    //E.g. undo a choice that couldn't be completed (Vytynanka with a full inventory), or a development reset
+    public void ClearFlag(string flag)
+    {
+        if (storyFlagsSet.Remove(flag))
+            storyFlags.Remove(flag);
+    }
+
     public void LoadStoryFlags(List<string> flags)
     {
         storyFlags = flags ?? new List<string>();

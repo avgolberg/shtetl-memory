@@ -1,9 +1,9 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+//A hand-placed point of a cut line. Since the B0 polish the dots stay hidden: cutting follows the line between them
 [RequireComponent(typeof(Image))]
-public class TracePoint : MonoBehaviour, IPointerEnterHandler
+public class TracePoint : MonoBehaviour
 {
     private Image image;
     private bool completed;
@@ -61,11 +61,6 @@ public class TracePoint : MonoBehaviour, IPointerEnterHandler
             image.enabled = false;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        VytynankaMiniGame.Instance?.TryCompletePoint(this);
-    }
-
     public void Hide()
     {
         if (image == null)
@@ -74,4 +69,4 @@ public class TracePoint : MonoBehaviour, IPointerEnterHandler
         if (image != null)
             image.enabled = false;
     }
-}
+}
